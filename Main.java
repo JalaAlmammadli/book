@@ -2,8 +2,7 @@
 import user_and_admin.*;
 import user_and_admin.exceptions.IllegalPasswordException;
 import user_and_admin.exceptions.IllegalUsernameException;
-
-import databases.UserDataBase;
+import database.UserDataBase;
 
 class Main {
 
@@ -16,8 +15,8 @@ class Main {
 
         System.out.println(user1.toString());
 
-        UserDataBase.add(user1);
+        UserDataBase.UserDataBase1.add(user1);
 
-        System.out.println(UserDataBase.isInMap(user1.getUsername()));
+        System.out.println(UserDataBase.UserDataBase1.isInMap(user1.getUsername()));
     }
 }

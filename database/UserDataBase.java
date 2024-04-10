@@ -1,24 +1,25 @@
-package databases;
+package database;
 
 import java.util.HashMap;
 import user_and_admin.User;
 
 // This class is used for holding User oblects
-public class UserDataBase {
+public class UserDataBase implements DataBaseInterface<User> {
 
     // All users will be contained in this HashMap, and its key will be user's
     // username and User object itself
     // *(For now value just conatins user's password)
-    private static HashMap<String, String> user_map = new HashMap<String, String>();
+    private HashMap<String, User> user_map;
 
-    public static void add(String username, String password) {
-        if (username != null || password != null) {
-            user_map.put(username, password);
-        }
+    // There will be only one exemplare of UserDataBase class
+    public static UserDataBase UserDataBase1 = new UserDataBase();
+
+    private UserDataBase() {
+        user_map = new HashMap<String, User>();
     }
 
-    public static void add(User obj) {
-        user_map.put(obj.getUsername(), obj.getPassword());
+    public void add(User obj) {
+        user_map.put(obj.getUsername(), obj);
     }
 
     // public void remove(User obj) {
@@ -26,8 +27,8 @@ public class UserDataBase {
     // }
 
     // This method removes user from user_map by its username
-    public static void remove(String username) {
-        if (UserDataBase.isInMap(username)) {
+    public void remove(String username) {
+        if (UserDataBase1.isInMap(username)) {
             user_map.remove(username);
         }
 
@@ -44,12 +45,17 @@ public class UserDataBase {
 
     // returns true if user with username "some username"
     // exits in the user_map
-    public static boolean isInMap(String username) {
+    public boolean isInMap(String username) {
         if (user_map.get(username) == null) {
             return false;
         }
 
         return true;
+    }
+
+    // This method will return user
+    public User getMember(String username) {
+        return user_map.get(username);
     }
 
     /*
@@ -60,13 +66,13 @@ public class UserDataBase {
      * for this username is correct. If yes user Successfully logined, else
      * it will throw WrongPasswordException.
      */
-    public static boolean checkUserForLogin(String username, String password) {
+    public boolean checkUserForLogin(String username, String password) {
         if (user_map.get(username) == null) {
             System.out.println("There is no such user. You can register");
             return false;
         }
 
-        else if (user_map.get(username).equals(password)) {
+        else if (user_map.get(username).getPassword().equals(password)) {
             return true;
         }
 
