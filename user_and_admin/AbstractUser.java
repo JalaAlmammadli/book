@@ -23,8 +23,8 @@ abstract class AbstractUser {
             this.username = username;
             return;
         }
-        throw new IllegalUsernameException(
-                "Username must be longer 4 letters and lesser 20 letters, and it must contain only english letters!");
+        throw new IllegalUsernameException(username
+                + " does not fit. Username must be longer 4 letters and lesser 20 letters, and it must contain only english letters!");
     }
 
     // for now username can only contain english letters, and testUsername() method
@@ -52,7 +52,8 @@ abstract class AbstractUser {
             this.password = password;
             return;
         }
-        throw new IllegalPasswordException("Password must be longer 8 letters and lesser 255 letters!");
+        throw new IllegalPasswordException(
+                "Password must be equal or longer than 8 letters and lesser than 255 letters!");
     }
 
     abstract public String toString();

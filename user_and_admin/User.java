@@ -1,27 +1,24 @@
 package user_and_admin;
 
-import java.math.BigInteger;
-
 import user_and_admin.AbstractUser;
 import user_and_admin.exceptions.IllegalPasswordException;
 import user_and_admin.exceptions.IllegalUsernameException;
 
 public class User extends AbstractUser {
-    private static BigInteger code = new BigInteger("00000000");
 
-    public User(String username, String password) throws IllegalUsernameException, IllegalPasswordException {
+    private User(String username, String password) throws IllegalUsernameException, IllegalPasswordException {
         super(username, password);
     }
 
     // User instance can only be created by createUser() method.
-    public User createUser(String username, String password) {
-        User user = null;
+    public static User createUser(String username, String password) {
         try {
-            user = new User(username, password);
+            User user = new User(username, password);
+            return user;
         } catch (IllegalUsernameException | IllegalPasswordException e) {
             System.out.println(e);
         }
-        return user;
+        return null;
     }
 
     public String toString() {
