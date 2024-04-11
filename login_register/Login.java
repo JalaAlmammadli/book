@@ -36,15 +36,23 @@ public class Login {
             stay_logined = false;
         }
 
-        while (!loginProcess(username, password) && end_prog.charAt(0) == 'n' && scan.hasNextLine()) {
+        while (!loginProcess(username, password)) {
             try {
-                Thread.sleep(2000);
+                Thread.sleep(200);
             } catch (InterruptedException e) {
 
             }
 
+            System.out.println("Press any key to repeat...");
+
+            scan.nextLine();
+
             System.out.print("Exit(y/n): ");
             end_prog = scan.nextLine();
+            if (end_prog.charAt(0) == 'y') {
+                return false;
+            }
+
             System.out.print("Enter username: ");
             username = scan.nextLine();
             System.out.print("Enter password: ");
