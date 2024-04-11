@@ -12,7 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-public class RegisterFrame extends LoginFrame{
+public class RegisterFrame extends LoginFrame {
     private static JTextField newUsernameField;
     private static JPasswordField newPasswordField;
     private static JButton registerButton;
@@ -57,7 +57,8 @@ public class RegisterFrame extends LoginFrame{
                 String newPassword = new String(newPasswordField.getPassword());
                 // Perform registration logic with newUsername and newPassword
                 System.out.println("Registered: " + newUsername + ", Password: " + newPassword);
-                // Here you can also add code to close the registration form or any other action you want after registration.
+                // Here you can also add code to close the registration form or any other action
+                // you want after registration.
                 registrationFrame.dispose(); // Close the registration form after registration
             }
         });
@@ -75,11 +76,11 @@ public class RegisterFrame extends LoginFrame{
         loginLink.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                registrationFrame.dispose(); 
-                LoginFrame.login(); 
+                registrationFrame.dispose();
+                LoginFrame.login();
             }
         });
-        
+
         registrationPanel.add(loginLink);
 
         registrationFrame.setVisible(true);

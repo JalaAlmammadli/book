@@ -67,6 +67,11 @@ public class LoginFrame {
         });
         jpanel.add(registerLink);
 
+        // ----------------------------
+        if (registerLink.isEnabled()) {
+            return;
+        }
+
         userText = new JTextField(20);
         userText.setBounds(100, 20, 165, 25);
         jpanel.add(userText);
@@ -82,7 +87,8 @@ public class LoginFrame {
                 String user = userText.getText();
                 String password = new String(passwordText.getPassword());
                 System.out.println("Registered: " + user + ", Password: " + password);
-                // Here you can also add code to go back to the login form or any other action you want after registration.
+                // Here you can also add code to go back to the login form or any other action
+                // you want after registration.
             }
         });
         jpanel.add(loginButton);

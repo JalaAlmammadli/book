@@ -1,4 +1,4 @@
-package databases;
+package database;
 
 import java.util.HashMap;
 import user_and_admin.User;
