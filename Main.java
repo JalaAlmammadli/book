@@ -3,6 +3,7 @@ import user_and_admin.*;
 import user_and_admin.exceptions.IllegalPasswordException;
 import user_and_admin.exceptions.IllegalUsernameException;
 import database.UserDataBase;
+import login_register.Login;
 
 class Main {
 
@@ -18,5 +19,8 @@ class Main {
         UserDataBase.UserDataBase1.add(user1);
 
         System.out.println(UserDataBase.UserDataBase1.isInMap(user1.getUsername()));
+
+        // System.out.println(Login.tryLogin("Orkhan", "123456789", false));
+        System.out.println(Login.tryLogin("Orkhan", "wrong_password", false));
     }
 }

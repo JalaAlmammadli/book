@@ -1,14 +1,18 @@
 package login_register;
 
+import java.util.Scanner;
+
 import database.UserDataBase;
 import user_and_admin.Admin;
-import user_and_admin.User;
-import user_and_admin.Status;
-import user_and_admin.CurrentStatus;
+import program_settings.Status;
+import program_settings.Parametres;
 
 public class Login {
     private static boolean stay_logined = false;
-    private static User active_user;
+
+    public boolean stayLogined() {
+        return stay_logined;
+    }
 
     /*
      * This method is used for calling loginProcess() method,
@@ -20,16 +24,35 @@ public class Login {
      * In the future user will able to prevent logging in by finishing
      * the program.
      */
+
     public static boolean tryLogin(String username, String password, boolean stay_logined_arg) {
+
+        String end_prog = "n";
+        Scanner scan = new Scanner(System.in);
+
         if (stay_logined_arg == true) {
             stay_logined = true;
         } else {
             stay_logined = false;
         }
 
-        while (!loginProcess(username, password)) {
+        while (!loginProcess(username, password) && end_prog.charAt(0) == 'n' && scan.hasNextLine()) {
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+
+            }
+
+            System.out.print("Exit(y/n): ");
+            end_prog = scan.nextLine();
+            System.out.print("Enter username: ");
+            username = scan.nextLine();
+            System.out.print("Enter password: ");
+            password = scan.nextLine();
+
         }
 
+        scan.close();
         return true;
 
     }
@@ -37,14 +60,14 @@ public class Login {
     private static boolean loginProcess(String username, String password) {
 
         if (Admin.login(username, password)) {
-            CurrentStatus.current_user_status = Status.ADMIN;
+            Parametres.setUserStatus(Status.ADMIN);
             return true;
 
         } else {
             if (UserDataBase.UserDataBase1.checkUserForLogin(username, password)) {
 
-                active_user = UserDataBase.UserDataBase1.getMember(username);
-                CurrentStatus.current_user_status = Status.USER;
+                Parametres.setActiveUser(UserDataBase.UserDataBase1.getMember(username));
+                Parametres.setUserStatus(Status.USER);
                 return true;
 
             } else {
