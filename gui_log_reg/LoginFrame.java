@@ -1,3 +1,4 @@
+package gui_log_reg;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
