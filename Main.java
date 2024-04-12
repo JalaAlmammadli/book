@@ -26,7 +26,6 @@ class Main {
 
         System.out.println(UserDataBase.UserDataBase1.isInMap(user1.getUsername()));
 
-        // LoginFrame.Login();
-        RegisterFrame.openRegistrationForm();
+        LoginFrame.Login();
     }
 }
