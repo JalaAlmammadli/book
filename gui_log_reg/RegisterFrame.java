@@ -26,6 +26,8 @@ import javax.swing.JTextField;
 import login_register.Register;
 import login_register.login_exceptions.ExistingUserException;
 import login_register.login_exceptions.PasswordsDontMatch;
+import user_and_admin.exceptions.IllegalPasswordException;
+import user_and_admin.exceptions.IllegalUsernameException;
 
 public class RegisterFrame extends LoginFrame {
     private static JTextField newUsernameField;
@@ -103,9 +105,12 @@ public class RegisterFrame extends LoginFrame {
                 // Added by Orkhan
                 try {
                     if (Register.tryRegister(newUsername, newPassword, newPassword2)) {
+                        LoginFrame.login();
                         registrationFrame.dispose();
                     }
                 } catch (ExistingUserException | PasswordsDontMatch ex) {
+                    infoForUser.setText(ex.getMessage());
+                } catch (IllegalPasswordException | IllegalUsernameException ex) {
                     infoForUser.setText(ex.getMessage());
                 }
                 // Here you can also add code to close the registration form or any other action
