@@ -26,9 +26,7 @@ class Main {
 
         System.out.println(UserDataBase.UserDataBase1.isInMap(user1.getUsername()));
 
-        System.out.println(Login.tryLogin("Orkhan", "123456789", false));
-        System.out.println(Login.tryLogin("JohnWick", "123456789", false));
-        LoginFrame.Login();
+        // LoginFrame.Login();
         RegisterFrame.openRegistrationForm();
     }
 }

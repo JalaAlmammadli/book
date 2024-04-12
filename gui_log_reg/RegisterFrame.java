@@ -24,6 +24,8 @@ import javax.swing.JTextField;
 
 // Project classes
 import login_register.Register;
+import login_register.login_exceptions.ExistingUserException;
+import login_register.login_exceptions.PasswordsDontMatch;
 
 public class RegisterFrame extends LoginFrame {
     private static JTextField newUsernameField;
@@ -37,6 +39,7 @@ public class RegisterFrame extends LoginFrame {
     private static JLabel usernameLabel;
     private static JLabel passwordLabel;
     private static JLabel repeatPasswordLabel;
+    private static JLabel infoForUser;
 
     // I made it protected because, I could call it from main
     // and it gave NullPointerException as Login page was not
@@ -45,7 +48,7 @@ public class RegisterFrame extends LoginFrame {
 
         registrationPanel = new JPanel();
         registrationFrame = new JFrame("Registration");
-        registrationFrame.setSize(350, 250);
+        registrationFrame.setSize(350, 280);
         registrationFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         registrationFrame.setLocationRelativeTo(null);
         registrationFrame.add(registrationPanel);
@@ -81,8 +84,14 @@ public class RegisterFrame extends LoginFrame {
         newPasswordField2.setBounds(100, 100, 165, 25);
         registrationPanel.add(newPasswordField2);
 
+        // Added by Orkhan
+        infoForUser = new JLabel();
+        infoForUser.setBounds(100, 110, 165, 60);
+        infoForUser.setForeground(Color.RED);
+        registrationPanel.add(infoForUser);
+
         registerButton = new JButton("Register");
-        registerButton.setBounds(100, 140, 100, 25);
+        registerButton.setBounds(100, 170, 100, 25);
         registerButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String newUsername = newUsernameField.getText();
@@ -92,9 +101,12 @@ public class RegisterFrame extends LoginFrame {
                 // Perform registration logic with newUsername and newPassword
 
                 // Added by Orkhan
-                if (Register.tryRegister(newUsername, newPassword, newPassword2)) {
-                    System.out.println("HMMMMMM");
-                    registrationFrame.dispose();
+                try {
+                    if (Register.tryRegister(newUsername, newPassword, newPassword2)) {
+                        registrationFrame.dispose();
+                    }
+                } catch (ExistingUserException | PasswordsDontMatch ex) {
+                    infoForUser.setText(ex.getMessage());
                 }
                 // Here you can also add code to close the registration form or any other action
                 // you want after registration.
@@ -103,11 +115,11 @@ public class RegisterFrame extends LoginFrame {
         registrationPanel.add(registerButton);
 
         loginText = new JLabel("Already have an account?");
-        loginText.setBounds(10, 180, 200, 25);
+        loginText.setBounds(10, 210, 200, 25);
         registrationPanel.add(loginText);
 
         loginLink = new JLabel("<html><u>Login here</u></html>");
-        loginLink.setBounds(170, 180, 100, 25);
+        loginLink.setBounds(170, 210, 100, 25);
         loginLink.setForeground(Color.blue);
         loginLink.setCursor(new Cursor(Cursor.HAND_CURSOR));
 

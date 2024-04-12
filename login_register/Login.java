@@ -12,6 +12,7 @@ import database.UserDataBase;
 import user_and_admin.Admin;
 import program_settings.Status;
 import program_settings.Parametres;
+import login_register.login_exceptions.WrongUserException;
 
 public class Login {
     private static boolean stay_logined = false;
@@ -31,7 +32,8 @@ public class Login {
      * the program.
      */
 
-    public static boolean tryLogin(String username, String password, boolean stay_logined_arg) {
+    public static boolean tryLogin(String username, String password, boolean stay_logined_arg)
+            throws WrongUserException {
 
         if (stay_logined_arg == true) {
             stay_logined = true;
@@ -53,7 +55,7 @@ public class Login {
 
     }
 
-    private static boolean loginProcess(String username, String password) {
+    private static boolean loginProcess(String username, String password) throws WrongUserException {
 
         if (Admin.login(username, password)) {
             Parametres.setUserStatus(Status.ADMIN);
@@ -68,8 +70,7 @@ public class Login {
                 return true;
 
             } else {
-                System.out.println("Wrong username or password");
-                return false;
+                throw new WrongUserException("Wrong username or password");
             }
         }
 

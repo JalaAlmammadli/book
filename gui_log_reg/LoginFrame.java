@@ -25,6 +25,7 @@ import javax.swing.SwingUtilities;
 
 // Project classes
 import login_register.Login;
+import login_register.login_exceptions.WrongUserException;
 
 public class LoginFrame {
 
@@ -38,6 +39,9 @@ public class LoginFrame {
     private static JFrame jframe;
     private static JLabel registerText;
     private static JButton loginButton;
+
+    // Added by Orkhan
+    private static JLabel infoForUser;
 
     public static void Login() {
         SwingUtilities.invokeLater(new Runnable() {
@@ -58,7 +62,7 @@ public class LoginFrame {
         // Login frame
         jpanel = new JPanel();
         jframe = new JFrame();
-        jframe.setSize(350, 210);
+        jframe.setSize(350, 230);
         jframe.setTitle("Login");
         jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jframe.setLocationRelativeTo(null);
@@ -80,12 +84,12 @@ public class LoginFrame {
 
         // Label near register button
         registerText = new JLabel("Do not you have an account?");
-        registerText.setBounds(10, 145, 200, 25);
+        registerText.setBounds(10, 165, 200, 25);
         jpanel.add(registerText);
 
         // Register button
         registerLink = new JLabel("<html><u>Register here</u></html>");
-        registerLink.setBounds(190, 145, 200, 25);
+        registerLink.setBounds(190, 165, 200, 25);
         registerLink.setForeground(Color.blue);
         registerLink.setCursor(new Cursor(Cursor.HAND_CURSOR));
         registerLink.addMouseListener(new MouseAdapter() {
@@ -109,15 +113,27 @@ public class LoginFrame {
         passwordText.setBounds(100, 70, 165, 25);
         jpanel.add(passwordText);
 
+        // Added by Orkhan
+        infoForUser = new JLabel();
+        infoForUser.setBounds(100, 100, 300, 25);
+        infoForUser.setForeground(Color.RED);
+        jpanel.add(infoForUser);
+
         // Login button
         loginButton = new JButton("Login");
-        loginButton.setBounds(130, 110, 100, 25);
+        loginButton.setBounds(130, 130, 100, 25);
         loginButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String user = userText.getText();
                 String password = new String(passwordText.getPassword());
 
-                Login.tryLogin(user, password, false);
+                try {
+                    if (Login.tryLogin(user, password, false)) {
+                        jframe.dispose();
+                    }
+                } catch (WrongUserException ex) {
+                    infoForUser.setText(ex.getMessage());
+                }
                 // Here you can also add code to go back to the login form or any other action
                 // you want after registration.
             }

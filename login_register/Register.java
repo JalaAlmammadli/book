@@ -10,6 +10,8 @@ package login_register;
 
 import database.UserDataBase;
 import user_and_admin.User;
+import login_register.login_exceptions.PasswordsDontMatch;
+import login_register.login_exceptions.ExistingUserException;
 
 public class Register {
 
@@ -17,7 +19,8 @@ public class Register {
      * tryRegister() method works completely same as tryLogin()
      * method, except that it will require 2 passwords.
      */
-    public static boolean tryRegister(String username, String password, String password2) {
+    public static boolean tryRegister(String username, String password, String password2)
+            throws PasswordsDontMatch, ExistingUserException {
 
         try {
             Thread.sleep(200);
@@ -32,11 +35,11 @@ public class Register {
         return true;
     }
 
-    private static boolean registerProcess(String username, String password, String password2) {
+    private static boolean registerProcess(String username, String password, String password2)
+            throws PasswordsDontMatch, ExistingUserException {
 
         if (!password.equals(password2)) {
-            System.out.println("Passwords do not match");
-            return false;
+            throw new PasswordsDontMatch("Passwords don't match");
         }
 
         if (!UserDataBase.UserDataBase1.isInMap(username)) {
@@ -45,7 +48,6 @@ public class Register {
             return true;
         }
 
-        System.out.println("Account with username " + username + " already exists");
-        return false;
+        throw new ExistingUserException("Account already exists");
     }
 }
