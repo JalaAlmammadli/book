@@ -1,3 +1,11 @@
+/*
+
+
+ * Created by Orkhan
+ * 
+ * 
+ */
+
 package database;
 
 interface DataBaseInterface<T> {

@@ -1,11 +1,19 @@
-package login_register;
+/*
 
-import java.util.Scanner;
+
+ * Created by Orkhan
+ * 
+ * 
+ */
+
+package login_register;
 
 import database.UserDataBase;
 import user_and_admin.Admin;
 import program_settings.Status;
 import program_settings.Parametres;
+
+import gui_log_reg.LoginFrame;
 
 public class Login {
     private static boolean stay_logined = false;
@@ -27,40 +35,22 @@ public class Login {
 
     public static boolean tryLogin(String username, String password, boolean stay_logined_arg) {
 
-        String end_prog = "n";
-        Scanner scan = new Scanner(System.in);
-
         if (stay_logined_arg == true) {
             stay_logined = true;
         } else {
             stay_logined = false;
         }
 
-        while (!loginProcess(username, password)) {
-            try {
-                Thread.sleep(200);
-            } catch (InterruptedException e) {
-
-            }
-
-            System.out.println("Press any key to repeat...");
-
-            scan.nextLine();
-
-            System.out.print("Exit(y/n): ");
-            end_prog = scan.nextLine();
-            if (end_prog.charAt(0) == 'y') {
-                return false;
-            }
-
-            System.out.print("Enter username: ");
-            username = scan.nextLine();
-            System.out.print("Enter password: ");
-            password = scan.nextLine();
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
 
         }
 
-        scan.close();
+        if (!loginProcess(username, password)) {
+            return false;
+        }
+
         return true;
 
     }
@@ -74,6 +64,7 @@ public class Login {
         } else {
             if (UserDataBase.UserDataBase1.checkUserForLogin(username, password)) {
 
+                System.out.println("Success");
                 Parametres.setActiveUser(UserDataBase.UserDataBase1.getMember(username));
                 Parametres.setUserStatus(Status.USER);
                 return true;
