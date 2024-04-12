@@ -1,6 +1,4 @@
-<<<<<<< HEAD
 package gui_log_reg;
-=======
 /*
 
 
@@ -9,9 +7,6 @@ package gui_log_reg;
  * 
  */
 
-package gui_log_reg;
-
->>>>>>> orkhan-branch
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
@@ -27,9 +22,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
-<<<<<<< HEAD
 public class LoginFrame {
-=======
 // Project classes
 import login_register.Login;
 import login_register.login_exceptions.WrongUserException;
@@ -37,7 +30,7 @@ import login_register.login_exceptions.WrongUserException;
 public class LoginFrame {
 
     // Declearing objects
->>>>>>> orkhan-branch
+    >>>>>>>orkhan-branch
     private static JLabel Userlabel;
     private static JLabel passwordlabel;
     private static JTextField userText;
@@ -48,7 +41,8 @@ public class LoginFrame {
     private static JLabel registerText;
     private static JButton loginButton;
 
-<<<<<<< HEAD
+    <<<<<<<HEAD
+
     public static void main(String[] args) {
 =======
     // Added by Orkhan
@@ -63,7 +57,8 @@ public class LoginFrame {
         });
     }
 
-<<<<<<< HEAD
+    <<<<<<<HEAD
+
     public static void login() {
         jpanel = new JPanel();
         jframe = new JFrame();
@@ -81,7 +76,6 @@ public class LoginFrame {
         jpanel = new JPanel();
         jframe = new JFrame();
         jframe.setSize(350, 230);
->>>>>>> orkhan-branch
         jframe.setTitle("Login");
         jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jframe.setLocationRelativeTo(null);
