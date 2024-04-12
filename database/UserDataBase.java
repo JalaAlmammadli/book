@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 /*
 
 
@@ -8,7 +6,6 @@
  * 
  */
 
->>>>>>> orkhan-branch
 package database;
 
 import java.util.HashMap;
