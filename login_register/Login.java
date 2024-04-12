@@ -13,8 +13,6 @@ import user_and_admin.Admin;
 import program_settings.Status;
 import program_settings.Parametres;
 
-import gui_log_reg.LoginFrame;
-
 public class Login {
     private static boolean stay_logined = false;
 

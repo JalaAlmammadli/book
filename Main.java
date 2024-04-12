@@ -10,7 +10,7 @@
 import user_and_admin.*;
 import database.UserDataBase;
 import login_register.Login;
-import gui_log_reg.LoginFrame;
+import gui_log_reg.*;
 
 class Main {
 
@@ -29,5 +29,6 @@ class Main {
         System.out.println(Login.tryLogin("Orkhan", "123456789", false));
         System.out.println(Login.tryLogin("JohnWick", "123456789", false));
         LoginFrame.Login();
+        RegisterFrame.openRegistrationForm();
     }
 }

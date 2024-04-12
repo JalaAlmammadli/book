@@ -47,18 +47,8 @@ public class LoginFrame {
         });
     }
 
-    // Checks if frame is closed
-    public static boolean isClosed() {
-        if (jframe == null) {
-            return true;
-        }
-        return false;
-    }
-
     // Added by Orkhan
     // By calling this method we can close login page
-    // I created it because when I called registration page
-    // login page was not closed
     public static void closeFrame() {
         jframe.dispose();
     }
@@ -102,6 +92,9 @@ public class LoginFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 RegisterFrame.openRegistrationForm(); // Open the registration form
+
+                // Added by Orkhan
+                jframe.dispose();
             }
         });
         jpanel.add(registerLink);
