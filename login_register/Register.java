@@ -10,7 +10,9 @@
 
  import database.UserDataBase;
  import user_and_admin.User;
- import java.util.Scanner;
+ import login_register.login_exceptions.PasswordsDontMatch;
+ import login_register.login_exceptions.ExistingUserException;
+ import user_and_admin.exceptions.*;;
  
  public class Register {
  
@@ -18,39 +20,39 @@
       * tryRegister() method works completely same as tryLogin()
       * method, except that it will require 2 passwords.
       */
-     public static boolean tryRegister(String username, String password, String password2) {
+     public static boolean tryRegister(String username, String password, String password2)
+             throws PasswordsDontMatch, ExistingUserException, IllegalPasswordException, IllegalUsernameException {
  
-         String end_prog = "n";
-         Scanner scan = new Scanner(System.in);
+         try {
+             Thread.sleep(200);
+         } catch (InterruptedException e) {
  
-         while (!registerProcess(username, password, password2) && end_prog.charAt(0) == 'n') {
- 
-             System.out.print("Exit(y/n): ");
-             end_prog = scan.nextLine();
-             System.out.print("Enter username: ");
-             username = scan.nextLine();
-             System.out.print("Enter password: ");
-             password = scan.nextLine();
-             System.out.print("Repeat password: ");
-             password2 = scan.nextLine();
          }
  
-         scan.close();
-         return true;
-     }
- 
-     private static boolean registerProcess(String username, String password, String password2) {
- 
-         if (!password.equals(password2)) {
+         if (!registerProcess(username, password, password2)) {
              return false;
          }
  
-         if (!UserDataBase.UserDataBase1.isInMap(username)) {
-             UserDataBase.UserDataBase1.add(User.createUser(username, password));
-             return true;
+         return true;
+     }
+ 
+     private static boolean registerProcess(String username, String password, String password2)
+             throws PasswordsDontMatch, ExistingUserException, IllegalPasswordException, IllegalUsernameException {
+ 
+         if (!password.equals(password2)) {
+             throw new PasswordsDontMatch("Passwords don't match");
          }
  
-         System.out.println("Account with username " + username + " already exists");
-         return false;
+         if (!UserDataBase.UserDataBase1.isInMap(username)) {
+             User u = User.createUser(username, password2);
+             if (u != null) {
+                 UserDataBase.UserDataBase1.add(u);
+                 System.out.println("Registered");
+                 return true;
+             }
+             return false;
+         }
+ 
+         throw new ExistingUserException("Account already exists");
      }
  }

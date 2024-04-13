@@ -30,6 +30,6 @@
      }
  
      public String toString() {
-         return "[ username: " + super.getUsername() + "]";
+         return "[ username: " + super.getUsername() + " ]";
      }
  }

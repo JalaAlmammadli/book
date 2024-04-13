@@ -8,9 +8,14 @@
  */
 
  import user_and_admin.*;
+ import user_and_admin.exceptions.IllegalPasswordException;
+ import user_and_admin.exceptions.IllegalUsernameException;
  import database.UserDataBase;
  import login_register.Login;
- import gui_log_reg.LoginFrame;
+ import login_register.Register;
+ import login_register.login_exceptions.ExistingUserException;
+ import login_register.login_exceptions.PasswordsDontMatch;
+ import gui_log_reg.*;
  
  class Main {
  
@@ -26,8 +31,13 @@
  
          System.out.println(UserDataBase.UserDataBase1.isInMap(user1.getUsername()));
  
-         System.out.println(Login.tryLogin("Orkhan", "123456789", false));
-         System.out.println(Login.tryLogin("JohnWick", "123456789", false));
-         LoginFrame.Login();
+         try {
+             Register.tryRegister("Orkhan", "123", "123");
+         } catch (IllegalPasswordException | IllegalUsernameException | PasswordsDontMatch | ExistingUserException ex) {
+             System.out.println(ex);
+         }
+ 
+         RegisterFrame.openRegistrationForm();
+ 
      }
  }
