@@ -42,6 +42,7 @@ public class LoginFrame {
                 SwingUtilities.invokeLater(new Runnable() {
                         public void run() {
                                 login();
+                                return;
                         }
                 });
         }
@@ -69,10 +70,10 @@ public class LoginFrame {
 
                 /* Labels*************************************************************** */
                 // Username label
-                Userlabel = new Label(10, 20, 80, 25, "Username", jpanel);
+                Userlabel = new Label(10, 20, 80, 25, "Username:", jpanel);
 
                 // Password label
-                passwordlabel = new Label(10, 70, 80, 25, "Password", jpanel);
+                passwordlabel = new Label(10, 70, 80, 25, "Password:", jpanel);
 
                 // Label near register button
                 registerText = new Label(10, 165, 200, 25, "Do not you have an account?", jpanel);

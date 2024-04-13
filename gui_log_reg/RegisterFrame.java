@@ -66,13 +66,13 @@ public class RegisterFrame extends LoginFrame {
 
         /* Labels */
         // Username label
-        usernameLabel = new Label(10, 20, 80, 25, "Username", registrationPanel);
+        usernameLabel = new Label(10, 20, 80, 25, "Username:", registrationPanel);
 
         // Password label
-        passwordLabel = new Label(10, 60, 80, 25, "Password", registrationPanel);
+        passwordLabel = new Label(10, 60, 80, 25, "Password:", registrationPanel);
 
         // Added by Orkhan
-        repeatPasswordLabel = new Label(10, 100, 80, 25, "Repeat Password", registrationPanel);
+        repeatPasswordLabel = new Label(10, 100, 120, 25, "Repeat Password:", registrationPanel);
 
         // Login text
         loginText = new Label(10, 210, 200, 25, "Already have an account?", registrationPanel);
@@ -83,13 +83,13 @@ public class RegisterFrame extends LoginFrame {
 
         // Text Fields**********************************************************
         // Userename field
-        newUsernameField = new TextField(100, 20, 165, 25, 20, registrationPanel);
+        newUsernameField = new TextField(120, 20, 165, 25, 20, registrationPanel);
 
         // Password field 1
-        newPasswordField = new PasswordField(100, 60, 165, 25, 20, registrationPanel);
+        newPasswordField = new PasswordField(120, 60, 165, 25, 20, registrationPanel);
 
         // Password field 2
-        newPasswordField2 = new PasswordField(100, 100, 165, 25, 20, registrationPanel);
+        newPasswordField2 = new PasswordField(120, 100, 165, 25, 20, registrationPanel);
         // *********************************************************************
 
         // Register button******************************************************
