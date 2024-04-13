@@ -37,6 +37,7 @@ public class Login {
 
         if (stay_logined_arg == true) {
             stay_logined = true;
+            System.out.println("Stay logined");
         } else {
             stay_logined = false;
         }

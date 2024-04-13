@@ -14,6 +14,7 @@ import database.UserDataBase;
 import login_register.Login;
 import login_register.Register;
 import gui_log_reg.*;
+import javax.swing.JCheckBoxMenuItem;
 
 class Main {
 
@@ -29,12 +30,11 @@ class Main {
 
         System.out.println(UserDataBase.UserDataBase1.isInMap(user1.getUsername()));
 
-        LoginFrame.Login();
-        try {
-            Register.tryRegister("Orkhan", "123", "123");
-        } catch (IllegalPasswordException | IllegalUsernameException ex) {
-            System.out.println(ex);
-        }
+        // try {
+        // Register.tryRegister("Orkhan", "123", "123");
+        // } catch (IllegalPasswordException | IllegalUsernameException ex) {
+        // System.out.println(ex);
+        // }
 
         LoginFrame.Login();
     }
