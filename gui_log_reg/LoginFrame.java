@@ -62,7 +62,7 @@ public class LoginFrame {
                 jframe = new JFrame();
                 jframe.setSize(350, 230);
                 jframe.setTitle("Login");
-                jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                jframe.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 jframe.setLocationRelativeTo(null);
                 jframe.add(jpanel);
                 jpanel.setLayout(null);
@@ -103,7 +103,7 @@ public class LoginFrame {
                 registerLink.getObject().addMouseListener(new MouseAdapter() {
                         @Override
                         public void mouseClicked(MouseEvent e) {
-                                RegisterFrame.openRegistrationForm(); // Open the registration form
+                                RegisterFrame.openRegistrationForm(true); // Open the registration form
 
                                 // Added by Orkhan
                                 jframe.dispose();

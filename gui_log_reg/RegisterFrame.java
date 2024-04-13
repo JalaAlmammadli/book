@@ -30,6 +30,7 @@ import user_and_admin.exceptions.IllegalUsernameException;
 
 public class RegisterFrame extends LoginFrame {
 
+    private static boolean calledFromLogin = false;
     // Frame objects
     private static JFrame registrationFrame;
     private static JPanel registrationPanel;
@@ -49,7 +50,7 @@ public class RegisterFrame extends LoginFrame {
     // I made it protected because, I could call it from main
     // and it gave NullPointerException as Login page was not
     // created. So, I made it for security purposes.
-    public static void openRegistrationForm() {
+    public static void openRegistrationForm(boolean calledFromLogin) {
 
         // Frame and Panel settings********************************************
         registrationPanel = new JPanel();
@@ -125,8 +126,16 @@ public class RegisterFrame extends LoginFrame {
         loginLink.getObject().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+
+                // This made because by calling login()->register()->login()->...
+                // this can cause StackOverFlow error because of too much recursion process
+                // So calledFromLogin will get boolean value to define if this method
+                // called from login(true) or not(false)
                 registrationFrame.dispose();
-                LoginFrame.login();
+                if (!calledFromLogin) {
+                    System.out.println("did not called from login");
+                    LoginFrame.login();
+                }
             }
         });
 

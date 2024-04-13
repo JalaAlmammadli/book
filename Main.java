@@ -37,5 +37,6 @@ class Main {
         // }
 
         LoginFrame.Login();
+        RegisterFrame.openRegistrationForm(false);
     }
 }
