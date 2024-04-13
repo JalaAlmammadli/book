@@ -13,8 +13,6 @@ import user_and_admin.exceptions.IllegalUsernameException;
 import database.UserDataBase;
 import login_register.Login;
 import login_register.Register;
-import login_register.login_exceptions.ExistingUserException;
-import login_register.login_exceptions.PasswordsDontMatch;
 import gui_log_reg.*;
 
 class Main {
@@ -34,10 +32,10 @@ class Main {
         LoginFrame.Login();
         try {
             Register.tryRegister("Orkhan", "123", "123");
-        } catch (IllegalPasswordException | IllegalUsernameException | PasswordsDontMatch | ExistingUserException ex) {
+        } catch (IllegalPasswordException | IllegalUsernameException ex) {
             System.out.println(ex);
         }
 
-        RegisterFrame.openRegistrationForm();
+        LoginFrame.Login();
     }
 }
