@@ -37,6 +37,7 @@ class Main {
             System.out.println(ex);
         }
 
+        // test
         RegisterFrame.openRegistrationForm();
 
     }
