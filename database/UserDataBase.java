@@ -80,7 +80,7 @@
              return false;
          }
  
-         else if (user_map.get(username).getPassword().equals(password)) {
+         else if (user_map.get(username).getPassword() == password.hashCode()) {
              return true;
          }
  

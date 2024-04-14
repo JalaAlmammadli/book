@@ -13,9 +13,8 @@
  import database.UserDataBase;
  import login_register.Login;
  import login_register.Register;
- import login_register.login_exceptions.ExistingUserException;
- import login_register.login_exceptions.PasswordsDontMatch;
  import gui_log_reg.*;
+ import javax.swing.JCheckBoxMenuItem;
  
  class Main {
  
@@ -31,13 +30,13 @@
  
          System.out.println(UserDataBase.UserDataBase1.isInMap(user1.getUsername()));
  
-         try {
-             Register.tryRegister("Orkhan", "123", "123");
-         } catch (IllegalPasswordException | IllegalUsernameException | PasswordsDontMatch | ExistingUserException ex) {
-             System.out.println(ex);
-         }
+         // try {
+         // Register.tryRegister("Orkhan", "123", "123");
+         // } catch (IllegalPasswordException | IllegalUsernameException ex) {
+         // System.out.println(ex);
+         // }
  
-         RegisterFrame.openRegistrationForm();
- 
+         LoginFrame.Login();
+         RegisterFrame.openRegistrationForm(false);
      }
  }

@@ -24,30 +24,35 @@
  
  // Project classes
  import login_register.Register;
- import login_register.login_exceptions.ExistingUserException;
- import login_register.login_exceptions.PasswordsDontMatch;
+ import gui_elements.*;
  import user_and_admin.exceptions.IllegalPasswordException;
  import user_and_admin.exceptions.IllegalUsernameException;
  
  public class RegisterFrame extends LoginFrame {
-     private static JTextField newUsernameField;
-     private static JPasswordField newPasswordField;
-     private static JPasswordField newPasswordField2;
-     private static JButton registerButton;
-     private static JLabel loginText;
-     private static JLabel loginLink;
+ 
+     private static boolean calledFromLogin = false;
+     // Frame objects
      private static JFrame registrationFrame;
      private static JPanel registrationPanel;
-     private static JLabel usernameLabel;
-     private static JLabel passwordLabel;
-     private static JLabel repeatPasswordLabel;
-     private static JLabel infoForUser;
+ 
+     // Addidtional objects
+     private static TextField newUsernameField;
+     private static PasswordField newPasswordField;
+     private static PasswordField newPasswordField2;
+     private static Button registerButton;
+     private static Label loginText;
+     private static Label loginLink;
+     private static Label usernameLabel;
+     private static Label passwordLabel;
+     private static Label repeatPasswordLabel;
+     private static Label infoForUser;
  
      // I made it protected because, I could call it from main
      // and it gave NullPointerException as Login page was not
      // created. So, I made it for security purposes.
-     public static void openRegistrationForm() {
+     public static void openRegistrationForm(boolean calledFromLogin) {
  
+         // Frame and Panel settings********************************************
          registrationPanel = new JPanel();
          registrationFrame = new JFrame("Registration");
          registrationFrame.setSize(350, 280);
@@ -57,48 +62,44 @@
  
          // Added by Orkhan. For some reason this page is can not be non-resizable
          registrationFrame.setResizable(false);
- 
          registrationPanel.setLayout(null);
+         // *********************************************************************
  
-         usernameLabel = new JLabel("Username");
-         usernameLabel.setBounds(10, 20, 80, 25);
-         registrationPanel.add(usernameLabel);
+         /* Labels */
+         // Username label
+         usernameLabel = new Label(10, 20, 80, 25, "Username:", registrationPanel);
  
-         passwordLabel = new JLabel("Password");
-         passwordLabel.setBounds(10, 60, 80, 25);
-         registrationPanel.add(passwordLabel);
- 
-         // Added by Orkhan
-         repeatPasswordLabel = new JLabel("Repeat Password");
-         repeatPasswordLabel.setBounds(10, 100, 80, 25);
-         registrationPanel.add(repeatPasswordLabel);
- 
-         newUsernameField = new JTextField(20);
-         newUsernameField.setBounds(100, 20, 165, 25);
-         registrationPanel.add(newUsernameField);
- 
-         newPasswordField = new JPasswordField();
-         newPasswordField.setBounds(100, 60, 165, 25);
-         registrationPanel.add(newPasswordField);
+         // Password label
+         passwordLabel = new Label(10, 60, 80, 25, "Password:", registrationPanel);
  
          // Added by Orkhan
-         newPasswordField2 = new JPasswordField();
-         newPasswordField2.setBounds(100, 100, 165, 25);
-         registrationPanel.add(newPasswordField2);
+         repeatPasswordLabel = new Label(10, 100, 120, 25, "Repeat Password:", registrationPanel);
  
-         // Added by Orkhan
-         infoForUser = new JLabel();
-         infoForUser.setBounds(100, 110, 165, 60);
-         infoForUser.setForeground(Color.RED);
-         registrationPanel.add(infoForUser);
+         // Login text
+         loginText = new Label(10, 210, 200, 25, "Already have an account?", registrationPanel);
  
-         registerButton = new JButton("Register");
-         registerButton.setBounds(100, 170, 100, 25);
-         registerButton.addActionListener(new ActionListener() {
+         // Information label
+         infoForUser = new Label(100, 130, 165, 25, null, registrationPanel);
+         infoForUser.getObject().setForeground(Color.RED);
+ 
+         // Text Fields**********************************************************
+         // Userename field
+         newUsernameField = new TextField(120, 20, 165, 25, 20, registrationPanel);
+ 
+         // Password field 1
+         newPasswordField = new PasswordField(120, 60, 165, 25, 20, registrationPanel);
+ 
+         // Password field 2
+         newPasswordField2 = new PasswordField(120, 100, 165, 25, 20, registrationPanel);
+         // *********************************************************************
+ 
+         // Register button******************************************************
+         registerButton = new Button(100, 170, 100, 25, "Register", registrationPanel);
+         registerButton.getObject().addActionListener(new ActionListener() {
              public void actionPerformed(ActionEvent e) {
-                 String newUsername = newUsernameField.getText();
-                 String newPassword = new String(newPasswordField.getPassword());
-                 String newPassword2 = new String(newPasswordField2.getPassword());
+                 String newUsername = newUsernameField.getObject().getText();
+                 String newPassword = new String(newPasswordField.getObject().getPassword());
+                 String newPassword2 = new String(newPasswordField2.getObject().getPassword());
  
                  // Perform registration logic with newUsername and newPassword
  
@@ -108,36 +109,37 @@
                          LoginFrame.login();
                          registrationFrame.dispose();
                      }
-                 } catch (ExistingUserException | PasswordsDontMatch ex) {
-                     infoForUser.setText(ex.getMessage());
                  } catch (IllegalPasswordException | IllegalUsernameException ex) {
-                     infoForUser.setText(ex.getMessage());
+                     infoForUser.getObject().setText(ex.getMessage());
                  }
+                 // Here you can also add code to close the registration form or any other action
                  // Here you can also add code to close the registration form or any other action
                  // you want after registration.
              }
          });
-         registrationPanel.add(registerButton);
+         // ***********************************************************************
  
-         loginText = new JLabel("Already have an account?");
-         loginText.setBounds(10, 210, 200, 25);
-         registrationPanel.add(loginText);
+         // Login link
+         loginLink = new Label(170, 210, 100, 25, "<html><u>Login here</u></html>", registrationPanel);
+         loginLink.getObject().setForeground(Color.BLUE);
  
-         loginLink = new JLabel("<html><u>Login here</u></html>");
-         loginLink.setBounds(170, 210, 100, 25);
-         loginLink.setForeground(Color.blue);
-         loginLink.setCursor(new Cursor(Cursor.HAND_CURSOR));
- 
-         loginLink.addMouseListener(new MouseAdapter() {
+         loginLink.getObject().addMouseListener(new MouseAdapter() {
              @Override
              public void mouseClicked(MouseEvent e) {
+ 
+                 // This made because by calling login()->register()->login()->...
+                 // this can cause StackOverFlow error because of too much recursion process
+                 // So calledFromLogin will get boolean value to define if this method
+                 // called from login(true) or not(false)
                  registrationFrame.dispose();
-                 LoginFrame.login();
+                 if (!calledFromLogin) {
+                     System.out.println("did not called from login");
+                     LoginFrame.login();
+                 }
              }
          });
  
-         registrationPanel.add(loginLink);
- 
+         // Frame visibility
          registrationFrame.setVisible(true);
      }
  }

@@ -35,23 +35,24 @@
      public static boolean tryLogin(String username, String password, boolean stay_logined_arg)
              throws WrongUserException {
  
-         if (stay_logined_arg == true) {
-             stay_logined = true;
-         } else {
-             stay_logined = false;
-         }
- 
          try {
              Thread.sleep(200);
          } catch (InterruptedException e) {
  
          }
  
-         if (!loginProcess(username, password)) {
-             return false;
+         if (loginProcess(username, password)) {
+             return true;
          }
  
-         return true;
+         if (stay_logined_arg == true) {
+             stay_logined = true;
+             System.out.println("Stay logined");
+         } else {
+             stay_logined = false;
+         }
+ 
+         return false;
  
      }
  
