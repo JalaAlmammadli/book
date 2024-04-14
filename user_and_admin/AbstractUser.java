@@ -13,7 +13,7 @@ import user_and_admin.exceptions.IllegalUsernameException;
 
 abstract class AbstractUser {
     private String username;
-    private String password;
+    private int password;
 
     // UserInterface() constructor does not handles exception, because if any
     // exception will be thrown, user will not be created.
@@ -50,14 +50,14 @@ abstract class AbstractUser {
         return true;
     }
 
-    public String getPassword() {
+    public int getPassword() {
         return password;
     }
 
     // password only has setter method, as user only can change password not see it.
     public void setPassword(String password) throws IllegalPasswordException {
         if (password.length() >= 8 && password.length() <= 255) {
-            this.password = password;
+            this.password = password.hashCode();
             return;
         }
         throw new IllegalPasswordException(

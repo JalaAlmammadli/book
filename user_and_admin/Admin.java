@@ -17,8 +17,8 @@ public final class Admin {
      * will be able to be Admin.
      * So, not everyone will be able to get Admin status.
      */
-    static final private String admin_name = "admin";
-    static final private String admin_password = "admin";
+    static final private String ADMIN_NAME = "admin";
+    static final private String ADMIN_PASSWORD = "admin";
 
     private Admin() {
 
@@ -26,6 +26,9 @@ public final class Admin {
 
     // There will be only one Admin in the program.
     public static boolean login(String name, String password) {
+        if (name.equals(ADMIN_NAME) && password.equals(ADMIN_PASSWORD)) {
+            return true;
+        }
         return false;
     }
 }
