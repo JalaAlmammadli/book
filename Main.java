@@ -36,6 +36,7 @@ class Main {
         // System.out.println(ex);
         // }
 
+        // merged - orkhan-branch
         LoginFrame.Login();
         RegisterFrame.openRegistrationForm(false);
     }
