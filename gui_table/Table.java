@@ -1,6 +1,7 @@
 package gui_table;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -39,24 +40,37 @@ public class Table {
     }
 
     private void TableGUI() {
-        jf = new JFrame("JTable Demo");
-        column = new String[]{"Title", "Author"};
-        data = getData();
+        jf = new JFrame("Book Database");
+        jf.setPreferredSize(new Dimension(900, 600));
 
-        if (data != null) {
-            model = new DefaultTableModel(data, column);
+        Object[][] headersAndData = getDataAndHeaders();
+        if (headersAndData != null) {
+            column = (String[]) headersAndData[0];
+            data = new Object[headersAndData.length - 1][column.length];
+            for (int i = 1; i < headersAndData.length; i++) {
+                data[i - 1] = headersAndData[i];
+            }
+
+            model = new DefaultTableModel(data, column) {
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return false;
+                }
+            };
+
             jt = new JTable(model);
+            jt.getTableHeader().setReorderingAllowed(false); 
             js = new JScrollPane(jt);
-            jf.add(js, BorderLayout.CENTER);
-            
-            searchField = new JTextField(20); 
+            jf.add(js, BorderLayout.CENTER);            
+
+            searchField = new JTextField(20);
             JButton searchButton = new JButton("Search");
             JPanel searchPanel = new JPanel();
             searchPanel.add(new JLabel("Search: "));
             searchPanel.add(searchField);
             searchPanel.add(searchButton);
             jf.add(searchPanel, BorderLayout.NORTH);
-            
+
             searchButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -64,7 +78,7 @@ public class Table {
                     searchTable(searchText);
                 }
             });
-            
+
             jf.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             jf.pack();
             jf.setLocationRelativeTo(null);
@@ -74,12 +88,52 @@ public class Table {
         }
     }
 
+    private Object[][] getDataAndHeaders() {
+        try {
+            String fileName = "team-project-team-50/brodsky.csv";
+            BufferedReader br = new BufferedReader(new FileReader(fileName));
+            ArrayList<Object[]> dataRows = new ArrayList<>();
+            String header = br.readLine(); 
+            String[] headers = null;
+            if (header != null) {
+                headers = header.split(",", -1);
+                String[] finalHeaders = new String[headers.length + 2];
+                System.arraycopy(headers, 0, finalHeaders, 0, headers.length);
+                finalHeaders[headers.length] = "Rating";
+                finalHeaders[headers.length + 1] = "Review";
+                headers = finalHeaders;
+            }
+            String str;
+            while ((str = br.readLine()) != null) {
+                String[] rowData = str.split(",", -1);
+                if (rowData.length >= 2) {
+                    Object[] dataRow = new Object[]{rowData[0], rowData[1], "", ""};
+                    dataRows.add(dataRow);
+                }
+            }
+            br.close();
+            if (!dataRows.isEmpty()) {
+                Object[][] result = new Object[dataRows.size() + 1][headers.length];
+                result[0] = headers;
+                for (int i = 0; i < dataRows.size(); i++) {
+                    result[i + 1] = dataRows.get(i);
+                }
+                return result;
+            } else {
+                return null;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     private void searchTable(String searchText) {
         if (searchText.trim().length() == 0) {
             jt.setModel(model);
             return;
         }
-        
+
         DefaultTableModel filteredModel = new DefaultTableModel(column, 0);
         for (Object[] rowData : data) {
             for (Object cellData : rowData) {
@@ -90,23 +144,6 @@ public class Table {
             }
         }
         jt.setModel(filteredModel);
-    }
-
-    Object[][] getData() {
-        try {
-            String fileName = "team-project-team-50/brodsky.csv";
-            BufferedReader br = new BufferedReader(new FileReader(fileName));
-            ArrayList<String[]> list = new ArrayList<>();
-            String str;
-            while ((str = br.readLine()) != null) {
-                list.add(str.split(",", -1)); 
-            }
-            br.close();
-            return list.toArray(new Object[0][]);
-        } catch (IOException e) {
-            e.printStackTrace(); 
-            return null;
-        }
     }
 
     public static void main(String[] args) {
