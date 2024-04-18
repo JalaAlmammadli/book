@@ -14,6 +14,13 @@ import database.UserDataBase;
 import login_register.Login;
 import login_register.Register;
 import gui_log_reg.*;
+import gui_table.Table;
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.IOException;
+
 import javax.swing.JCheckBoxMenuItem;
 
 class Main {
@@ -36,8 +43,6 @@ class Main {
         // System.out.println(ex);
         // }
 
-        // merged - orkhan-branch
-        LoginFrame.Login();
-        RegisterFrame.openRegistrationForm(false);
+        new Table();
     }
 }

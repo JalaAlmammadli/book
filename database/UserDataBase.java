@@ -9,6 +9,7 @@
 package database;
 
 import java.util.HashMap;
+import java.util.TreeMap;
 import user_and_admin.User;
 
 // This class is used for holding User oblects
@@ -17,13 +18,13 @@ public class UserDataBase implements DataBaseInterface<User> {
     // All users will be contained in this HashMap, and its key will be user's
     // username and User object itself
     // *(For now value just conatins user's password)
-    private HashMap<String, User> user_map;
+    private TreeMap<String, User> user_map;
 
     // There will be only one exemplare of UserDataBase class
     public static UserDataBase UserDataBase1 = new UserDataBase();
 
     private UserDataBase() {
-        user_map = new HashMap<String, User>();
+        user_map = new TreeMap<String, User>();
     }
 
     public void add(User obj) {
