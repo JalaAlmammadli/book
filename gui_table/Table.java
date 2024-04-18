@@ -30,10 +30,11 @@ public class Table {
     Object[][] data;
     DefaultTableModel model;
 
-    Table() {
+    public Table() {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
+                System.out.println("Hello World!");
                 TableGUI();
             }
         });
@@ -59,9 +60,9 @@ public class Table {
             };
 
             jt = new JTable(model);
-            jt.getTableHeader().setReorderingAllowed(false); 
+            jt.getTableHeader().setReorderingAllowed(false);
             js = new JScrollPane(jt);
-            jf.add(js, BorderLayout.CENTER);            
+            jf.add(js, BorderLayout.CENTER);
 
             searchField = new JTextField(20);
             JButton searchButton = new JButton("Search");
@@ -79,7 +80,7 @@ public class Table {
                 }
             });
 
-            jf.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            jf.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
             jf.pack();
             jf.setLocationRelativeTo(null);
             jf.setVisible(true);
@@ -90,11 +91,14 @@ public class Table {
 
     private Object[][] getDataAndHeaders() {
         try {
-            String fileName = "team-project-team-50/brodsky.csv";
+
+            // File Name***************************************************
+            String fileName = "brodsky.csv";
             BufferedReader br = new BufferedReader(new FileReader(fileName));
             ArrayList<Object[]> dataRows = new ArrayList<>();
-            String header = br.readLine(); 
+            String header = br.readLine();
             String[] headers = null;
+
             if (header != null) {
                 headers = header.split(",", -1);
                 String[] finalHeaders = new String[headers.length + 2];
@@ -105,11 +109,10 @@ public class Table {
             }
             String str;
             while ((str = br.readLine()) != null) {
-                String[] rowData = str.split(",", -1);
-                if (rowData.length >= 2) {
-                    Object[] dataRow = new Object[]{rowData[0], rowData[1], "", ""};
-                    dataRows.add(dataRow);
-                }
+
+                // Added by Orkhan*****************
+                add(dataRows, str);
+
             }
             br.close();
             if (!dataRows.isEmpty()) {
@@ -146,7 +149,38 @@ public class Table {
         jt.setModel(filteredModel);
     }
 
-    public static void main(String[] args) {
-        new Table();
+    private void add(ArrayList<Object[]> dataRows, String line) {
+
+        if (line.charAt(0) == '\"') {
+            String row[] = line.split("\",", -1);
+            String[] titles = row[0].replaceAll("\"", "").split(",", -1);
+
+            for (int i = 0; i < titles.length; i++) {
+                if (titles[i].equals("")) {
+                    titles[i] = "Unknown";
+                } else if (titles[i].startsWith(" ")) {
+                    titles[i] = titles[i].replaceFirst(" ", "");
+                }
+                addToList(dataRows, titles[i], row[1]);
+            }
+        } else if (line.charAt(line.length() - 1) == '\"') {
+            String row[] = line.split(",\"", -1);
+            addToList(dataRows, row[0], row[1].replaceAll("\"", ""));
+
+        } else {
+            String row[] = line.split(",", -1);
+
+            if (row[0].equals("")) {
+                row[0] = "Unknown";
+            } else if (row[1].equals("")) {
+                row[1] = "Unknown";
+            }
+            addToList(dataRows, row[0], row[1]);
+        }
+    }
+
+    private void addToList(ArrayList<Object[]> dataRows, String book, String author) {
+        Object[] dataRow = new Object[] { book, author, "", "" };
+        dataRows.add(dataRow);
     }
 }
