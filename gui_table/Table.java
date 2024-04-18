@@ -107,7 +107,9 @@ public class Table {
             while ((str = br.readLine()) != null) {
                 String[] rowData = str.split(",", -1);
                 if (rowData.length >= 2) {
-                    Object[] dataRow = new Object[]{rowData[0], rowData[1], "", ""};
+                    String rating = rowData.length > 2 ? rowData[2] : "No Rating";
+                    String review = rowData.length > 3 ? rowData[3] : "No Review";
+                    Object[] dataRow = new Object[]{rowData[0], rowData[1], rating, review};
                     dataRows.add(dataRow);
                 }
             }
