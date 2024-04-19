@@ -23,6 +23,7 @@ import javax.swing.JCheckBoxMenuItem;
 import login_register.Login;
 import login_register.login_exceptions.WrongUserException;
 import gui_elements.*;
+import gui_table.Table;
 
 public class LoginFrame {
         // Frame objects
@@ -103,10 +104,10 @@ public class LoginFrame {
                 registerLink.getObject().addMouseListener(new MouseAdapter() {
                         @Override
                         public void mouseClicked(MouseEvent e) {
+                                jframe.setVisible(false);
                                 RegisterFrame.openRegistrationForm(true); // Open the registration form
-
+                                jframe.setVisible(true);
                                 // Added by Orkhan
-                                jframe.dispose();
                         }
                 });
                 // **************************************************************************
@@ -121,6 +122,7 @@ public class LoginFrame {
                                 try {
                                         if (Login.tryLogin(user, password, stayLoginedBox.getState())) {
                                                 jframe.dispose();
+                                                new Table();
                                         }
                                 } catch (WrongUserException ex) {
                                         infoForUser.getObject().setText(ex.getMessage());

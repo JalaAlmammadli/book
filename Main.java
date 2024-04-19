@@ -43,6 +43,7 @@ class Main {
         // System.out.println(ex);
         // }
 
-        new Table();
+        // RegisterFrame.openRegistrationForm(true);
+        LoginFrame.Login();
     }
 }

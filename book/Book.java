@@ -1,8 +1,8 @@
-package movie;
+package book;
 
 import java.util.ArrayList;
 
-public class Movie {
+public class Book {
 
     private String name;
     private String author;
@@ -11,12 +11,12 @@ public class Movie {
     private ArrayList<Double> rates = new ArrayList<Double>();
     private ArrayList<String> reviews = new ArrayList<String>();
 
-    public Movie(String movieName, String author) {
+    public Book(String movieName, String author) {
         setName(movieName);
         setAuthor(author);
     }
 
-    public Movie(String movieName) {
+    public Book(String movieName) {
         setName(movieName);
     }
 
