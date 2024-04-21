@@ -1,4 +1,4 @@
-package user_and_admin;
+package entities.user_and_admin;
 
 import java.io.File;
 

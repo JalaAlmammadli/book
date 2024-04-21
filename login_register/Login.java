@@ -10,7 +10,7 @@ package login_register;
 
 import database.UserDataBase;
 import database.exceptions.IllegalMemberException;
-import user_and_admin.Admin;
+import entities.user_and_admin.Admin;
 import program_settings.Status;
 import program_settings.Parametres;
 import login_register.login_exceptions.WrongUserException;

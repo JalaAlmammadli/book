@@ -9,8 +9,8 @@
 package login_register;
 
 import database.UserDataBase;
-import user_and_admin.User;
-import user_and_admin.exceptions.*;;
+import entities.user_and_admin.User;
+import entities.user_and_admin.exceptions.*;;
 
 public class Register {
 

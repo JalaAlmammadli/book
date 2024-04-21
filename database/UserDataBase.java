@@ -12,7 +12,8 @@ import java.util.HashMap;
 import java.util.TreeMap;
 
 import database.exceptions.IllegalMemberException;
-import user_and_admin.User;
+import entities.user_and_admin.User;
+import entities.user_and_admin.UserDataFile;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -20,7 +21,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import user_and_admin.UserDataFile;
+
 import program_settings.Parametres;
 
 // This class is used for holding User oblects

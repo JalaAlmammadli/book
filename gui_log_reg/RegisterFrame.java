@@ -17,11 +17,11 @@ import java.awt.event.MouseEvent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import entities.user_and_admin.exceptions.IllegalPasswordException;
+import entities.user_and_admin.exceptions.IllegalUsernameException;
 // Project classes
 import login_register.Register;
 import gui_elements.*;
-import user_and_admin.exceptions.IllegalPasswordException;
-import user_and_admin.exceptions.IllegalUsernameException;
 
 public class RegisterFrame extends LoginFrame {
 

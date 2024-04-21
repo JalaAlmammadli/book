@@ -8,7 +8,7 @@
 
 package program_settings;
 
-import user_and_admin.User;
+import entities.user_and_admin.User;
 
 public class Parametres {
     /*

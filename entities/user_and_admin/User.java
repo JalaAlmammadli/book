@@ -6,7 +6,7 @@
  * 
  */
 
-package user_and_admin;
+package entities.user_and_admin;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -14,10 +14,10 @@ import java.io.FileReader;
 import java.io.IOException;
 
 import program_settings.Parametres;
-import user_and_admin.AbstractUser;
-import user_and_admin.exceptions.IllegalPasswordException;
-import user_and_admin.exceptions.IllegalUsernameException;
 import database.exceptions.IllegalMemberException;
+import entities.user_and_admin.AbstractUser;
+import entities.user_and_admin.exceptions.IllegalPasswordException;
+import entities.user_and_admin.exceptions.IllegalUsernameException;
 
 public class User extends AbstractUser {
 

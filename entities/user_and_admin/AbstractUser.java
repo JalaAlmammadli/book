@@ -6,11 +6,12 @@
  * 
  */
 
-package user_and_admin;
+package entities.user_and_admin;
 
-import user_and_admin.exceptions.IllegalPasswordException;
-import user_and_admin.exceptions.IllegalUsernameException;
 import java.util.regex.*;
+
+import entities.user_and_admin.exceptions.IllegalPasswordException;
+import entities.user_and_admin.exceptions.IllegalUsernameException;
 
 abstract class AbstractUser {
     private String username;

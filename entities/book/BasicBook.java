@@ -1,19 +1,19 @@
-package book;
+package entities.book;
 
 import java.util.ArrayList;
 
-public class Book {
+public class BasicBook {
 
     private String name;
     private String author;
     private double totalRating;
 
-    public Book(String movieName, String author) {
+    public BasicBook(String movieName, String author) {
         setName(movieName);
         setAuthor(author);
     }
 
-    public Book(String movieName) {
+    public BasicBook(String movieName) {
         setName(movieName);
     }
 
@@ -49,9 +49,5 @@ public class Book {
 
     public void setRating(double totalRating) {
         this.totalRating = totalRating;
-    }
-
-    public Book createBook(String bookName, String author) {
-
     }
 }

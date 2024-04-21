@@ -2,13 +2,13 @@ package database;
 
 import java.util.TreeMap;
 
-import book.Book;
+import entities.book.BasicBook;
 
 public class BookDataBase {
 
-    private static TreeMap<String, Book> bookMap = new TreeMap<String, Book>();
+    private static TreeMap<String, BasicBook> bookMap = new TreeMap<String, BasicBook>();
 
-    public static void add(Book book) {
+    public static void add(BasicBook book) {
         bookMap.put(book.getName(), book);
     }
 
@@ -22,7 +22,7 @@ public class BookDataBase {
         return bookMap.get(name) == null ? false : true;
     }
 
-    public static Book getMember(String name) {
+    public static BasicBook getMember(String name) {
         return bookMap.get(name);
     }
 }

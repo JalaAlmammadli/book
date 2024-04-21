@@ -7,10 +7,10 @@
  * 
  */
 
-import user_and_admin.*;
-import user_and_admin.exceptions.IllegalPasswordException;
-import user_and_admin.exceptions.IllegalUsernameException;
 import database.UserDataBase;
+import entities.user_and_admin.*;
+import entities.user_and_admin.exceptions.IllegalPasswordException;
+import entities.user_and_admin.exceptions.IllegalUsernameException;
 import login_register.Login;
 import login_register.Register;
 import gui_log_reg.*;
