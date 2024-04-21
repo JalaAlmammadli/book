@@ -26,6 +26,7 @@ import user_and_admin.exceptions.IllegalUsernameException;
 public class RegisterFrame extends LoginFrame {
 
     private static boolean calledFromLogin = false;
+    private static boolean returnReg = false;
     // Frame objects
     private static JFrame registrationFrame;
     private static JPanel registrationPanel;
@@ -41,6 +42,13 @@ public class RegisterFrame extends LoginFrame {
     private static Label passwordLabel;
     private static Label repeatPasswordLabel;
     private static Label infoForUser;
+
+    public static void Register(boolean calledFromLogin) {
+        openRegistrationForm(calledFromLogin);
+        if (returnReg) {
+            return;
+        }
+    }
 
     // I made it protected because, I could call it from main
     // and it gave NullPointerException as Login page was not
@@ -115,6 +123,7 @@ public class RegisterFrame extends LoginFrame {
         // ***********************************************************************
 
         // Login link
+        returnReg = false;
         loginLink = new Label(170, 210, 100, 25, "<html><u>Login here</u></html>", registrationPanel);
         loginLink.getObject().setForeground(Color.BLUE);
 
@@ -127,10 +136,11 @@ public class RegisterFrame extends LoginFrame {
                 // So calledFromLogin will get boolean value to define if this method
                 // called from login(true) or not(false)
                 if (!calledFromLogin) {
+                    registrationFrame.dispose();
                     System.out.println("did not called from login");
                     LoginFrame.login();
                 }
-                registrationFrame.dispose();
+                returnReg = true;
             }
         });
 

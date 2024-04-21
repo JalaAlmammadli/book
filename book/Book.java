@@ -8,9 +8,6 @@ public class Book {
     private String author;
     private double totalRating;
 
-    private ArrayList<Double> rates = new ArrayList<Double>();
-    private ArrayList<String> reviews = new ArrayList<String>();
-
     public Book(String movieName, String author) {
         setName(movieName);
         setAuthor(author);
@@ -25,9 +22,12 @@ public class Book {
     }
 
     public void setName(String name) {
-        if (name.length() < 64) {
+        if (name == null || name.equals("")) {
+            this.name = "Unknown";
+        } else if (name.length() < 64) {
             this.name = name;
         }
+
     }
 
     public String getAuthor() {
@@ -35,8 +35,23 @@ public class Book {
     }
 
     public void setAuthor(String author) {
+        if (author == null) {
+            this.author = "Unknown";
+        }
         if (author.length() < 64) {
             this.author = author;
         }
+    }
+
+    public double getRating() {
+        return totalRating;
+    }
+
+    public void setRating(double totalRating) {
+        this.totalRating = totalRating;
+    }
+
+    public Book createBook(String bookName, String author) {
+
     }
 }

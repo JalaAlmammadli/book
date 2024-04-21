@@ -33,9 +33,13 @@ class Main {
 
         System.out.println(user1.toString());
 
-        UserDataBase.UserDataBase1.add(user1);
+        UserDataBase.add(user1);
+        UserDataBase.add(user2);
+        UserDataBase.add(user3);
 
-        System.out.println(UserDataBase.UserDataBase1.isInMap(user1.getUsername()));
+        System.out.println(UserDataBase.isInMap(user1.getUsername()));
+        System.out.println(UserDataBase.isInMap(user2.getUsername()));
+        System.out.println(UserDataBase.isInMap(user3.getUsername()));
 
         // try {
         // Register.tryRegister("Orkhan", "123", "123");
@@ -44,6 +48,8 @@ class Main {
         // }
 
         // RegisterFrame.openRegistrationForm(true);
-        LoginFrame.Login();
+        // LoginFrame.Login();
+        UserDataBase.loadData();
+        RegisterFrame.Register(false);
     }
 }

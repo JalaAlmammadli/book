@@ -6,30 +6,76 @@
  * 
  */
 
- package user_and_admin;
+package user_and_admin;
 
- import user_and_admin.AbstractUser;
- import user_and_admin.exceptions.IllegalPasswordException;
- import user_and_admin.exceptions.IllegalUsernameException;
- 
- public class User extends AbstractUser {
- 
-     private User(String username, String password) throws IllegalUsernameException, IllegalPasswordException {
-         super(username, password);
-     }
- 
-     // User instance can only be created by createUser() method.
-     public static User createUser(String username, String password) {
-         try {
-             User user = new User(username, password);
-             return user;
-         } catch (IllegalUsernameException | IllegalPasswordException e) {
-             System.out.println(e);
-         }
-         return null;
-     }
- 
-     public String toString() {
-         return "[ username: " + super.getUsername() + " ]";
-     }
- }
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+
+import program_settings.Parametres;
+import user_and_admin.AbstractUser;
+import user_and_admin.exceptions.IllegalPasswordException;
+import user_and_admin.exceptions.IllegalUsernameException;
+import database.exceptions.IllegalMemberException;
+
+public class User extends AbstractUser {
+
+    private User(String username, String password) throws IllegalUsernameException, IllegalPasswordException {
+        super(username, password);
+    }
+
+    private User(String username, int hashedPassword) {
+        super(username, hashedPassword);
+    }
+
+    // Searches User's data by username if there is no such file throws
+    // IllegalMemberException
+
+    public static User ReadUser(String username) throws IllegalMemberException {
+
+        try (BufferedReader br = new BufferedReader(
+                new FileReader(Parametres.USER_PATH + username + Parametres.FILE_FORMAT));) {
+
+            String data[] = new String[2];
+            data = br.readLine().split(";", -1);
+
+            return new User(data[0], data[1].hashCode());
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+
+        return null;
+        // throw new IllegalMemberException("No such member in the list");
+    }
+
+    public static User ReadUser(File file) {
+
+        try (BufferedReader br = new BufferedReader(new FileReader(file.getPath()));) {
+
+            String data[] = new String[2];
+            data = br.readLine().split(";", -1);
+
+            return new User(data[0], data[1].hashCode());
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+
+        return null;
+    }
+
+    // User instance can only be created by createUser() method.
+    public static User createUser(String username, String password) {
+        try {
+            User user = new User(username, password);
+            return user;
+        } catch (IllegalUsernameException | IllegalPasswordException e) {
+            System.out.println(e);
+        }
+        return null;
+    }
+
+    public String toString() {
+        return "[ username: " + super.getUsername() + " ]";
+    }
+}
