@@ -1,4 +1,3 @@
-package database;
 
 import java.util.TreeMap;
 import movie.Movie;

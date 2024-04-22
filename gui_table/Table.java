@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -101,7 +102,7 @@ public class Table {
         try {
 
             // File Name***************************************************
-            String fileName = "team-project-team-50/brodsky.csv";
+            String fileName = "../team-project-team-50/brodsky.csv";
             BufferedReader br = new BufferedReader(new FileReader(fileName));
             ArrayList<Object[]> dataRows = new ArrayList<>();
             String header = br.readLine();
