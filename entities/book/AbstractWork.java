@@ -1,31 +1,25 @@
 package entities.book;
 
-import java.util.ArrayList;
+public abstract class AbstractWork {
 
-public class BasicBook {
-
-    private String name;
+    private String title;
     private String author;
     private double totalRating;
 
-    public BasicBook(String movieName, String author) {
-        setName(movieName);
+    public AbstractWork(String title, String author) {
+        setTitle(title);
         setAuthor(author);
     }
 
-    public BasicBook(String movieName) {
-        setName(movieName);
+    public String getTitle() {
+        return title;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        if (name == null || name.equals("")) {
-            this.name = "Unknown";
-        } else if (name.length() < 64) {
-            this.name = name;
+    public void setTitle(String title) {
+        if (title == null || title.strip().equals("")) {
+            this.title = "Unknown";
+        } else if (title.length() < 64) {
+            this.title = title;
         }
 
     }
@@ -35,7 +29,7 @@ public class BasicBook {
     }
 
     public void setAuthor(String author) {
-        if (author == null) {
+        if (author == null || author.strip().equals("")) {
             this.author = "Unknown";
         }
         if (author.length() < 64) {

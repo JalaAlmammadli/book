@@ -40,7 +40,7 @@ public class UserDataBase {
 
         // Add all files form users folder to the map
         for (File file : userFolder.listFiles()) {
-            userMap.put(file.getName(), User.ReadUser(file));
+            userMap.put(file.getName(), User.readUser(file));
         }
     }
 
@@ -97,18 +97,14 @@ public class UserDataBase {
     // returns true if user with username "some username"
     // exits in the user_map
     public static boolean isInMap(String username) {
-        if (userMap.get(username) == null) {
-            return false;
-        }
-
-        return true;
+        return userMap.get(username) == null ? false : true;
     }
 
     // This method will return user
-    public static User getMember(String username) throws IllegalMemberException {
+    public static User getMember(String username) {
 
         // Creates a user according to read file data
-        return User.ReadUser(username);
+        return User.readUser(username);
     }
 
     /*
