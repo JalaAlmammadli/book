@@ -1,26 +1,16 @@
 package gui_table;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
-import javax.swing.WindowConstants;
-import javax.swing.table.DefaultTableModel;
+import java.util.Comparator;
 
 public class Table {
     JFrame jf;
@@ -30,14 +20,13 @@ public class Table {
     String[] column;
     Object[][] data;
     DefaultTableModel model;
+    TableRowSorter<DefaultTableModel> sorter;
+    int[] sortingOrder;
 
     public Table() {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                System.out.println("Hello World!");
-                TableGUI();
-            }
+        SwingUtilities.invokeLater(() -> {
+            System.out.println("Hello World!");
+            TableGUI();
         });
     }
 
@@ -65,6 +54,9 @@ public class Table {
             js = new JScrollPane(jt);
             jf.add(js, BorderLayout.CENTER);
 
+            sorter = new TableRowSorter<>(model);
+            jt.setRowSorter(sorter);
+
             searchField = new JTextField(20);
             JButton searchButton = new JButton("Search");
             JPanel searchPanel = new JPanel();
@@ -73,11 +65,26 @@ public class Table {
             searchPanel.add(searchButton);
             jf.add(searchPanel, BorderLayout.NORTH);
 
-            searchButton.addActionListener(new ActionListener() {
+            searchButton.addActionListener(e -> {
+                String searchText = searchField.getText().toLowerCase();
+                searchTable(searchText);
+            });
+
+            searchField.addActionListener(e -> {
+                String searchText = searchField.getText().toLowerCase();
+                searchTable(searchText);
+            });
+
+            sortingOrder = new int[column.length];
+            for (int i = 0; i < sortingOrder.length; i++) {
+                sortingOrder[i] = 0;
+            }
+
+            jt.getTableHeader().addMouseListener(new MouseAdapter() {
                 @Override
-                public void actionPerformed(ActionEvent e) {
-                    String searchText = searchField.getText().toLowerCase();
-                    searchTable(searchText);
+                public void mouseClicked(MouseEvent e) {
+                    int column = jt.columnAtPoint(e.getPoint());
+                    sortTable(column);
                 }
             });
 
@@ -92,10 +99,8 @@ public class Table {
 
     private Object[][] getDataAndHeaders() {
         try {
-
             // File Name***************************************************
-
-            String fileName = "../team-project-team-50/brodsky.csv";
+            String fileName = "team-project-team-50/brodsky.csv";
             BufferedReader br = new BufferedReader(new FileReader(fileName));
             ArrayList<Object[]> dataRows = new ArrayList<>();
             String header = br.readLine();
@@ -111,10 +116,8 @@ public class Table {
             }
             String str;
             while ((str = br.readLine()) != null) {
-
                 // Added by Orkhan*****************
                 add(dataRows, str);
-
             }
             br.close();
             if (!dataRows.isEmpty()) {
@@ -152,7 +155,6 @@ public class Table {
     }
 
     private void add(ArrayList<Object[]> dataRows, String line) {
-
         if (line.charAt(0) == '\"') {
             String row[] = line.split("\",", -1);
             String[] titles = row[0].replaceAll("\"", "").split(",", -1);
@@ -182,7 +184,38 @@ public class Table {
     }
 
     private void addToList(ArrayList<Object[]> dataRows, String book, String author) {
-        Object[] dataRow = new Object[] { book, author, "", "" };
+        Object[] dataRow = new Object[] { book, author, "No Rating", "No Review" };
         dataRows.add(dataRow);
     }
+
+    private void sortTable(int colIndex) {
+        Comparator<Object> comparator = (Comparator<Object>) (a, b) -> {
+            if (a == null && b == null) {
+                return 0;
+            } else if (a == null) {
+                return 1;
+            } else if (b == null) {
+                return -1;
+            } else {
+                return a.toString().compareToIgnoreCase(b.toString());
+            }
+        };
+    
+        int sortOrder = sortingOrder[colIndex];
+        sortingOrder[colIndex] = (sortOrder + 1) % 3;
+        
+        switch (sortOrder) {
+            case 0: // First click - sort ascending
+                sorter.setComparator(colIndex, comparator);
+                break;
+            case 1: // Second click - sort descending
+                sorter.setComparator(colIndex, comparator.reversed());
+                break;
+            case 2: // Third click - restore original order
+                sorter.setComparator(colIndex, null);
+                sorter.setSortKeys(null); // Clear sorting for all columns
+                break;
+        }
+    }
+    
 }
