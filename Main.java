@@ -11,12 +11,12 @@
  import user_and_admin.exceptions.IllegalPasswordException;
  import user_and_admin.exceptions.IllegalUsernameException;
  import database.UserDataBase;
- import login_register.Login;
+import gui_library.DatabaseLib;
+import login_register.Login;
  import login_register.Register;
  import gui_log_reg.*;
- import gui_table.Table;
- 
- import java.io.BufferedReader;
+
+import java.io.BufferedReader;
  import java.io.FileInputStream;
  import java.io.FileReader;
  import java.io.IOException;
@@ -43,6 +43,6 @@
          // System.out.println(ex);
          // }
  
-         new Table();
+         new DatabaseLib();
      }
  }

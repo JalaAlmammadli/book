@@ -1,8 +1,10 @@
-package gui_table;
+package gui_library;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableRowSorter;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumnModel;
+
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -10,9 +12,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Comparator;
 
-public class Table {
+public class DatabaseLib {
     JFrame jf;
     JScrollPane js;
     JTable jt;
@@ -20,10 +21,8 @@ public class Table {
     String[] column;
     Object[][] data;
     DefaultTableModel model;
-    TableRowSorter<DefaultTableModel> sorter;
-    int[] sortingOrder;
 
-    public Table() {
+    public DatabaseLib() {
         SwingUtilities.invokeLater(() -> {
             System.out.println("Hello World!");
             TableGUI();
@@ -54,11 +53,11 @@ public class Table {
             js = new JScrollPane(jt);
             jf.add(js, BorderLayout.CENTER);
 
-            sorter = new TableRowSorter<>(model);
-            jt.setRowSorter(sorter);
-
             searchField = new JTextField(20);
             JButton searchButton = new JButton("Search");
+            Color buttonHeaderColor = new Color(0x776B5D);
+            searchButton.setBackground(buttonHeaderColor);
+            searchButton.setForeground(Color.BLACK);
             JPanel searchPanel = new JPanel();
             searchPanel.add(new JLabel("Search: "));
             searchPanel.add(searchField);
@@ -75,26 +74,51 @@ public class Table {
                 searchTable(searchText);
             });
 
-            sortingOrder = new int[column.length];
-            for (int i = 0; i < sortingOrder.length; i++) {
-                sortingOrder[i] = 0;
-            }
-
-            jt.getTableHeader().addMouseListener(new MouseAdapter() {
+            jt.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
+                    int row = jt.rowAtPoint(e.getPoint());
                     int column = jt.columnAtPoint(e.getPoint());
-                    sortTable(column);
+
+                    if (column == 3) {
+                        String username = (String) jt.getValueAt(row, column);
+                        if (username != null) {
+                            reviewUser(username);
+                        }
+                    }
                 }
             });
 
-            jf.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+            jf.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE); 
+            jf.addWindowListener(new java.awt.event.WindowAdapter() {
+                @Override
+                public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                    System.exit(0); 
+                }
+            });
             jf.pack();
             jf.setLocationRelativeTo(null);
             jf.setVisible(true);
         } else {
             JOptionPane.showMessageDialog(null, "Failed to load data from file.", "Error", JOptionPane.ERROR_MESSAGE);
         }
+
+        jt.getTableHeader().setForeground(Color.BLACK);
+        jt.getTableHeader().setBackground(Color.decode("#776B5D"));
+        jt.getTableHeader().setPreferredSize(new Dimension(jt.getTableHeader().getWidth(), 40));
+        jt.setBackground(Color.WHITE);
+        jt.setForeground(Color.BLACK);
+        jt.setSelectionBackground(Color.decode("#F3EEEA"));
+        jt.setSelectionForeground(Color.BLACK);
+
+        TableColumnModel columnModel = jt.getTableHeader().getColumnModel();
+        columnModel.getColumn(0).setPreferredWidth(250); // Adjust as needed for the Title column
+        columnModel.getColumn(1).setPreferredWidth(250); // Adjust as needed for the Author column
+        columnModel.getColumn(2).setPreferredWidth(170); // Adjust as needed for the Rating column
+        columnModel.getColumn(3).setPreferredWidth(230);
+
+        jt.setRowHeight(30);
+        
     }
 
     private Object[][] getDataAndHeaders() {
@@ -184,38 +208,54 @@ public class Table {
     }
 
     private void addToList(ArrayList<Object[]> dataRows, String book, String author) {
-        Object[] dataRow = new Object[] { book, author, "No Rating", "No Review" };
+        Object[] dataRow = new Object[]{book, author, "No Rating", "No Review"};
         dataRows.add(dataRow);
     }
 
-    private void sortTable(int colIndex) {
-        Comparator<Object> comparator = (Comparator<Object>) (a, b) -> {
-            if (a == null && b == null) {
-                return 0;
-            } else if (a == null) {
-                return 1;
-            } else if (b == null) {
-                return -1;
-            } else {
-                return a.toString().compareToIgnoreCase(b.toString());
-            }
-        };
-    
-        int sortOrder = sortingOrder[colIndex];
-        sortingOrder[colIndex] = (sortOrder + 1) % 3;
+    private void reviewUser(String username) {
+        int selectedRow = jt.getSelectedRow();
+
+        String title = (String) jt.getValueAt(selectedRow, 0);
+        String author = (String) jt.getValueAt(selectedRow, 1);
+        String rating = (String) jt.getValueAt(selectedRow, 2);
+
+        Object[][] bookData = {{title, author, rating}};
+        String[] bookColumns = {"Title", "Author", "Rating"};
         
-        switch (sortOrder) {
-            case 0: // First click - sort ascending
-                sorter.setComparator(colIndex, comparator);
-                break;
-            case 1: // Second click - sort descending
-                sorter.setComparator(colIndex, comparator.reversed());
-                break;
-            case 2: // Third click - restore original order
-                sorter.setComparator(colIndex, null);
-                sorter.setSortKeys(null); // Clear sorting for all columns
-                break;
-        }
+        JTable bookTable = new JTable(bookData, bookColumns);
+        bookTable.setEnabled(false);
+        bookTable.setRowHeight(20);
+        JTableHeader bookHeader = bookTable.getTableHeader();
+        bookHeader.setBackground(Color.decode("#776B5D"));
+
+        Object[][] userData = {{username, "", ""}}; // Fill with appropriate data
+        String[] userColumns = {"Username", "User Rating", "User Review"};
+        JTable userTable = new JTable(userData, userColumns);
+        userTable.setEnabled(false);
+        userTable.setRowHeight(20);
+        JTableHeader userHeader = userTable.getTableHeader();
+        userHeader.setBackground(Color.decode("#776B5D"));
+
+
+        JScrollPane bookScrollPane = new JScrollPane(bookTable);
+        JScrollPane userScrollPane = new JScrollPane(userTable);
+
+        JPanel bookPanel = new JPanel(new GridLayout(0, 1));
+        bookPanel.setBorder(BorderFactory.createTitledBorder("Book Details"));
+        bookPanel.add(bookScrollPane);
+
+        JPanel userPanel = new JPanel(new GridLayout(0, 1));
+        userPanel.setBorder(BorderFactory.createTitledBorder("User Review"));
+        userPanel.add(userScrollPane);
+
+        JFrame reviewFrame = new JFrame("User Review");
+        reviewFrame.setLayout(new GridLayout(2, 1));
+        reviewFrame.add(bookPanel);
+        reviewFrame.add(userPanel);
+
+        reviewFrame.setPreferredSize(new Dimension(500, 200));
+        reviewFrame.pack();
+        reviewFrame.setVisible(true);
+        reviewFrame.setLocationRelativeTo(null);
     }
-    
 }
