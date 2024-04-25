@@ -25,7 +25,14 @@ public class Book extends AbstractWork {
         return null;
     }
 
+    public static Book readBook(String title, String author) {
+
+        return new Book(title, author);
+    }
+
     public static Book createBook(String bookTitle, String author) {
-        return new Book(bookTitle, author);
+        Book book = new Book(bookTitle, author);
+        book.setIndex(AbstractWork.index++);
+        return book;
     }
 }

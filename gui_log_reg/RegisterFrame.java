@@ -17,6 +17,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import database_systems.exceptions.IllegalMemberException;
 import entities.user_and_admin.exceptions.IllegalPasswordException;
 import entities.user_and_admin.exceptions.IllegalUsernameException;
 // Project classes
@@ -112,7 +113,7 @@ public class RegisterFrame extends LoginFrame {
                         LoginFrame.login();
                         registrationFrame.dispose();
                     }
-                } catch (IllegalPasswordException | IllegalUsernameException ex) {
+                } catch (IllegalPasswordException | IllegalUsernameException | IllegalMemberException ex) {
                     infoForUser.getObject().setText(ex.getMessage());
                 }
                 // Here you can also add code to close the registration form or any other action

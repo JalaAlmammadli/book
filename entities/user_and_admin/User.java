@@ -15,7 +15,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 import program_settings.Parametres;
-import database.exceptions.IllegalMemberException;
+import database_systems.exceptions.IllegalMemberException;
 import entities.user_and_admin.AbstractUser;
 import entities.user_and_admin.exceptions.IllegalPasswordException;
 import entities.user_and_admin.exceptions.IllegalUsernameException;
@@ -33,19 +33,27 @@ public class User extends AbstractUser {
     // Searches User's data by username if there is no such file throws
     // IllegalMemberException
 
-    public static User readUser(String username) {
+    public static User readUser(String username, String password) {
 
-        try (BufferedReader br = new BufferedReader(
-                new FileReader(Parametres.USER_PATH + username + Parametres.FILE_FORMAT));) {
-
-            String data[] = br.readLine().split(";", -1);
-
-            return new User(data[0], data[1].hashCode());
-        } catch (IOException e) {
+        try {
+            return new User(username, password);
+        } catch (IllegalPasswordException | IllegalUsernameException e) {
             System.out.println(e);
         }
 
         return null;
+
+        // try (BufferedReader br = new BufferedReader(
+        // new FileReader(Parametres.USER_PATH + username + Parametres.FILE_FORMAT));) {
+
+        // String data[] = br.readLine().split(";", -1);
+
+        // return new User(data[0], data[1].hashCode());
+        // } catch (IOException e) {
+        // System.out.println(e);
+        // }
+
+        // return null;
         // throw new IllegalMemberException("No such member in the list");
     }
 
@@ -67,8 +75,8 @@ public class User extends AbstractUser {
     // User instance can only be created by createUser() method.
     public static User createUser(String username, String password) {
         try {
-            User user = new User(username, password);
-            return user;
+            return new User(username, password);
+
         } catch (IllegalUsernameException | IllegalPasswordException e) {
             System.out.println(e);
         }

@@ -34,12 +34,12 @@ abstract class AbstractUser {
     }
 
     public void setUsername(String username) throws IllegalUsernameException {
-        if (username.length() >= 6 && username.length() <= 30 && testUsername(username)) {
+        if (username.length() >= 2 && username.length() <= 30 && testUsername(username)) {
             this.username = username;
             return;
         }
         throw new IllegalUsernameException(
-                username + " does not fit. Username must be longer than 6 and lesser than 30 characters!");
+                username + " does not fit. Username must be longer than 2 and lesser than 30 characters!");
     }
 
     // for now username can only contain english letters, and testUsername() method
