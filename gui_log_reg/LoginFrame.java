@@ -17,12 +17,16 @@ import java.awt.event.MouseEvent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+
+import database_systems.exceptions.IllegalMemberException;
+
 import javax.swing.JCheckBoxMenuItem;
 
 // Project classes
 import login_register.Login;
 import login_register.login_exceptions.WrongUserException;
 import gui_elements.*;
+import gui_table.Table;
 
 public class LoginFrame {
         // Frame objects
@@ -103,10 +107,9 @@ public class LoginFrame {
                 registerLink.getObject().addMouseListener(new MouseAdapter() {
                         @Override
                         public void mouseClicked(MouseEvent e) {
-                                RegisterFrame.openRegistrationForm(true); // Open the registration form
-
-                                // Added by Orkhan
                                 jframe.dispose();
+                                RegisterFrame.Register(true); // Open the registration form
+                                // Added by Orkhan
                         }
                 });
                 // **************************************************************************
@@ -121,8 +124,9 @@ public class LoginFrame {
                                 try {
                                         if (Login.tryLogin(user, password, stayLoginedBox.getState())) {
                                                 jframe.dispose();
+                                                new Table();
                                         }
-                                } catch (WrongUserException ex) {
+                                } catch (WrongUserException | IllegalMemberException ex) {
                                         infoForUser.getObject().setText(ex.getMessage());
                                 }
                                 // Here you can also add code to go back to the login form or any other action
