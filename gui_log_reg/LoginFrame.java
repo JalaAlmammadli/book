@@ -26,7 +26,8 @@ import javax.swing.JCheckBoxMenuItem;
 import login_register.Login;
 import login_register.login_exceptions.WrongUserException;
 import gui_elements.*;
-import gui_table.Table;
+import gui_library.DatabaseLib;
+import gui_library.DatabaseLib;
 
 public class LoginFrame {
         // Frame objects
@@ -124,7 +125,7 @@ public class LoginFrame {
                                 try {
                                         if (Login.tryLogin(user, password, stayLoginedBox.getState())) {
                                                 jframe.dispose();
-                                                new Table();
+                                                new DatabaseLib();
                                         }
                                 } catch (WrongUserException | IllegalMemberException ex) {
                                         infoForUser.getObject().setText(ex.getMessage());
