@@ -124,7 +124,7 @@ public class DatabaseLib {
     private Object[][] getDataAndHeaders() {
         try {
             // File Name***************************************************
-            String fileName = "team-project-team-50/brodsky.csv";
+            String fileName = "./brodsky.csv";
             BufferedReader br = new BufferedReader(new FileReader(fileName));
             ArrayList<Object[]> dataRows = new ArrayList<>();
             String header = br.readLine();
