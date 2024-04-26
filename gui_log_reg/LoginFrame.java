@@ -27,7 +27,6 @@ import login_register.Login;
 import login_register.login_exceptions.WrongUserException;
 import gui_elements.*;
 import gui_library.DatabaseLib;
-import gui_library.DatabaseLib;
 
 public class LoginFrame {
         // Frame objects

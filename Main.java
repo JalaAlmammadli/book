@@ -51,6 +51,10 @@
          }
  
          BookDataBase.writeData();
+        // LoginFrame.Login();
+        new DatabaseLib();
+         
+        
      }
  
      static void add(String line) throws IllegalMemberException {
