@@ -1,32 +1,39 @@
 package gui_library;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
-import javax.swing.table.TableColumnModel;
-
-import app_runner.SaveData;
-import gui_elements.Actions;
-
+import javax.swing.table.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
+import java.awt.event.WindowEvent;
+
+import gui_elements.Actions;
+import app_runner.*;
 
 public class DatabaseLib extends Actions implements WindowListener {
-    JFrame jf;
-    JScrollPane js;
-    JTable jt;
-    JTextField searchField;
-    String[] column;
-    Object[][] data;
-    DefaultTableModel model;
+    // Constants for file name and column indices
+    private static final String FILE_NAME = "./brodsky.csv";
+    static final int TITLE_COLUMN_INDEX = 0;
+    static final int AUTHOR_COLUMN_INDEX = 1;
+    static final int RATING_COLUMN_INDEX = 2;
+    static final int REVIEW_COLUMN_INDEX = 3;
+
+    // JFrame and other GUI components
+    private JFrame jf;
+    private JScrollPane js;
+    private JTable jt;
+    private JTextField searchField;
+    private String[] column;
+    private Object[][] data;
+    private DefaultTableModel model;
+
+    // Constructor
+    public DatabaseLib() {
+        SwingUtilities.invokeLater(() -> {
+            TableGUI();
+        });
+    }
 
     @Override
     public void windowClosing(WindowEvent e) {
@@ -34,97 +41,90 @@ public class DatabaseLib extends Actions implements WindowListener {
         System.exit(0);
     }
 
-    public DatabaseLib() {
-        SwingUtilities.invokeLater(() -> {
-            TableGUI();
-        });
-    }
-
+    // Method to initialize GUI components and display the table
     private void TableGUI() {
+        // Initialize JFrame
         jf = new JFrame("Book Database");
         jf.setPreferredSize(new Dimension(900, 600));
 
         jf.addWindowListener(this);
 
-        jf.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosed(WindowEvent event) {
-                if (event.getID() == WindowEvent.WINDOW_CLOSED) {
-                    System.out.println("saveddddd");
-                    SaveData.save();
-                }
-            }
-        });
+        // Load data and headers
         Object[][] headersAndData = getDataAndHeaders();
         if (headersAndData != null) {
-            column = (String[]) headersAndData[0];
-            data = new Object[headersAndData.length - 1][column.length];
-            for (int i = 1; i < headersAndData.length; i++) {
-                data[i - 1] = headersAndData[i];
-            }
-
-            model = new DefaultTableModel(data, column) {
-                @Override
-                public boolean isCellEditable(int row, int column) {
-                    return false;
-                }
-            };
-
-            jt = new JTable(model);
-            jt.getTableHeader().setReorderingAllowed(false);
-            js = new JScrollPane(jt);
-            jf.add(js, BorderLayout.CENTER);
-
-            searchField = new JTextField(20);
-            JButton searchButton = new JButton("Search");
-            Color buttonHeaderColor = new Color(0x776B5D);
-            searchButton.setBackground(buttonHeaderColor);
-            searchButton.setForeground(Color.BLACK);
-            JPanel searchPanel = new JPanel();
-            searchPanel.add(new JLabel("Search: "));
-            searchPanel.add(searchField);
-            searchPanel.add(searchButton);
-            jf.add(searchPanel, BorderLayout.NORTH);
-
-            searchButton.addActionListener(e -> {
-                String searchText = searchField.getText().toLowerCase();
-                searchTable(searchText);
-            });
-
-            searchField.addActionListener(e -> {
-                String searchText = searchField.getText().toLowerCase();
-                searchTable(searchText);
-            });
-
-            jt.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    int row = jt.rowAtPoint(e.getPoint());
-                    int column = jt.columnAtPoint(e.getPoint());
-
-                    if (column == 3) {
-                        String username = (String) jt.getValueAt(row, column);
-                        if (username != null) {
-                            reviewUser(username);
-                        }
-                    }
-                }
-            });
-
-            jf.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-            jf.addWindowListener(new java.awt.event.WindowAdapter() {
-                @Override
-                public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-                    System.exit(0);
-                }
-            });
-            jf.pack();
-            jf.setLocationRelativeTo(null);
-            jf.setVisible(true);
+            initializeTable(headersAndData);
+            addSearchFunctionality();
+            addReviewColumnMouseListener();
+            propertyJFrame();
         } else {
             JOptionPane.showMessageDialog(null, "Failed to load data from file.", "Error", JOptionPane.ERROR_MESSAGE);
         }
 
+        customizeTableAppearance();
+    }
+
+    // Method to initialize the table with data and headers
+    private void initializeTable(Object[][] headersAndData) {
+        column = (String[]) headersAndData[0];
+        data = new Object[headersAndData.length - 1][column.length];
+        for (int i = 1; i < headersAndData.length; i++) {
+            data[i - 1] = headersAndData[i];
+        }
+
+        model = new DefaultTableModel(data, column) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+
+        // Initialize JTable
+        jt = new JTable(model);
+        jt.getTableHeader().setReorderingAllowed(false);
+        js = new JScrollPane(jt);
+        jf.add(js, BorderLayout.CENTER);
+    }
+
+    // Method to add search functionality
+    private void addSearchFunctionality() {
+        searchField = new JTextField(20);
+        JButton searchButton = new JButton("Search");
+        Color buttonHeaderColor = new Color(0x776B5D);
+        searchButton.setBackground(buttonHeaderColor);
+        searchButton.setForeground(Color.BLACK);
+        JPanel searchPanel = new JPanel();
+        searchPanel.add(new JLabel("Search: "));
+        searchPanel.add(searchField);
+        searchPanel.add(searchButton);
+        jf.add(searchPanel, BorderLayout.NORTH);
+
+        searchButton.addActionListener(new TableListeners.SearchActionListener(jt, searchField, column, data, model));
+
+        searchField.addActionListener(new TableListeners.SearchActionListener(jt, searchField, column, data, model));
+    }
+
+    // Method to handle mouse clicks on the review column
+    private void addReviewColumnMouseListener() {
+        jt.addMouseListener(new TableListeners.ReviewColumnMouseListener(jt, REVIEW_COLUMN_INDEX));
+    }
+
+    // Method to configure JFrame properties
+    private void propertyJFrame() {
+        jf.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        jf.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                System.exit(0);
+            }
+        });
+        jf.pack();
+        jf.setLocationRelativeTo(null);
+        jf.setVisible(true);
+    }
+
+    // Method to customize table appearance
+    private void customizeTableAppearance() {
+        // Set table header and cell properties
         jt.getTableHeader().setForeground(Color.BLACK);
         jt.getTableHeader().setBackground(Color.decode("#776B5D"));
         jt.getTableHeader().setPreferredSize(new Dimension(jt.getTableHeader().getWidth(), 40));
@@ -133,73 +133,71 @@ public class DatabaseLib extends Actions implements WindowListener {
         jt.setSelectionBackground(Color.decode("#F3EEEA"));
         jt.setSelectionForeground(Color.BLACK);
 
+        // Set column widths
         TableColumnModel columnModel = jt.getTableHeader().getColumnModel();
-        columnModel.getColumn(0).setPreferredWidth(250); // Adjust as needed for the Title column
-        columnModel.getColumn(1).setPreferredWidth(250); // Adjust as needed for the Author column
-        columnModel.getColumn(2).setPreferredWidth(170); // Adjust as needed for the Rating column
-        columnModel.getColumn(3).setPreferredWidth(230);
+        columnModel.getColumn(TITLE_COLUMN_INDEX).setPreferredWidth(250);
+        columnModel.getColumn(AUTHOR_COLUMN_INDEX).setPreferredWidth(250);
+        columnModel.getColumn(RATING_COLUMN_INDEX).setPreferredWidth(170);
+        columnModel.getColumn(REVIEW_COLUMN_INDEX).setPreferredWidth(230);
 
+        // Set row height
         jt.setRowHeight(30);
-
     }
 
+    // Method to load data and headers from file
     private Object[][] getDataAndHeaders() {
-        try {
-            // File Name***************************************************
-            String fileName = "./brodsky.csv";
-            BufferedReader br = new BufferedReader(new FileReader(fileName));
-            ArrayList<Object[]> dataRows = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(FILE_NAME))) {
             String header = br.readLine();
-            String[] headers = null;
-
-            if (header != null) {
-                headers = header.split(",", -1);
-                String[] finalHeaders = new String[headers.length + 2];
-                System.arraycopy(headers, 0, finalHeaders, 0, headers.length);
-                finalHeaders[headers.length] = "Rating";
-                finalHeaders[headers.length + 1] = "Review";
-                headers = finalHeaders;
-            }
-            String str;
-            while ((str = br.readLine()) != null) {
-                // Added by Orkhan*****************
-                add(dataRows, str);
-            }
-            br.close();
-            if (!dataRows.isEmpty()) {
-                Object[][] result = new Object[dataRows.size() + 1][headers.length];
-                result[0] = headers;
-                for (int i = 0; i < dataRows.size(); i++) {
-                    result[i + 1] = dataRows.get(i);
-                }
-                return result;
-            } else {
-                return null;
-            }
+            String[] headers = readHeaders(header);
+            ArrayList<Object[]> dataRows = readDataRows(br);
+            return assembleResult(headers, dataRows);
         } catch (IOException e) {
+            // Display an error message to the user
+            JOptionPane.showMessageDialog(null, "Error reading data from file.", "Error", JOptionPane.ERROR_MESSAGE);
+            // Log the exception (optional)
             e.printStackTrace();
             return null;
         }
     }
 
-    private void searchTable(String searchText) {
-        if (searchText.trim().length() == 0) {
-            jt.setModel(model);
-            return;
+    // Method to read headers from the first line of the file
+    private String[] readHeaders(String header) {
+        if (header != null) {
+            String[] headers = header.split(",", -1);
+            String[] finalHeaders = new String[headers.length + 2];
+            System.arraycopy(headers, 0, finalHeaders, 0, headers.length);
+            finalHeaders[headers.length] = "Rating";
+            finalHeaders[headers.length + 1] = "Review";
+            return finalHeaders;
         }
-
-        DefaultTableModel filteredModel = new DefaultTableModel(column, 0);
-        for (Object[] rowData : data) {
-            for (Object cellData : rowData) {
-                if (cellData != null && cellData.toString().toLowerCase().contains(searchText)) {
-                    filteredModel.addRow(rowData);
-                    break;
-                }
-            }
-        }
-        jt.setModel(filteredModel);
+        return null;
     }
 
+    // Method to read data rows from the file
+    private ArrayList<Object[]> readDataRows(BufferedReader br) throws IOException {
+        ArrayList<Object[]> dataRows = new ArrayList<>();
+        String str;
+        while ((str = br.readLine()) != null) {
+            add(dataRows, str);
+        }
+        return dataRows;
+    }
+
+    // Method to assemble the final result from headers and data rows
+    private Object[][] assembleResult(String[] headers, ArrayList<Object[]> dataRows) {
+        if (headers != null && !dataRows.isEmpty()) {
+            Object[][] result = new Object[dataRows.size() + 1][headers.length];
+            result[0] = headers;
+            for (int i = 0; i < dataRows.size(); i++) {
+                result[i + 1] = dataRows.get(i);
+            }
+            return result;
+        } else {
+            return null;
+        }
+    }
+
+    // Method to parse and add data to the table
     private void add(ArrayList<Object[]> dataRows, String line) {
         if (line.charAt(0) == '\"') {
             String row[] = line.split("\",", -1);
@@ -229,54 +227,9 @@ public class DatabaseLib extends Actions implements WindowListener {
         }
     }
 
+    // Method to add book details to the list of data rows
     private void addToList(ArrayList<Object[]> dataRows, String book, String author) {
         Object[] dataRow = new Object[] { book, author, "No Rating", "No Review" };
         dataRows.add(dataRow);
-    }
-
-    private void reviewUser(String username) {
-        int selectedRow = jt.getSelectedRow();
-
-        String title = (String) jt.getValueAt(selectedRow, 0);
-        String author = (String) jt.getValueAt(selectedRow, 1);
-        String rating = (String) jt.getValueAt(selectedRow, 2);
-
-        Object[][] bookData = { { title, author, rating } };
-        String[] bookColumns = { "Title", "Author", "Rating" };
-
-        JTable bookTable = new JTable(bookData, bookColumns);
-        bookTable.setEnabled(false);
-        bookTable.setRowHeight(20);
-        JTableHeader bookHeader = bookTable.getTableHeader();
-        bookHeader.setBackground(Color.decode("#776B5D"));
-
-        Object[][] userData = { { username, "", "" } }; // Fill with appropriate data
-        String[] userColumns = { "Username", "User Rating", "User Review" };
-        JTable userTable = new JTable(userData, userColumns);
-        userTable.setEnabled(false);
-        userTable.setRowHeight(20);
-        JTableHeader userHeader = userTable.getTableHeader();
-        userHeader.setBackground(Color.decode("#776B5D"));
-
-        JScrollPane bookScrollPane = new JScrollPane(bookTable);
-        JScrollPane userScrollPane = new JScrollPane(userTable);
-
-        JPanel bookPanel = new JPanel(new GridLayout(0, 1));
-        bookPanel.setBorder(BorderFactory.createTitledBorder("Book Details"));
-        bookPanel.add(bookScrollPane);
-
-        JPanel userPanel = new JPanel(new GridLayout(0, 1));
-        userPanel.setBorder(BorderFactory.createTitledBorder("User Review"));
-        userPanel.add(userScrollPane);
-
-        JFrame reviewFrame = new JFrame("User Review");
-        reviewFrame.setLayout(new GridLayout(2, 1));
-        reviewFrame.add(bookPanel);
-        reviewFrame.add(userPanel);
-
-        reviewFrame.setPreferredSize(new Dimension(500, 200));
-        reviewFrame.pack();
-        reviewFrame.setVisible(true);
-        reviewFrame.setLocationRelativeTo(null);
     }
 }
