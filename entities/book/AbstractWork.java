@@ -14,14 +14,6 @@ public abstract class AbstractWork {
     protected static int index;
     protected int workIndex;
 
-    {
-        try (BufferedReader bf = new BufferedReader(new FileReader("./program_settings/book_index.txt"))) {
-
-            index = Integer.parseInt(bf.readLine());
-        } catch (IOException e) {
-        }
-    }
-
     public AbstractWork(String title, String author) {
         setTitle(title);
         setAuthor(author);
@@ -69,8 +61,19 @@ public abstract class AbstractWork {
         workIndex = index;
     }
 
-    public void writeLastIndex() {
+    public static void writeLastIndex() {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("./program_settings/book_index.txt"))) {
+            bw.write(index);
+
+        } catch (IOException e) {
+            System.out.println("error during writing last books index");
+        }
+    }
+
+    public static void readLastIndex() {
+        try (BufferedReader br = new BufferedReader(new FileReader("./program_settings/book_index.txt"))) {
+
+            index = Integer.parseInt(br.readLine());
 
         } catch (IOException e) {
             System.out.println("error during writing last books index");

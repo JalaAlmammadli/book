@@ -3,10 +3,15 @@ package gui_library;
 import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
+import java.awt.event.WindowListener;
 import java.io.*;
 import java.util.ArrayList;
+import java.awt.event.WindowEvent;
 
-public class DatabaseLib {
+import gui_elements.Actions;
+import app_runner.*;
+
+public class DatabaseLib extends Actions implements WindowListener {
     // Constants for file name and column indices
     private static final String FILE_NAME = "./brodsky.csv";
     static final int TITLE_COLUMN_INDEX = 0;
@@ -26,9 +31,14 @@ public class DatabaseLib {
     // Constructor
     public DatabaseLib() {
         SwingUtilities.invokeLater(() -> {
-            System.out.println("Hello World!");
             TableGUI();
         });
+    }
+
+    @Override
+    public void windowClosing(WindowEvent e) {
+        SaveData.save();
+        System.exit(0);
     }
 
     // Method to initialize GUI components and display the table
@@ -36,6 +46,8 @@ public class DatabaseLib {
         // Initialize JFrame
         jf = new JFrame("Book Database");
         jf.setPreferredSize(new Dimension(900, 600));
+
+        jf.addWindowListener(this);
 
         // Load data and headers
         Object[][] headersAndData = getDataAndHeaders();
@@ -217,7 +229,7 @@ public class DatabaseLib {
 
     // Method to add book details to the list of data rows
     private void addToList(ArrayList<Object[]> dataRows, String book, String author) {
-        Object[] dataRow = new Object[]{book, author, "No Rating", "No Review"};
+        Object[] dataRow = new Object[] { book, author, "No Rating", "No Review" };
         dataRows.add(dataRow);
     }
 }

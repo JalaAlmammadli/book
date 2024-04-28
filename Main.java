@@ -24,6 +24,10 @@
  
  import javax.swing.JCheckBoxMenuItem;
  
+ import app_runner.ReadData;
+ import app_runner.RunApp;
+ import app_runner.SaveData;
+ 
  class Main {
  
      public static void main(String[] args) {
@@ -38,23 +42,31 @@
          // System.out.println(UserDataBase.contains(user1.getUsername()));
          // UserDataBase.writeData();
  
-         try (BufferedReader br = new BufferedReader(new FileReader("./brodsky.csv"))) {
+         ReadData.read();
  
-             String str;
-             br.readLine();
-             while ((str = br.readLine()) != null) {
-                 // Added by Orkhan*****************
-                 add(str);
-             }
-         } catch (IOException | IllegalMemberException e) {
+         RunApp app = new RunApp();
+         app.setPriority(10);
+         app.start();
+ 
+         try {
+             app.join();
+         } catch (InterruptedException | IllegalMonitorStateException e) {
              System.out.println(e);
          }
  
-         BookDataBase.writeData();
-        // LoginFrame.Login();
-        new DatabaseLib();
-         
-        
+         // try (BufferedReader br = new BufferedReader(new FileReader("./brodsky.csv")))
+         // {
+ 
+         // String str;
+         // br.readLine();
+         // while ((str = br.readLine()) != null) {
+         // // Added by Orkhan*****************
+         // add(str);
+         // }
+         // } catch (IOException | IllegalMemberException e) {
+         // System.out.println(e);
+         // }
+ 
      }
  
      static void add(String line) throws IllegalMemberException {
