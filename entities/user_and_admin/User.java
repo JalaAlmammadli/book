@@ -33,15 +33,9 @@ public class User extends AbstractUser {
     // Searches User's data by username if there is no such file throws
     // IllegalMemberException
 
-    public static User readUser(String username, String password) {
+    public static User readUser(String username, int password) {
 
-        try {
-            return new User(username, password);
-        } catch (IllegalPasswordException | IllegalUsernameException e) {
-            System.out.println(e);
-        }
-
-        return null;
+        return new User(username, password);
 
         // try (BufferedReader br = new BufferedReader(
         // new FileReader(Parametres.USER_PATH + username + Parametres.FILE_FORMAT));) {

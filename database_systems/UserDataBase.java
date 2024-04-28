@@ -44,7 +44,8 @@ public class UserDataBase {
             String line;
             while ((line = br.readLine()) != null) {
                 String data[] = line.split(";");
-                userList.add(User.readUser(data[0], data[1]));
+                userList.add(User.readUser(data[0], Integer.parseInt(data[1])));
+
                 usernameList.add(data[0]);
             }
         } catch (IOException e) {

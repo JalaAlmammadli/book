@@ -107,9 +107,7 @@ public class LoginFrame {
                 registerLink.getObject().addMouseListener(new MouseAdapter() {
                         @Override
                         public void mouseClicked(MouseEvent e) {
-                                jframe.dispose();
-                                RegisterFrame.Register(true); // Open the registration form
-                                // Added by Orkhan
+                                RegisterFrame.Register(); // Open the registration form
                         }
                 });
                 // **************************************************************************

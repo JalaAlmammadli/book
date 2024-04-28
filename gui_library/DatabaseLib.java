@@ -5,15 +5,21 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
 
+import app_runner.SaveData;
+import gui_elements.Actions;
+
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class DatabaseLib {
+public class DatabaseLib extends Actions implements WindowListener {
     JFrame jf;
     JScrollPane js;
     JTable jt;
@@ -22,9 +28,14 @@ public class DatabaseLib {
     Object[][] data;
     DefaultTableModel model;
 
+    @Override
+    public void windowClosing(WindowEvent e) {
+        SaveData.save();
+        System.exit(0);
+    }
+
     public DatabaseLib() {
         SwingUtilities.invokeLater(() -> {
-            System.out.println("Hello World!");
             TableGUI();
         });
     }
@@ -33,6 +44,17 @@ public class DatabaseLib {
         jf = new JFrame("Book Database");
         jf.setPreferredSize(new Dimension(900, 600));
 
+        jf.addWindowListener(this);
+
+        jf.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent event) {
+                if (event.getID() == WindowEvent.WINDOW_CLOSED) {
+                    System.out.println("saveddddd");
+                    SaveData.save();
+                }
+            }
+        });
         Object[][] headersAndData = getDataAndHeaders();
         if (headersAndData != null) {
             column = (String[]) headersAndData[0];
@@ -89,11 +111,11 @@ public class DatabaseLib {
                 }
             });
 
-            jf.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE); 
+            jf.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             jf.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-                    System.exit(0); 
+                    System.exit(0);
                 }
             });
             jf.pack();
@@ -118,7 +140,7 @@ public class DatabaseLib {
         columnModel.getColumn(3).setPreferredWidth(230);
 
         jt.setRowHeight(30);
-        
+
     }
 
     private Object[][] getDataAndHeaders() {
@@ -208,7 +230,7 @@ public class DatabaseLib {
     }
 
     private void addToList(ArrayList<Object[]> dataRows, String book, String author) {
-        Object[] dataRow = new Object[]{book, author, "No Rating", "No Review"};
+        Object[] dataRow = new Object[] { book, author, "No Rating", "No Review" };
         dataRows.add(dataRow);
     }
 
@@ -219,23 +241,22 @@ public class DatabaseLib {
         String author = (String) jt.getValueAt(selectedRow, 1);
         String rating = (String) jt.getValueAt(selectedRow, 2);
 
-        Object[][] bookData = {{title, author, rating}};
-        String[] bookColumns = {"Title", "Author", "Rating"};
-        
+        Object[][] bookData = { { title, author, rating } };
+        String[] bookColumns = { "Title", "Author", "Rating" };
+
         JTable bookTable = new JTable(bookData, bookColumns);
         bookTable.setEnabled(false);
         bookTable.setRowHeight(20);
         JTableHeader bookHeader = bookTable.getTableHeader();
         bookHeader.setBackground(Color.decode("#776B5D"));
 
-        Object[][] userData = {{username, "", ""}}; // Fill with appropriate data
-        String[] userColumns = {"Username", "User Rating", "User Review"};
+        Object[][] userData = { { username, "", "" } }; // Fill with appropriate data
+        String[] userColumns = { "Username", "User Rating", "User Review" };
         JTable userTable = new JTable(userData, userColumns);
         userTable.setEnabled(false);
         userTable.setRowHeight(20);
         JTableHeader userHeader = userTable.getTableHeader();
         userHeader.setBackground(Color.decode("#776B5D"));
-
 
         JScrollPane bookScrollPane = new JScrollPane(bookTable);
         JScrollPane userScrollPane = new JScrollPane(userTable);
