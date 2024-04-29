@@ -18,7 +18,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-import database_systems.exceptions.IllegalMemberException;
+import database_system.exceptions.IllegalMemberException;
 
 import javax.swing.JCheckBoxMenuItem;
 

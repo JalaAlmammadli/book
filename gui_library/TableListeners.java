@@ -2,6 +2,8 @@ package gui_library;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -86,4 +88,26 @@ public class TableListeners {
             table.setModel(filteredModel);
         }
     }
+    
+    // Inner class to handle mouse events on panels
+    public static class PanelMouseListener extends MouseAdapter {
+        private final JButton button;
+        private final Color originalColor;
+    
+        public PanelMouseListener(JButton button) {
+            this.button = button;
+            this.originalColor = button.getBackground();
+        }
+    
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            button.setBackground(Color.decode("0x96B6C5"));       
+         }
+    
+        @Override
+        public void mouseExited(MouseEvent e) {
+            button.setBackground(originalColor); 
+        }
+    }
+    
 }

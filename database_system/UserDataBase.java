@@ -6,13 +6,13 @@
  * 
  */
 
-package database_systems;
+package database_system;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.TreeMap;
 
-import database_systems.exceptions.IllegalMemberException;
+import database_system.exceptions.IllegalMemberException;
 import entities.user_and_admin.User;
 import entities.user_and_admin.UserDataFile;
 

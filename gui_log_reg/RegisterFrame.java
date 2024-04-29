@@ -17,7 +17,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import database_systems.exceptions.IllegalMemberException;
+import database_system.exceptions.IllegalMemberException;
 import entities.user_and_admin.exceptions.IllegalPasswordException;
 import entities.user_and_admin.exceptions.IllegalUsernameException;
 // Project classes

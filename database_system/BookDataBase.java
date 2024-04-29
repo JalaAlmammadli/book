@@ -1,4 +1,4 @@
-package database_systems;
+package database_system;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
-import database_systems.exceptions.IllegalMemberException;
+import database_system.exceptions.IllegalMemberException;
 import entities.book.Book;
 import program_settings.Parametres;
 

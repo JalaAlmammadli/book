@@ -1,4 +1,4 @@
-package database_systems.exceptions;
+package database_system.exceptions;
 
 public class IllegalMemberException extends Exception {
 

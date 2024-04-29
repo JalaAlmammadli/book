@@ -1,17 +1,17 @@
 package gui_library;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.table.*;
 import java.awt.*;
-import java.awt.event.WindowListener;
+import java.awt.event.WindowEvent;
 import java.io.*;
 import java.util.ArrayList;
-import java.awt.event.WindowEvent;
 
 import gui_elements.Actions;
 import app_runner.*;
 
-public class DatabaseLib extends Actions implements WindowListener {
+public class DatabaseLib extends Actions {
     // Constants for file name and column indices
     private static final String FILE_NAME = "./brodsky.csv";
     static final int TITLE_COLUMN_INDEX = 0;
@@ -21,18 +21,21 @@ public class DatabaseLib extends Actions implements WindowListener {
 
     // JFrame and other GUI components
     private JFrame jf;
+    private JPanel mainPanel; 
+    private JPanel tablePanel; 
+    private JPanel settingsPanel;
+    private JPanel personalPanel;
     private JScrollPane js;
     private JTable jt;
     private JTextField searchField;
     private String[] column;
     private Object[][] data;
     private DefaultTableModel model;
+    private MyLibraryPanel myLibraryPanel;
 
     // Constructor
     public DatabaseLib() {
-        SwingUtilities.invokeLater(() -> {
-            TableGUI();
-        });
+        SwingUtilities.invokeLater(this::initializeGUI);
     }
 
     @Override
@@ -41,28 +44,39 @@ public class DatabaseLib extends Actions implements WindowListener {
         System.exit(0);
     }
 
-    // Method to initialize GUI components and display the table
-    private void TableGUI() {
-        // Initialize JFrame
+    // Method to initialize GUI components
+    private void initializeGUI() {
+        // Create the main frame
         jf = new JFrame("Book Database");
-        jf.setPreferredSize(new Dimension(900, 600));
-
-        jf.addWindowListener(this);
-
-        // Load data and headers
+        jf.setPreferredSize(new Dimension(1000, 650));
+        mainPanel = new JPanel(new BorderLayout());
+        tablePanel = new JPanel(new BorderLayout());
+    
+        // Initialize table with data
         Object[][] headersAndData = getDataAndHeaders();
         if (headersAndData != null) {
             initializeTable(headersAndData);
-            addSearchFunctionality();
             addReviewColumnMouseListener();
-            propertyJFrame();
+            customizeTableAppearance();
         } else {
             JOptionPane.showMessageDialog(null, "Failed to load data from file.", "Error", JOptionPane.ERROR_MESSAGE);
         }
-
-        customizeTableAppearance();
+    
+        personalPanel = new PersonalDatabasePanel(data, column);
+        mainPanel.add(tablePanel, BorderLayout.CENTER);
+        myLibraryPanel = new MyLibraryPanel();
+        settingsPanel = new SettingsPanel(); 
+        addLeftPanels();
+        jf.add(mainPanel);
+        propertyJFrame();
+        addSearchFunctionality();
+    
+        mainPanel.remove(myLibraryPanel);
+        mainPanel.add(settingsPanel, BorderLayout.CENTER); 
+        mainPanel.revalidate();
+        mainPanel.repaint();
     }
-
+    
     // Method to initialize the table with data and headers
     private void initializeTable(Object[][] headersAndData) {
         column = (String[]) headersAndData[0];
@@ -78,28 +92,28 @@ public class DatabaseLib extends Actions implements WindowListener {
             }
         };
 
-        // Initialize JTable
         jt = new JTable(model);
         jt.getTableHeader().setReorderingAllowed(false);
         js = new JScrollPane(jt);
-        jf.add(js, BorderLayout.CENTER);
+        tablePanel.add(js, BorderLayout.CENTER);
     }
 
     // Method to add search functionality
     private void addSearchFunctionality() {
         searchField = new JTextField(20);
         JButton searchButton = new JButton("Search");
-        Color buttonHeaderColor = new Color(0x776B5D);
+        Color buttonHeaderColor = new Color(173, 196, 206);
         searchButton.setBackground(buttonHeaderColor);
         searchButton.setForeground(Color.BLACK);
         JPanel searchPanel = new JPanel();
+        searchPanel.setBackground(Color.WHITE); 
         searchPanel.add(new JLabel("Search: "));
         searchPanel.add(searchField);
         searchPanel.add(searchButton);
-        jf.add(searchPanel, BorderLayout.NORTH);
+        tablePanel.add(searchPanel, BorderLayout.NORTH);
 
+        // Add action listeners for search
         searchButton.addActionListener(new TableListeners.SearchActionListener(jt, searchField, column, data, model));
-
         searchField.addActionListener(new TableListeners.SearchActionListener(jt, searchField, column, data, model));
     }
 
@@ -126,22 +140,21 @@ public class DatabaseLib extends Actions implements WindowListener {
     private void customizeTableAppearance() {
         // Set table header and cell properties
         jt.getTableHeader().setForeground(Color.BLACK);
-        jt.getTableHeader().setBackground(Color.decode("#776B5D"));
+        jt.getTableHeader().setBackground(Color.decode("#ADC4CE"));
         jt.getTableHeader().setPreferredSize(new Dimension(jt.getTableHeader().getWidth(), 40));
         jt.setBackground(Color.WHITE);
         jt.setForeground(Color.BLACK);
-        jt.setSelectionBackground(Color.decode("#F3EEEA"));
+        jt.setSelectionBackground(Color.decode("#F1F0E8"));
         jt.setSelectionForeground(Color.BLACK);
 
-        // Set column widths
         TableColumnModel columnModel = jt.getTableHeader().getColumnModel();
-        columnModel.getColumn(TITLE_COLUMN_INDEX).setPreferredWidth(250);
-        columnModel.getColumn(AUTHOR_COLUMN_INDEX).setPreferredWidth(250);
+        columnModel.getColumn(TITLE_COLUMN_INDEX).setPreferredWidth(270);
+        columnModel.getColumn(AUTHOR_COLUMN_INDEX).setPreferredWidth(300);
         columnModel.getColumn(RATING_COLUMN_INDEX).setPreferredWidth(170);
-        columnModel.getColumn(REVIEW_COLUMN_INDEX).setPreferredWidth(230);
+        columnModel.getColumn(REVIEW_COLUMN_INDEX).setPreferredWidth(260);
 
-        // Set row height
         jt.setRowHeight(30);
+        jt.getTableHeader().setResizingAllowed(false);
     }
 
     // Method to load data and headers from file
@@ -152,9 +165,7 @@ public class DatabaseLib extends Actions implements WindowListener {
             ArrayList<Object[]> dataRows = readDataRows(br);
             return assembleResult(headers, dataRows);
         } catch (IOException e) {
-            // Display an error message to the user
             JOptionPane.showMessageDialog(null, "Error reading data from file.", "Error", JOptionPane.ERROR_MESSAGE);
-            // Log the exception (optional)
             e.printStackTrace();
             return null;
         }
@@ -165,9 +176,10 @@ public class DatabaseLib extends Actions implements WindowListener {
         if (header != null) {
             String[] headers = header.split(",", -1);
             String[] finalHeaders = new String[headers.length + 2];
-            System.arraycopy(headers, 0, finalHeaders, 0, headers.length);
-            finalHeaders[headers.length] = "Rating";
-            finalHeaders[headers.length + 1] = "Review";
+            finalHeaders[0] = "<html><b>Title</b></html>"; 
+            finalHeaders[1] = "<html><b>Author</b></html>"; 
+            finalHeaders[headers.length] = "<html><b>Rating</b></html>";
+            finalHeaders[headers.length + 1] = "<html><b>Review</b></html>";
             return finalHeaders;
         }
         return null;
@@ -229,7 +241,120 @@ public class DatabaseLib extends Actions implements WindowListener {
 
     // Method to add book details to the list of data rows
     private void addToList(ArrayList<Object[]> dataRows, String book, String author) {
-        Object[] dataRow = new Object[] { book, author, "No Rating", "No Review" };
+        Object[] dataRow = new Object[]{book, author, "No Rating", "No Review"};
         dataRows.add(dataRow);
+    }
+
+    // Method to add left side panels
+    private void addLeftPanels() {
+        JPanel leftPanel = new JPanel();
+        leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
+
+        // Create buttons for different panels
+        JButton tableButton = new JButton("Table");
+        JButton myLibraryButton = new JButton("My Library");
+        JButton settingsButton = new JButton("Settings");
+        JButton personalDB = new JButton("Personal Database");
+
+        // Set fixed width for buttons
+        int buttonWidth = 250; 
+        int buttonHeight = 30;
+
+        // Set fixed width and let height adjust automatically
+        tableButton.setMaximumSize(new Dimension(buttonWidth, buttonHeight));
+        myLibraryButton.setMaximumSize(new Dimension(buttonWidth, buttonHeight));
+        settingsButton.setMaximumSize(new Dimension(buttonWidth, buttonHeight));
+        personalDB.setMaximumSize(new Dimension(buttonWidth, buttonHeight));
+
+        // Add buttons to panel
+        leftPanel.add(tableButton);
+        leftPanel.add(myLibraryButton);
+        leftPanel.add(settingsButton);
+        leftPanel.add(personalDB);
+
+        // Set background color for buttons
+        Color buttonColor = new Color(150, 182, 197);
+        tableButton.setBackground(buttonColor);
+        myLibraryButton.setBackground(buttonColor);
+        settingsButton.setBackground(buttonColor);
+        personalDB.setBackground(buttonColor);
+
+        // Set text color for buttons
+        Color textColor = Color.BLACK; // Adjust as needed
+        tableButton.setForeground(textColor);
+        myLibraryButton.setForeground(textColor);
+        settingsButton.setForeground(textColor);
+        personalDB.setForeground(textColor);
+
+        // Add action listeners to buttons
+        tableButton.addActionListener(e -> {
+            if (myLibraryPanel != null) {
+                mainPanel.remove(myLibraryPanel); 
+            }
+            if (settingsPanel != null) {
+                mainPanel.remove(settingsPanel);
+            }
+            if (personalPanel != null) {
+                mainPanel.remove(personalPanel);
+            }
+            mainPanel.add(tablePanel, BorderLayout.CENTER);
+            mainPanel.revalidate();
+            mainPanel.repaint();
+        });
+
+        myLibraryButton.addActionListener(e -> {
+            if (tablePanel != null) {
+                mainPanel.remove(tablePanel); 
+            }
+            if (settingsPanel != null) {
+                mainPanel.remove(settingsPanel);
+            }
+            if (personalPanel != null) {
+                mainPanel.remove(personalPanel);
+            }
+            mainPanel.add(myLibraryPanel, BorderLayout.CENTER);
+            mainPanel.revalidate();
+            mainPanel.repaint();
+        });
+
+        settingsButton.addActionListener(e -> {
+            if (tablePanel != null) {
+                mainPanel.remove(tablePanel);
+            }
+            if (myLibraryPanel != null) {
+                mainPanel.remove(myLibraryPanel);
+            }
+            if (personalPanel != null) {
+                mainPanel.remove(personalPanel);
+            }
+            mainPanel.add(settingsPanel, BorderLayout.CENTER);
+            mainPanel.revalidate();
+            mainPanel.repaint();
+        });
+
+        personalDB.addActionListener(e -> {
+            if (tablePanel != null) {
+                mainPanel.remove(tablePanel); 
+            }
+            if (myLibraryPanel != null) {
+                mainPanel.remove(myLibraryPanel);
+            }
+            if (settingsPanel != null) {
+                mainPanel.remove(settingsPanel);
+            }
+            mainPanel.add(personalPanel, BorderLayout.CENTER);
+            mainPanel.revalidate();
+            mainPanel.repaint();
+        });
+
+        // Add a black line border between buttons
+        Border border = BorderFactory.createLineBorder(Color.BLACK);
+        leftPanel.setBorder(BorderFactory.createCompoundBorder(border, BorderFactory.createEmptyBorder(1, 1, 1, 1)));
+
+        // Add the panel to the frame
+        jf.add(leftPanel, BorderLayout.WEST);
+    }
+    public static void main(String[] args) {
+        new DatabaseLib();
     }
 }

@@ -1,4 +1,4 @@
-package database_systems;
+package database_system;
 
 public class RatingDataBase {
 
