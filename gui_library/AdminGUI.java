@@ -27,33 +27,38 @@ public class AdminGUI extends DatabaseLib {
 
         addMovieButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
+                
             }
         });
 
         modifyMovieButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
+               
             }
         });
 
         deleteMovieButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
+               
             }
         });
 
         removeReviewButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
+              
             }
         });
 
         deleteUserButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
+               
             }
         });
+    }
+
+    @Override
+    public void initializeTable(Object[][] headersAndData) {
+        super.initializeTable(headersAndData); 
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(addMovieButton);
@@ -65,33 +70,11 @@ public class AdminGUI extends DatabaseLib {
         mainPanel.add(buttonPanel, BorderLayout.SOUTH);
     }
 
-    @Override
-    public void initializeTable(Object[][] headersAndData) {
-        column = (String[]) headersAndData[0];
-        data = new Object[headersAndData.length - 1][column.length];
-        for (int i = 1; i < headersAndData.length; i++) {
-            data[i - 1] = headersAndData[i];
-        }
-
-        model = new DefaultTableModel(data, column) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return column != REVIEW_COLUMN_INDEX && column != RATING_COLUMN_INDEX;
-            }
-        };
-
-        jt = new JTable(model);
-        jt.getTableHeader().setReorderingAllowed(false);
-        js = new JScrollPane(jt);
-        tablePanel.add(js, BorderLayout.CENTER);
-    }
-
     public void addNewMovie(String title, String author, String rating, String review) {
 
     }
 
     public void modifyMovie(int rowIndex, String title, String author, String rating, String review) {
-
 
     }
 
