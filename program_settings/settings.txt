@@ -1,0 +1,2 @@
+review_index=0
+logined_user=Unknown

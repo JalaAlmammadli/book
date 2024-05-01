@@ -7,7 +7,7 @@ public class ReadData {
 
     public static void read() {
 
-        UserDataBase.loadData();
-        BookDataBase.loadData();
+        UserDataBase.MainUserList.loadData();
+        BookDataBase.MainBookList.loadData();
     }
 }

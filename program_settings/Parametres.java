@@ -31,6 +31,7 @@ public class Parametres {
     public static final String BOOK_PATH = "./data/books/";
     public static final String REVIEW_PATH = "./data/reviews/";
     public static final String RATING_PATH = "./data/ratings/";
+    public static final String SETTINGS_PATH = "./program_settings/settings.txt";
     public static final String FILE_FORMAT = ".txt";
 
     /***************************************************************************** */

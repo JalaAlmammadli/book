@@ -7,7 +7,7 @@ public class SaveData {
 
     public static void save() {
 
-        UserDataBase.writeData();
-        BookDataBase.writeData();
+        UserDataBase.MainUserList.writeData();
+        BookDataBase.MainBookList.writeData();
     }
 }

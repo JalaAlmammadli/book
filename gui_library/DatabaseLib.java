@@ -10,8 +10,10 @@ import java.awt.event.WindowEvent;
 
 import gui_elements.Actions;
 import app_runner.*;
+import entities.book.Book;
 
 public class DatabaseLib extends Actions implements WindowListener {
+
     // Constants for file name and column indices
     private static final String FILE_NAME = "./brodsky.csv";
     static final int TITLE_COLUMN_INDEX = 0;
@@ -94,6 +96,7 @@ public class DatabaseLib extends Actions implements WindowListener {
         searchButton.setForeground(Color.BLACK);
         JPanel searchPanel = new JPanel();
         searchPanel.add(new JLabel("Search: "));
+
         searchPanel.add(searchField);
         searchPanel.add(searchButton);
         jf.add(searchPanel, BorderLayout.NORTH);
