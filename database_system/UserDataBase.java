@@ -6,9 +6,9 @@
  * 
  */
 
-package database_systems;
+package database_system;
 
-import database_systems.exceptions.IllegalMemberException;
+import database_system.exceptions.IllegalMemberException;
 import entities.user_and_admin.User;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

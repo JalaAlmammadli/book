@@ -8,8 +8,8 @@
 
 package login_register;
 
-import database_systems.UserDataBase;
-import database_systems.exceptions.IllegalMemberException;
+import database_system.UserDataBase;
+import database_system.exceptions.IllegalMemberException;
 import entities.user_and_admin.Admin;
 import login_register.login_exceptions.WrongUserException;
 import program_settings.Parametres;

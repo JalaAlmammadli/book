@@ -1,6 +1,6 @@
-package database_systems;
+package database_system;
 
-import database_systems.exceptions.IllegalMemberException;
+import database_system.exceptions.IllegalMemberException;
 import entities.book.Book;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

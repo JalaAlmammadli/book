@@ -18,15 +18,19 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-import database_systems.exceptions.IllegalMemberException;
+import database_system.exceptions.IllegalMemberException;
 
 import javax.swing.JCheckBoxMenuItem;
 
 // Project classes
 import login_register.Login;
 import login_register.login_exceptions.WrongUserException;
+import program_settings.Parametres;
+import program_settings.Status;
 import gui_elements.*;
+import gui_library.AdminGUI;
 import gui_library.DatabaseLib;
+import gui_library.UserGUI;
 
 public class LoginFrame {
         // Frame objects
@@ -122,7 +126,12 @@ public class LoginFrame {
                                 try {
                                         if (Login.tryLogin(user, password, stayLoginedBox.getState())) {
                                                 jframe.dispose();
-                                                new DatabaseLib();
+
+                                              if(Parametres.getUserStatus() == Status.ADMIN){
+                                                new AdminGUI();
+                                              }else{
+                                                new UserGUI();
+                                        }
                                         }
                                 } catch (WrongUserException | IllegalMemberException ex) {
                                         infoForUser.getObject().setText(ex.getMessage());

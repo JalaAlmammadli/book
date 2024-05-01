@@ -2,6 +2,8 @@ package gui_library;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -28,7 +30,7 @@ public class TableListeners {
             if (column == reviewColumnIndex) {
                 Object reviewValue = table.getValueAt(row, column);
 
-                if (reviewValue != null && !reviewValue.toString().equals("No Review")) {
+                if (reviewValue != null && reviewValue.toString().equals("No Review")) {
                     String username = (String) reviewValue;
                     String title = (String) table.getValueAt(row, DatabaseLib.TITLE_COLUMN_INDEX);
                     String author = (String) table.getValueAt(row, DatabaseLib.AUTHOR_COLUMN_INDEX);
@@ -48,7 +50,8 @@ public class TableListeners {
         private final DefaultTableModel model;
 
         // Constructor to initialize table, search field, column names, data, and model
-        public SearchActionListener(JTable table, JTextField searchField, String[] column, Object[][] data, DefaultTableModel model) {
+        public SearchActionListener(JTable table, JTextField searchField, String[] column, Object[][] data,
+                DefaultTableModel model) {
             this.table = table;
             this.searchField = searchField;
             this.column = column;
@@ -86,4 +89,26 @@ public class TableListeners {
             table.setModel(filteredModel);
         }
     }
+
+    // Inner class to handle mouse events on panels
+    public static class PanelMouseListener extends MouseAdapter {
+        private final JButton button;
+        private final Color originalColor;
+
+        public PanelMouseListener(JButton button) {
+            this.button = button;
+            this.originalColor = button.getBackground();
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            button.setBackground(Color.decode("0x96B6C5"));
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+            button.setBackground(originalColor);
+        }
+    }
+
 }

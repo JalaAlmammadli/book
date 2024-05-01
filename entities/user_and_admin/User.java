@@ -15,7 +15,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 import program_settings.Parametres;
-import database_systems.exceptions.IllegalMemberException;
+import database_system.exceptions.IllegalMemberException;
 import entities.user_and_admin.AbstractUser;
 import entities.user_and_admin.exceptions.IllegalPasswordException;
 import entities.user_and_admin.exceptions.IllegalUsernameException;
