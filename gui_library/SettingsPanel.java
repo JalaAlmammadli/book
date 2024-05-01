@@ -8,7 +8,7 @@ public class SettingsPanel extends JPanel {
     public SettingsPanel() {
         initializeComponents();
         setLayout(new BorderLayout());
-        setBackground(Color.WHITE); 
+        setBackground(Color.WHITE);
         JLabel label = new JLabel("Settings Panel");
         label.setHorizontalAlignment(SwingConstants.CENTER);
         add(label, BorderLayout.CENTER);
