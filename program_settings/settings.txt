@@ -1,2 +1,2 @@
-review_index=0
-logined_user=Unknown
+review_index=2
+login_user=Unknown

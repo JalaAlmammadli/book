@@ -4,6 +4,7 @@ import app_runner.*;
 import gui_elements.Actions;
 import java.awt.*;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.*;
 import java.util.ArrayList;
 import javax.swing.*;
@@ -12,7 +13,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.*;
 
-public class DatabaseLib extends Actions {
+public class DatabaseLib extends Actions implements  WindowListener{
     private static final String FILE_NAME = "./brodsky.csv";
     static final int TITLE_COLUMN_INDEX = 0;
     static final int AUTHOR_COLUMN_INDEX = 1;
@@ -34,8 +35,11 @@ public class DatabaseLib extends Actions {
         SwingUtilities.invokeLater(this::initializeGUI);
     }
 
+    // Shut down the whole program and saves all data while closing
     @Override
     public void windowClosing(WindowEvent e) {
+
+        System.out.println("closing");
         SaveData.save();
         System.exit(0);
     }
@@ -45,6 +49,10 @@ public class DatabaseLib extends Actions {
         jf.setPreferredSize(new Dimension(1000, 650));
         mainPanel = new JPanel(new BorderLayout());
         tablePanel = new JPanel(new BorderLayout());
+
+        // It will track the changes in the window
+        // DONT DELETE THIS
+        jf.addWindowListener(this);
 
         Object[][] headersAndData = getDataAndHeaders();
         if (headersAndData != null) {

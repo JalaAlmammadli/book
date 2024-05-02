@@ -28,7 +28,11 @@ public class Parametres {
 
     // Location of data folder
     public static final String USER_PATH = "./data/users/";
+    public static final String USER_BOOK_PATH = "./data/users/added_books/";
+    public static final String USER_REVIEW_PATH = "./data/users/reviews/";
+    public static final String USER_RATING_PATH = "./data/users/ratings/";
     public static final String BOOK_PATH = "./data/books/";
+    public static final String BOOK_REVIEW_PATH = "./data/books/reviews/";
     public static final String REVIEW_PATH = "./data/reviews/";
     public static final String RATING_PATH = "./data/ratings/";
     public static final String SETTINGS_PATH = "./program_settings/settings.txt";

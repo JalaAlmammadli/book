@@ -7,18 +7,26 @@
  * 
  */
 
- import app_runner.ReadData;
- import app_runner.RunApp;
  import database_system.BookDataBase;
+ import database_system.ReviewDataBase;
  import database_system.exceptions.IllegalMemberException;
- import entities.book.Book;
+import entities.book.Book;
+ import entities.user_and_admin.User;
+import program_settings.SettingsControl;
  
  class Main {
  
      public static void main(String[] args) {
          // UserDataBase.loadData();
  
-         // User user1 = User.createUser("user12345", "1234567890");
+
+         SettingsControl.read();
+         User user1 = User.createUser("user12345", "1234567890");
+         Book book1 = Book.createBook("book1", "author");
+
+         ReviewDataBase.addReview(user1, book1, "Hello World!");
+
+         SettingsControl.write();
          // try {
          // UserDataBase.add(user1);
          // } catch (IllegalMemberException e) {
@@ -27,17 +35,19 @@
          // System.out.println(UserDataBase.contains(user1.getUsername()));
          // UserDataBase.writeData();
  
-         ReadData.read();
+        //  ReadData.read();
  
-         RunApp app = new RunApp();
-         app.setPriority(10);
-         app.start();
+        //  RunApp app = new RunApp();
+        //  app.setPriority(10);
+        //  app.start();
  
-         try {
-             app.join();
-         } catch (InterruptedException | IllegalMonitorStateException e) {
-             System.out.println(e);
-         }
+        //  try {
+        //      app.join();
+        //  } catch (InterruptedException | IllegalMonitorStateException e) {
+        //      System.out.println(e);
+        //  }
+
+        
  
          // try (BufferedReader br = new BufferedReader(new FileReader("./brodsky.csv")))
          // {

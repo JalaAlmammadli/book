@@ -13,14 +13,14 @@ public class SettingsControl {
 
         try (BufferedReader bf = new BufferedReader(new FileReader(Parametres.SETTINGS_PATH))) {
 
-            Review.setIndex(Integer.parseInt(bf.readLine().split("=")[1]));
+            Review.setGeneralIndex(Integer.parseInt(bf.readLine().split("=")[1]));
 
             String user = bf.readLine().split("=")[1];
             if(user.equals("Unknown")){
                 
             } 
 
-            System.out.println(Review.getIndex());
+            System.out.println(Review.getGeneralIndex());
         } catch (IOException e) {
             System.out.println("error during reading settings.txt");
         }
@@ -30,7 +30,7 @@ public class SettingsControl {
 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(Parametres.SETTINGS_PATH))) {
 
-            bw.write("review_index=" + Review.getIndex());
+            bw.write("review_index=" + Review.getGeneralIndex());
             bw.newLine();
 
             bw.append("login_user=Unknown");
