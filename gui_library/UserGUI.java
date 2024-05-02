@@ -182,34 +182,25 @@ public class UserGUI extends DatabaseLib {
 
         JButton tableButton = new JButton("General Database");
         JButton personalDatabaseButton = new JButton("Personal Database");
-        JButton settingsButton = new JButton("Settings");
 
         int buttonWidth = 250;
         int buttonHeight = 30;
         tableButton.setMaximumSize(new Dimension(buttonWidth, buttonHeight));
-        settingsButton.setMaximumSize(new Dimension(buttonWidth, buttonHeight));
         personalDatabaseButton.setMaximumSize(new Dimension(buttonWidth, buttonHeight));
 
         leftPanel.add(tableButton);
         leftPanel.add(personalDatabaseButton);
-        leftPanel.add(settingsButton);
 
         Color buttonColor = new Color(150, 182, 197);
         tableButton.setBackground(buttonColor);
-        settingsButton.setBackground(buttonColor);
         personalDatabaseButton.setBackground(buttonColor);
 
         Color textColor = Color.BLACK;
         tableButton.setForeground(textColor);
-        settingsButton.setForeground(textColor);
         personalDatabaseButton.setForeground(textColor);
 
         tableButton.addActionListener(e -> {
             showTablePanel();
-        });
-
-        settingsButton.addActionListener(e -> {
-            showSettingsPanel();
         });
 
         personalDatabaseButton.addActionListener(e -> {
@@ -223,25 +214,10 @@ public class UserGUI extends DatabaseLib {
     }
 
     private void showTablePanel() {
-        if (settingsPanel != null) {
-            mainPanel.remove(settingsPanel);
-        }
         if (personalDatabasePanel != null) {
             mainPanel.remove(personalDatabasePanel);
         }
         mainPanel.add(tablePanel, BorderLayout.CENTER);
-        mainPanel.revalidate();
-        mainPanel.repaint();
-    }
-
-    private void showSettingsPanel() {
-        if (tablePanel != null) {
-            mainPanel.remove(tablePanel);
-        }
-        if (personalDatabasePanel != null) {
-            mainPanel.remove(personalDatabasePanel);
-        }
-        mainPanel.add(settingsPanel, BorderLayout.CENTER);
         mainPanel.revalidate();
         mainPanel.repaint();
     }
@@ -252,9 +228,6 @@ public class UserGUI extends DatabaseLib {
         }
         if (tablePanel != null) {
             mainPanel.remove(tablePanel);
-        }
-        if (settingsPanel != null) {
-            mainPanel.remove(settingsPanel);
         }
         mainPanel.add(personalDatabasePanel, BorderLayout.CENTER);
         mainPanel.revalidate();

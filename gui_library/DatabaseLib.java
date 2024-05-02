@@ -13,7 +13,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.*;
 
-public class DatabaseLib extends Actions implements  WindowListener{
+public class DatabaseLib extends Actions implements WindowListener {
     private static final String FILE_NAME = "./brodsky.csv";
     static final int TITLE_COLUMN_INDEX = 0;
     static final int AUTHOR_COLUMN_INDEX = 1;
@@ -23,7 +23,6 @@ public class DatabaseLib extends Actions implements  WindowListener{
     protected JFrame jf;
     protected JPanel mainPanel;
     public JPanel tablePanel;
-    protected JPanel settingsPanel;
     protected JScrollPane js;
     protected JTable jt;
     private JTextField searchField;
@@ -62,14 +61,12 @@ public class DatabaseLib extends Actions implements  WindowListener{
             JOptionPane.showMessageDialog(null, "Failed to load data from file.", "Error", JOptionPane.ERROR_MESSAGE);
         }
 
-        mainPanel.add(tablePanel, BorderLayout.CENTER);
-        settingsPanel = new SettingsPanel();
+        mainPanel.add(tablePanel);
         addLeftPanels();
         jf.add(mainPanel);
         propertyJFrame();
         addSearchFunctionality();
 
-        mainPanel.add(settingsPanel, BorderLayout.CENTER);
         mainPanel.revalidate();
         mainPanel.repaint();
     }
@@ -81,7 +78,7 @@ public class DatabaseLib extends Actions implements  WindowListener{
             data[i - 1] = headersAndData[i];
         }
 
-        model = new DefaultTableModel(data, column); 
+        model = new DefaultTableModel(data, column);
 
         jt = new JTable(model);
         jt.getTableHeader().setReorderingAllowed(false);
@@ -96,7 +93,7 @@ public class DatabaseLib extends Actions implements  WindowListener{
         searchButton.setBackground(buttonHeaderColor);
         searchButton.setForeground(Color.BLACK);
         JPanel searchPanel = new JPanel();
-    
+
         searchPanel.setBackground(Color.WHITE);
         searchPanel.add(searchField);
         searchPanel.add(searchButton);
@@ -255,47 +252,28 @@ public class DatabaseLib extends Actions implements  WindowListener{
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
 
         JButton tableButton = new JButton("General Database");
-        JButton settingsButton = new JButton("Settings");
 
         int buttonWidth = 250;
         int buttonHeight = 30;
 
         tableButton.setMaximumSize(new Dimension(buttonWidth, buttonHeight));
-        settingsButton.setMaximumSize(new Dimension(buttonWidth, buttonHeight));
 
         leftPanel.add(tableButton);
-        leftPanel.add(settingsButton);
 
         Color buttonColor = new Color(150, 182, 197);
         tableButton.setBackground(buttonColor);
-        settingsButton.setBackground(buttonColor);
 
         Color textColor = Color.BLACK;
         tableButton.setForeground(textColor);
-        settingsButton.setForeground(textColor);
 
         tableButton.addActionListener(e -> {
-            if (settingsPanel != null) {
-                mainPanel.remove(settingsPanel);
-            }
             mainPanel.add(tablePanel, BorderLayout.CENTER);
-            mainPanel.revalidate();
-            mainPanel.repaint();
-        });
-
-        settingsButton.addActionListener(e -> {
-            if (tablePanel != null) {
-                mainPanel.remove(tablePanel);
-            }
-
-            mainPanel.add(settingsPanel, BorderLayout.CENTER);
             mainPanel.revalidate();
             mainPanel.repaint();
         });
 
         Border border = BorderFactory.createLineBorder(Color.BLACK);
         leftPanel.setBorder(BorderFactory.createCompoundBorder(border, BorderFactory.createEmptyBorder(1, 1, 1, 1)));
-
         jf.add(leftPanel, BorderLayout.WEST);
     }
 
