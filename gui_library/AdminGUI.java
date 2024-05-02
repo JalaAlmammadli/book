@@ -11,7 +11,6 @@ import java.awt.event.ActionListener;
 
 public class AdminGUI extends DatabaseLib {
     private JButton addMovieButton;
-    private JButton modifyMovieButton;
     private JButton deleteMovieButton;
     private JButton removeReviewButton;
     private JButton deleteUserButton;
@@ -19,21 +18,14 @@ public class AdminGUI extends DatabaseLib {
     public AdminGUI() {
         super();
 
-        addMovieButton = new JButton("Add New Movie");
-        modifyMovieButton = new JButton("Modify Movie");
-        deleteMovieButton = new JButton("Delete Movie");
+        addMovieButton = new JButton("Add New Book");
+        deleteMovieButton = new JButton("Delete Book");
         removeReviewButton = new JButton("Remove Review");
         deleteUserButton = new JButton("Delete User");
 
         addMovieButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 
-            }
-        });
-
-        modifyMovieButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-               
             }
         });
 
@@ -62,7 +54,6 @@ public class AdminGUI extends DatabaseLib {
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(addMovieButton);
-        buttonPanel.add(modifyMovieButton);
         buttonPanel.add(deleteMovieButton);
         buttonPanel.add(removeReviewButton);
         buttonPanel.add(deleteUserButton);
@@ -71,10 +62,6 @@ public class AdminGUI extends DatabaseLib {
     }
 
     public void addNewMovie(String title, String author, String rating, String review) {
-
-    }
-
-    public void modifyMovie(int rowIndex, String title, String author, String rating, String review) {
 
     }
 

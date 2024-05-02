@@ -35,7 +35,6 @@ public class DatabaseLib extends Actions implements  WindowListener{
         SwingUtilities.invokeLater(this::initializeGUI);
     }
 
-    // Shut down the whole program and saves all data while closing
     @Override
     public void windowClosing(WindowEvent e) {
 
@@ -90,16 +89,14 @@ public class DatabaseLib extends Actions implements  WindowListener{
         tablePanel.add(js, BorderLayout.CENTER);
     }
 
-    private void addSearchFunctionality() {
+    protected void addSearchFunctionality() {
         searchField = new JTextField(20);
         JButton searchButton = new JButton("Search");
         Color buttonHeaderColor = new Color(173, 196, 206);
         searchButton.setBackground(buttonHeaderColor);
         searchButton.setForeground(Color.BLACK);
         JPanel searchPanel = new JPanel();
-        
-        // searchPanel.add(new JLabel("Search: "));
-
+    
         searchPanel.setBackground(Color.WHITE);
         searchPanel.add(searchField);
         searchPanel.add(searchButton);
@@ -162,10 +159,10 @@ public class DatabaseLib extends Actions implements  WindowListener{
         jt.setSelectionForeground(Color.BLACK);
 
         TableColumnModel columnModel = jt.getTableHeader().getColumnModel();
-        columnModel.getColumn(TITLE_COLUMN_INDEX).setPreferredWidth(270);
-        columnModel.getColumn(AUTHOR_COLUMN_INDEX).setPreferredWidth(300);
+        columnModel.getColumn(TITLE_COLUMN_INDEX).setPreferredWidth(200);
+        columnModel.getColumn(AUTHOR_COLUMN_INDEX).setPreferredWidth(200);
         columnModel.getColumn(RATING_COLUMN_INDEX).setPreferredWidth(170);
-        columnModel.getColumn(REVIEW_COLUMN_INDEX).setPreferredWidth(260);
+        columnModel.getColumn(REVIEW_COLUMN_INDEX).setPreferredWidth(200);
 
         jt.setRowHeight(30);
         jt.getTableHeader().setResizingAllowed(false);
