@@ -89,6 +89,14 @@ public class UserGUI extends DatabaseLib {
                 int row, int column) {
             String buttonText = (value != null && value.equals("Added")) ? "Added" : "Add";
             setText(buttonText);
+
+            // Set background color based on the value
+            if (value != null && value.equals("Added")) {
+                setBackground(new Color(0xB0A695)); // Change to whatever color you prefer
+            } else {
+                setBackground(new Color(0xE5E1DA)); // Change to whatever color you prefer
+            }
+
             return this;
         }
     }
