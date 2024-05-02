@@ -1,18 +1,19 @@
 package gui_library;
 
+import app_runner.*;
+import gui_elements.Actions;
+import java.awt.*;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.io.*;
+import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.*;
-import java.awt.*;
-import java.awt.event.WindowEvent;
-import java.io.*;
-import java.util.ArrayList;
-import gui_elements.Actions;
-import app_runner.*;
 
-public class DatabaseLib extends Actions {
+public class DatabaseLib extends Actions implements  WindowListener{
     private static final String FILE_NAME = "./brodsky.csv";
     static final int TITLE_COLUMN_INDEX = 0;
     static final int AUTHOR_COLUMN_INDEX = 1;
@@ -34,8 +35,11 @@ public class DatabaseLib extends Actions {
         SwingUtilities.invokeLater(this::initializeGUI);
     }
 
+    // Shut down the whole program and saves all data while closing
     @Override
     public void windowClosing(WindowEvent e) {
+
+        System.out.println("closing");
         SaveData.save();
         System.exit(0);
     }
@@ -45,6 +49,10 @@ public class DatabaseLib extends Actions {
         jf.setPreferredSize(new Dimension(1050, 650));
         mainPanel = new JPanel(new BorderLayout());
         tablePanel = new JPanel(new BorderLayout());
+
+        // It will track the changes in the window
+        // DONT DELETE THIS
+        jf.addWindowListener(this);
 
         Object[][] headersAndData = getDataAndHeaders();
         if (headersAndData != null) {
@@ -89,6 +97,9 @@ public class DatabaseLib extends Actions {
         searchButton.setBackground(buttonHeaderColor);
         searchButton.setForeground(Color.BLACK);
         JPanel searchPanel = new JPanel();
+        
+        // searchPanel.add(new JLabel("Search: "));
+
         searchPanel.setBackground(Color.WHITE);
         searchPanel.add(searchField);
         searchPanel.add(searchButton);

@@ -1,8 +1,53 @@
-// package database;
+package database_system;
 
-// public abstract class AbstractDataBase<T> implements DataBaseInterface<T> {
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 
-// public default void add(T obj) {
+import database_system.exceptions.IllegalMemberException;
 
-// }
-// }
+public abstract class AbstractDataBase<T>{
+
+    protected  ArrayList<T> list = new ArrayList<T>();
+    protected  ArrayList<String> nameList = new ArrayList<>();
+
+
+    public AbstractDataBase(){
+
+    }
+
+
+
+    public void add(T obj) throws IllegalMemberException {
+
+        list.add(obj);
+    }
+
+    // This method removes user from user_map by its username
+    public void remove(String name) {
+        if (contains(name)) {
+
+            list.remove(list.get(nameList.indexOf(name)));
+        }
+
+        System.out.println("There is no such object in the list");
+    }
+
+    public boolean contains(String name) {
+        return nameList.contains(name) ? true : false;
+    }
+
+    // This method will return user
+    public T getMember(String name) {
+
+        return list.get(nameList.indexOf(name));
+    }
+
+    public int size() {
+        return list.size();
+    }
+}

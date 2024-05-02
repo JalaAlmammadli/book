@@ -9,7 +9,7 @@ public class RunApp extends Thread {
     public synchronized void run() {
 
         try {
-            RegisterFrame.Login();
+            LoginFrame.Login();
         } catch (Exception e) {
             System.out.println(e);
         }

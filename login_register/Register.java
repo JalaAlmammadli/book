@@ -46,10 +46,10 @@ public class Register {
             throw new IllegalUsernameException(username + " is reserved");
         }
 
-        if (!UserDataBase.contains(username)) {
+        if (!UserDataBase.MainUserList.contains(username)) {
             User u = User.createUser(username, password2);
             if (u != null) {
-                UserDataBase.add(u);
+                UserDataBase.MainUserList.add(u);
                 System.out.println("Registered");
                 return true;
             }

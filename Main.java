@@ -8,32 +8,25 @@
  */
 
  import database_system.BookDataBase;
- import database_system.UserDataBase;
+ import database_system.ReviewDataBase;
  import database_system.exceptions.IllegalMemberException;
- import entities.book.Book;
+import entities.book.Book;
  import entities.user_and_admin.User;
- import login_register.Login;
- import login_register.Register;
- import gui_log_reg.*;
- import gui_library.DatabaseLib;
- 
- import java.io.BufferedReader;
- import java.io.FileInputStream;
- import java.io.FileReader;
- import java.io.IOException;
- 
- import javax.swing.JCheckBoxMenuItem;
- 
- import app_runner.ReadData;
- import app_runner.RunApp;
- import app_runner.SaveData;
+import program_settings.SettingsControl;
  
  class Main {
  
      public static void main(String[] args) {
          // UserDataBase.loadData();
  
-         // User user1 = User.createUser("user12345", "1234567890");
+
+         SettingsControl.read();
+         User user1 = User.createUser("user12345", "1234567890");
+         Book book1 = Book.createBook("book1", "author");
+
+         ReviewDataBase.addReview(user1, book1, "Hello World!");
+
+         SettingsControl.write();
          // try {
          // UserDataBase.add(user1);
          // } catch (IllegalMemberException e) {
@@ -42,17 +35,19 @@
          // System.out.println(UserDataBase.contains(user1.getUsername()));
          // UserDataBase.writeData();
  
-         ReadData.read();
+        //  ReadData.read();
  
-         RunApp app = new RunApp();
-         app.setPriority(10);
-         app.start();
+        //  RunApp app = new RunApp();
+        //  app.setPriority(10);
+        //  app.start();
  
-         try {
-             app.join();
-         } catch (InterruptedException | IllegalMonitorStateException e) {
-             System.out.println(e);
-         }
+        //  try {
+        //      app.join();
+        //  } catch (InterruptedException | IllegalMonitorStateException e) {
+        //      System.out.println(e);
+        //  }
+
+        
  
          // try (BufferedReader br = new BufferedReader(new FileReader("./brodsky.csv")))
          // {
@@ -80,11 +75,11 @@
                  } else if (titles[i].startsWith(" ")) {
                      titles[i] = titles[i].replaceFirst(" ", "");
                  }
-                 BookDataBase.add(Book.createBook(titles[i], row[1]));
+                 BookDataBase.MainBookList.add(Book.createBook(titles[i], row[1]));
              }
          } else if (line.charAt(line.length() - 1) == '\"') {
              String row[] = line.split(",\"", -1);
-             BookDataBase.add(Book.createBook(row[0], row[1].replaceAll("\"", "")));
+             BookDataBase.MainBookList.add(Book.createBook(row[0], row[1].replaceAll("\"", "")));
  
          } else {
              String row[] = line.split(",", -1);
@@ -94,7 +89,7 @@
              } else if (row[1].equals("")) {
                  row[1] = "Unknown";
              }
-             BookDataBase.add(Book.createBook(row[0], row[1]));
+             BookDataBase.MainBookList.add(Book.createBook(row[0], row[1]));
          }
      }
  }

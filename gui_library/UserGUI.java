@@ -20,7 +20,7 @@ public class UserGUI extends DatabaseLib {
     @Override
     public void initializeTable(Object[][] headersAndData) {
         column = (String[]) headersAndData[0];
-        data = new Object[headersAndData.length - 1][column.length];
+        data = new Object[headersAndData.length][column.length];
         for (int i = 1; i < headersAndData.length; i++) {
             data[i - 1] = headersAndData[i];
         }

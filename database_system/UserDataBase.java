@@ -8,52 +8,41 @@
 
 package database_system;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.TreeMap;
-
 import database_system.exceptions.IllegalMemberException;
 import entities.user_and_admin.User;
-import entities.user_and_admin.UserDataFile;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import program_settings.Parametres;
-
 // This class is used for holding User oblects
-public class UserDataBase {
+public class UserDataBase extends AbstractDataBase<User>{
 
-    // All users will be contained in this HashMap, and its key will be user's
-    // username and User object itself
-    // *(For now value just conatins user's password)
-    private static ArrayList<User> userList = new ArrayList<>();
-    private static ArrayList<String> usernameList = new ArrayList<>();
+    public static UserDataBase MainUserList = new UserDataBase();
 
-    // There will be only one exemplare of UserDataBase class
+    public UserDataBase(){
+        super();
+    }
 
-    public static void loadData() {
+    public void loadData() {
 
         try (BufferedReader br = new BufferedReader(new FileReader("./data/user_list.csv"))) {
 
             String line;
             while ((line = br.readLine()) != null) {
                 String data[] = line.split(";");
-                userList.add(User.readUser(data[0], Integer.parseInt(data[1])));
+                super.list.add(User.readUser(data[0], Integer.parseInt(data[1])));
 
-                usernameList.add(data[0]);
+                super.nameList.add(data[0]);
             }
         } catch (IOException e) {
             System.out.println(e);
         }
     }
 
-    public static void writeData() {
+    public void writeData() {
 
         new File("./data/user_list.csv").delete();
 
@@ -63,8 +52,8 @@ public class UserDataBase {
 
             BufferedWriter bw = new BufferedWriter(new FileWriter("./data/user_list.csv"));
 
-            for (int i = 0; i < usernameList.size(); i++) {
-                User u = userList.get(i);
+            for (int i = 0; i < super.nameList.size(); i++) {
+                User u = super.list.get(i);
                 bw.write(u.getUsername() + ";" + u.getPassword());
                 bw.newLine();
             }
@@ -85,24 +74,14 @@ public class UserDataBase {
     // }
     // }
 
-    public static void add(User user) throws IllegalMemberException {
+    public void add(User user) throws IllegalMemberException {
 
         if (contains(user.getUsername())) {
             throw new IllegalMemberException("User with username " + user.getUsername() + " already exists");
         }
 
-        userList.add(user);
-        usernameList.add(user.getUsername());
-    }
-
-    // This method removes user from user_map by its username
-    public static void remove(String username) {
-        if (contains(username)) {
-
-            userList.remove(userList.get(usernameList.indexOf(username)));
-        }
-
-        System.out.println("There is no such user in the map");
+        super.add(user);
+        super.nameList.add(user.getUsername());
     }
 
     // public User search(String username) {
@@ -133,32 +112,16 @@ public class UserDataBase {
      * for this username is correct. If yes user Successfully logined, else
      * it will throw WrongPasswordException.
      */
-    public static boolean checkUserForLogin(String username, String password) {
-        if (!usernameList.contains(username)) {
+    public boolean checkUserForLogin(String username, String password) {
+        if (!super.nameList.contains(username)) {
             System.out.println("There is no such user. You can register");
             return false;
         }
 
-        else if (userList.get(usernameList.indexOf(username)).getPassword() == password.hashCode()) {
+        else if (super.list.get(super.nameList.indexOf(username)).getPassword() == password.hashCode()) {
             return true;
         }
 
         return false;
-    }
-
-    // returns true if user with username "some username"
-    // exits in the user_map
-    public static boolean contains(String username) {
-        return usernameList.contains(username) ? true : false;
-    }
-
-    // This method will return user
-    public static User getMember(String username) {
-
-        return userList.get(usernameList.indexOf(username));
-    }
-
-    public static int size() {
-        return userList.size();
     }
 }
