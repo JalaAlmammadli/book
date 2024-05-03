@@ -64,4 +64,11 @@ public class BookDataBase extends AbstractDataBase<Book>{
         super.add(book);
         super.nameList.add(book.getTitle());
     }
+
+    public String[] returnData(int index){
+
+        Book book = MainBookList.getMemberByIndex(index);
+        String data[] = {book.getTitle(), book.getAuthor()};
+        return data;
+    }
 }
