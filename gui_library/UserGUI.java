@@ -9,8 +9,11 @@ import java.awt.event.MouseEvent;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -25,6 +28,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableRowSorter;
+
+import gui_log_reg.LoginFrame;
 
 public class UserGUI extends DatabaseLib {
 
@@ -214,7 +219,23 @@ public class UserGUI extends DatabaseLib {
         personalDatabaseButton.addActionListener(e -> {
             showPersonalDatabasePanel();
         });
-
+    
+        JButton logoutButton = new JButton("Logout");
+        logoutButton.setMaximumSize(new Dimension(buttonWidth, buttonHeight)); // Set maximum size for logout button
+        logoutButton.setBackground(buttonColor);
+        logoutButton.setForeground(Color.BLACK);
+    
+        // Action listener for logout button
+        logoutButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Handle logout functionality
+                jf.dispose(); // Close the current window
+                LoginFrame.Login(); // Open the login frame again
+            }
+        });
+    
+        leftPanel.add(logoutButton); // Add logout button below the table button
         Border border = BorderFactory.createLineBorder(Color.BLACK);
         leftPanel.setBorder(BorderFactory.createCompoundBorder(border, BorderFactory.createEmptyBorder(1, 1, 1, 1)));
 

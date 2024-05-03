@@ -7,7 +7,9 @@
  * 
  */
 
- import database_system.BookDataBase;
+ import app_runner.ReadData;
+import app_runner.RunApp;
+import database_system.BookDataBase;
  import database_system.ReviewDataBase;
  import database_system.exceptions.IllegalMemberException;
 import entities.book.Book;
@@ -20,13 +22,13 @@ import program_settings.SettingsControl;
          // UserDataBase.loadData();
  
 
-         SettingsControl.read();
-         User user1 = User.createUser("user12345", "1234567890");
-         Book book1 = Book.createBook("book1", "author");
+        //  SettingsControl.read();
+        //  User user1 = User.createUser("user12345", "1234567890");
+        //  Book book1 = Book.createBook("book1", "author");
 
-         ReviewDataBase.addReview(user1, book1, "Hello World!");
+        //  ReviewDataBase.addReview(user1, book1, "Hello World!");
 
-         SettingsControl.write();
+        //  SettingsControl.write();
          // try {
          // UserDataBase.add(user1);
          // } catch (IllegalMemberException e) {
@@ -35,17 +37,17 @@ import program_settings.SettingsControl;
          // System.out.println(UserDataBase.contains(user1.getUsername()));
          // UserDataBase.writeData();
  
-        //  ReadData.read();
+         ReadData.read();
  
-        //  RunApp app = new RunApp();
-        //  app.setPriority(10);
-        //  app.start();
+         RunApp app = new RunApp();
+         app.setPriority(10);
+         app.start();
  
-        //  try {
-        //      app.join();
-        //  } catch (InterruptedException | IllegalMonitorStateException e) {
-        //      System.out.println(e);
-        //  }
+         try {
+             app.join();
+         } catch (InterruptedException | IllegalMonitorStateException e) {
+             System.out.println(e);
+         }
 
         
  

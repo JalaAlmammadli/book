@@ -2,11 +2,17 @@ package gui_library;
 
 import app_runner.*;
 import gui_elements.Actions;
+import gui_log_reg.LoginFrame;
+
 import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.*;
 import java.util.ArrayList;
+import java.awt.event.ActionListener;
+
+import java.awt.event.ActionEvent;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
@@ -249,33 +255,49 @@ public class DatabaseLib extends Actions implements WindowListener {
 
     public void addLeftPanels() {
         JPanel leftPanel = new JPanel();
-        leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
-
+        leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS)); // Use vertical layout
+    
         JButton tableButton = new JButton("General Database");
-
+    
         int buttonWidth = 250;
         int buttonHeight = 30;
-
+    
         tableButton.setMaximumSize(new Dimension(buttonWidth, buttonHeight));
-
+    
         leftPanel.add(tableButton);
-
+    
         Color buttonColor = new Color(150, 182, 197);
         tableButton.setBackground(buttonColor);
-
-        Color textColor = Color.BLACK;
-        tableButton.setForeground(textColor);
-
+        tableButton.setForeground(Color.BLACK);
+    
         tableButton.addActionListener(e -> {
             mainPanel.add(tablePanel, BorderLayout.CENTER);
             mainPanel.revalidate();
             mainPanel.repaint();
         });
-
+        
+        JButton logoutButton = new JButton("Log out");
+        logoutButton.setMaximumSize(new Dimension(buttonWidth, buttonHeight)); // Set maximum size for logout button
+        logoutButton.setBackground(buttonColor);
+        logoutButton.setForeground(Color.BLACK);
+    
+        // Action listener for logout button
+        logoutButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Handle logout functionality
+                jf.dispose(); // Close the current window
+                LoginFrame.Login(); // Open the login frame again
+            }
+        });
+    
+        leftPanel.add(logoutButton); // Add logout button below the table button
+    
         Border border = BorderFactory.createLineBorder(Color.BLACK);
         leftPanel.setBorder(BorderFactory.createCompoundBorder(border, BorderFactory.createEmptyBorder(1, 1, 1, 1)));
         jf.add(leftPanel, BorderLayout.WEST);
     }
+    
 
     public static void main(String[] args) {
         new DatabaseLib();
