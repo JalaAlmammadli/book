@@ -112,6 +112,7 @@ public class LoginFrame {
                         @Override
                         public void mouseClicked(MouseEvent e) {
                                 RegisterFrame.Register(); // Open the registration form
+                                jframe.dispose();
                         }
                 });
                 // **************************************************************************

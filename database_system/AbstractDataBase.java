@@ -47,6 +47,11 @@ public abstract class AbstractDataBase<T>{
         return list.get(nameList.indexOf(name));
     }
 
+    public T getMemberByIndex(int index){
+        
+        return list.get(index);
+    }
+
     public int size() {
         return list.size();
     }

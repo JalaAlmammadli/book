@@ -1,6 +1,7 @@
 package gui_library;
 
 import app_runner.*;
+import database_system.BookDataBase;
 import gui_elements.Actions;
 import java.awt.*;
 import java.awt.event.WindowEvent;
@@ -171,6 +172,18 @@ public class DatabaseLib extends Actions implements  WindowListener{
         jt.getTableHeader().setResizingAllowed(false);
     }
 
+    // private Object[][] getDataAndHeaders1() {
+    //     try (BufferedReader br = new BufferedReader(new FileReader(FILE_NAME))) {
+    //         String header = br.readLine();
+    //         String[] headers = readHeaders(header);
+    //         ArrayList<Object[]> dataRows = readDataRows(br);
+    //         return assembleResult(headers, dataRows);
+    //     } catch (IOException e) {
+    //         JOptionPane.showMessageDialog(null, "Error reading data from file.", "Error", JOptionPane.ERROR_MESSAGE);
+    //         e.printStackTrace();
+    //         return null;
+    //     }
+    // }
     private Object[][] getDataAndHeaders() {
         try (BufferedReader br = new BufferedReader(new FileReader(FILE_NAME))) {
             String header = br.readLine();
@@ -199,10 +212,9 @@ public class DatabaseLib extends Actions implements  WindowListener{
 
     private ArrayList<Object[]> readDataRows(BufferedReader br) throws IOException {
         ArrayList<Object[]> dataRows = new ArrayList<>();
-        String str;
-        while ((str = br.readLine()) != null) {
-            add(dataRows, str);
-        }
+
+        addAllBooks(dataRows);
+
         return dataRows;
     }
 
@@ -219,37 +231,16 @@ public class DatabaseLib extends Actions implements  WindowListener{
         }
     }
 
-    private void add(ArrayList<Object[]> dataRows, String line) {
-        if (line.charAt(0) == '\"') {
-            String row[] = line.split("\",", -1);
-            String[] titles = row[0].replaceAll("\"", "").split(",", -1);
-
-            for (int i = 0; i < titles.length; i++) {
-                if (titles[i].equals("")) {
-                    titles[i] = "Unknown";
-                } else if (titles[i].startsWith(" ")) {
-                    titles[i] = titles[i].replaceFirst(" ", "");
-                }
-                addToList(dataRows, titles[i], row[1]);
-            }
-        } else if (line.charAt(line.length() - 1) == '\"') {
-            String row[] = line.split(",\"", -1);
-            addToList(dataRows, row[0], row[1].replaceAll("\"", ""));
-
-        } else {
-            String row[] = line.split(",", -1);
-
-            if (row[0].equals("")) {
-                row[0] = "Unknown";
-            } else if (row[1].equals("")) {
-                row[1] = "Unknown";
-            }
-            addToList(dataRows, row[0], row[1]);
+    private void addAllBooks(ArrayList<Object[]> dataRows) {
+        
+        for(int i = 0; i < BookDataBase.MainBookList.size(); i++){
+            
+            addToList(dataRows, BookDataBase.MainBookList.returnData(i));
         }
     }
 
-    private void addToList(ArrayList<Object[]> dataRows, String book, String author) {
-        Object[] dataRow = new Object[] { book, author, "No Rating", "No Review" };
+    private void addToList(ArrayList<Object[]> dataRows, String[] data) {
+        Object[] dataRow = new Object[] { data[0], data[1], "No Rating", "No Review" };
         dataRows.add(dataRow);
     }
 
