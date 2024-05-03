@@ -47,7 +47,7 @@ public class DatabaseLib extends Actions implements  WindowListener{
 
     private void initializeGUI() {
         jf = new JFrame("Book Database");
-        jf.setPreferredSize(new Dimension(1000, 650));
+        jf.setPreferredSize(new Dimension(1050, 650));
         mainPanel = new JPanel(new BorderLayout());
         tablePanel = new JPanel(new BorderLayout());
 
@@ -197,7 +197,7 @@ public class DatabaseLib extends Actions implements  WindowListener{
         }
     }
 
-    private String[] readHeaders(String header) {
+    protected String[] readHeaders(String header) {
         if (header != null) {
             String[] headers = header.split(",", -1);
             String[] finalHeaders = new String[headers.length + 2];

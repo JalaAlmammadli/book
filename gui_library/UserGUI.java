@@ -39,6 +39,21 @@ public class UserGUI extends DatabaseLib {
     }
 
     @Override
+    protected String[] readHeaders(String header) {
+        if (header != null) {
+            String[] headers = header.split(",", -1);
+            String[] finalHeaders = new String[headers.length + 3];
+            finalHeaders[0] = "<html><b>Title</b></html>";
+            finalHeaders[1] = "<html><b>Author</b></html>";
+            finalHeaders[headers.length] = "<html><b>Rating</b></html>";
+            finalHeaders[headers.length + 1] = "<html><b>Review</b></html>";
+            finalHeaders[headers.length + 2] = "<html><b>Add Book</b></html>";
+            return finalHeaders;
+        }
+        return null;
+    }
+
+    @Override
     public void addLeftPanels() {
         JPanel leftPanel = new JPanel();
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
