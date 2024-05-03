@@ -13,7 +13,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -95,11 +94,10 @@ public class UserGUI extends DatabaseLib {
             String buttonText = (value != null && value.equals("Added")) ? "Added" : "Add";
             setText(buttonText);
 
-            // Set background color based on the value
             if (value != null && value.equals("Added")) {
-                setBackground(new Color(0xB0A695)); // Change to whatever color you prefer
+                setBackground(new Color(0xB0A695)); 
             } else {
-                setBackground(new Color(0xE5E1DA)); // Change to whatever color you prefer
+                setBackground(new Color(0xE5E1DA)); 
             }
 
             return this;
@@ -219,23 +217,21 @@ public class UserGUI extends DatabaseLib {
         personalDatabaseButton.addActionListener(e -> {
             showPersonalDatabasePanel();
         });
-    
+
         JButton logoutButton = new JButton("Logout");
-        logoutButton.setMaximumSize(new Dimension(buttonWidth, buttonHeight)); // Set maximum size for logout button
+        logoutButton.setMaximumSize(new Dimension(buttonWidth, buttonHeight));
         logoutButton.setBackground(buttonColor);
         logoutButton.setForeground(Color.BLACK);
-    
-        // Action listener for logout button
+
         logoutButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Handle logout functionality
-                jf.dispose(); // Close the current window
-                LoginFrame.Login(); // Open the login frame again
+                jf.dispose(); 
+                LoginFrame.Login(); 
             }
         });
-    
-        leftPanel.add(logoutButton); // Add logout button below the table button
+
+        leftPanel.add(logoutButton); 
         Border border = BorderFactory.createLineBorder(Color.BLACK);
         leftPanel.setBorder(BorderFactory.createCompoundBorder(border, BorderFactory.createEmptyBorder(1, 1, 1, 1)));
 
