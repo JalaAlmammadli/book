@@ -1,5 +1,10 @@
+package database;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+
+import database.Book;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Date;
