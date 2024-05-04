@@ -53,6 +53,7 @@ public class AdminGUI extends DatabaseLib {
         });
     }
 
+
     // Method to initialize the table
     public void initializeTable(Object[][] headersAndData) {
         column = Arrays.copyOf((String[]) headersAndData[0], ((String[]) headersAndData[0]).length + 1);
@@ -85,6 +86,14 @@ public class AdminGUI extends DatabaseLib {
         jt.addMouseListener(new MouseAdapter() {
 
         });
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(addBookButton);
+        buttonPanel.add(deleteBookButton);
+        buttonPanel.add(removeReviewButton);
+        buttonPanel.add(deleteUserButton);
+
+        mainPanel.add(buttonPanel, BorderLayout.SOUTH);
     }
 
     public class ButtonRenderer extends JButton implements TableCellRenderer {
