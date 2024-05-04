@@ -13,10 +13,13 @@ import entities.user_and_admin.exceptions.IllegalPasswordException;
 import entities.user_and_admin.exceptions.IllegalUsernameException;
 import gui_elements.*;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import lang_change.Lang;
@@ -91,9 +94,26 @@ public class RegisterFrame extends LoginFrame {
         // *********************************************************************
 
         // Register button******************************************************
-        registerButton = new Button(100, 170, 100, 25, Lang.registerTitle, registrationPanel);
+        registerButton = new Button(100, 170, 140, 25, Lang.registerTitle, registrationPanel);
+        registerButton.getObject().setBackground(new Color(0xF1F0E8));
+        registerButton.getObject().setBorder(BorderFactory.createLineBorder(new Color(0x0C0C0C), 1));
+
+        registerButton.getObject().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseExited(MouseEvent e) {
+                  registerButton.getObject().setBorder(BorderFactory.createLineBorder(new Color(0x0C0C0C), 1));
+             }
+
+            @Override
+             public void mouseEntered(MouseEvent e){
+                registerButton.getObject().setBorder(BorderFactory.createLineBorder(new Color(0x0C0C0C), 2));
+
+             }
+    });
+
         registerButton.getObject().addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                
                 String newUsername = newUsernameField.getObject().getText();
                 String newPassword = new String(newPasswordField.getObject().getPassword());
                 String newPassword2 = new String(newPasswordField2.getObject().getPassword());
@@ -118,7 +138,8 @@ public class RegisterFrame extends LoginFrame {
 
         // Login link
         loginLink = new Label(170, 210, 100, 25, "<html><u>" + Lang.loginHere + "</u></html>", registrationPanel);
-        loginLink.getObject().setForeground(Color.BLUE);
+        loginLink.getObject().setForeground(Color.BLACK);
+        loginLink.getObject().setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         loginLink.getObject().addMouseListener(new MouseAdapter() {
             @Override

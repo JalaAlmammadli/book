@@ -20,6 +20,7 @@ import javax.swing.SwingUtilities;
 
 import database_system.exceptions.IllegalMemberException;
 
+import javax.swing.BorderFactory;
 import javax.swing.JCheckBoxMenuItem;
 
 // Project classes
@@ -106,8 +107,8 @@ public class LoginFrame {
                 /*********************************************************************** */
 
                 // Register link***********************************************************
-                registerLink = new Label(190, 165, 200, 25, "<html><u>" + Lang.registerHere +"</u></html>", jpanel);
-                registerLink.getObject().setForeground(Color.blue);
+                registerLink = new Label(190, 165, 200, 25, "<html><u>" + Lang.registerHere + "</u></html>", jpanel);
+                registerLink.getObject().setForeground(Color.black);
                 registerLink.getObject().setCursor(new Cursor(Cursor.HAND_CURSOR));
                 registerLink.getObject().addMouseListener(new MouseAdapter() {
                         @Override
@@ -120,6 +121,20 @@ public class LoginFrame {
 
                 /* Login button************************************************************** */
                 loginButton = new Button(130, 130, 100, 25, Lang.loginTitle, jpanel);
+                loginButton.getObject().setBackground(new Color(0xF1F0E8));
+                loginButton.getObject().setBorder(BorderFactory.createLineBorder(new Color(0x0C0C0C), 1));
+        
+                loginButton.getObject().addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseExited(MouseEvent e) {
+                        loginButton.getObject().setBorder(BorderFactory.createLineBorder(new Color(0x0C0C0C), 1));
+                 }
+
+                @Override
+                public void mouseEntered(MouseEvent e){
+                        loginButton.getObject().setBorder(BorderFactory.createLineBorder(new Color(0x0C0C0C), 2));
+                  }
+           });                
                 loginButton.getObject().addActionListener(new ActionListener() {
                         public void actionPerformed(ActionEvent e) {
                                 String user = userText.getObject().getText();
@@ -129,11 +144,11 @@ public class LoginFrame {
                                         if (Login.tryLogin(user, password, stayLoginedBox.getState())) {
                                                 jframe.dispose();
 
-                                              if(Parametres.getUserStatus() == Status.ADMIN){
-                                                new AdminGUI();
-                                              }else{
-                                                new UserGUI();
-                                        }
+                                                if (Parametres.getUserStatus() == Status.ADMIN) {
+                                                        new AdminGUI();
+                                                } else {
+                                                        new UserGUI();
+                                                }
                                         }
                                 } catch (WrongUserException | IllegalMemberException ex) {
                                         infoForUser.getObject().setText(ex.getMessage());

@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
+import lang_change.Lang;
 
 public class AddBook extends JFrame{
 
@@ -20,7 +21,7 @@ public class AddBook extends JFrame{
     JFrame frame;
 
     public AddBook(){
-        frame = new JFrame("Add Book");
+        frame = new JFrame(Lang.addBook);
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.setVisible(true);
         frame.setBounds(500, 250, 350, 200);
@@ -32,8 +33,8 @@ public class AddBook extends JFrame{
         frame.add(panel);
 
         // Title and Author labels
-        new Label(10, 30, 50, 25, "Title:", panel);
-        new Label(10, 70, 50, 25, "Author:", panel);
+        new Label(10, 30, 50, 25, Lang.bookTitle, panel);
+        new Label(10, 70, 50, 25, Lang.bookAuthor, panel);
 
         //Title text field
         field1 = new TextField(70, 30, 200, 25, 25, panel);
@@ -43,7 +44,7 @@ public class AddBook extends JFrame{
 
 
         //Confirm button
-        button = new Button(120, 120, 100, 25, "Confirm", panel);
+        button = new Button(120, 120, 100, 25, Lang.confirm, panel);
         button.getObject().addActionListener((ActionEvent e) -> {
 
             try {

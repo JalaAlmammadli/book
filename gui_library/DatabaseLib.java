@@ -173,19 +173,7 @@ public class DatabaseLib extends Actions implements WindowListener {
         jt.getTableHeader().setResizingAllowed(false);
     }
 
-    // private Object[][] getDataAndHeaders1() {
-    //     try (BufferedReader br = new BufferedReader(new FileReader(FILE_NAME))) {
-    //         String header = br.readLine();
-    //         String[] headers = readHeaders(header);
-    //         ArrayList<Object[]> dataRows = readDataRows(br);
-    //         return assembleResult(headers, dataRows);
-    //     } catch (IOException e) {
-    //         JOptionPane.showMessageDialog(null, "Error reading data from file.", "Error", JOptionPane.ERROR_MESSAGE);
-    //         e.printStackTrace();
-    //         return null;
-    //     }
-    // }
-    private Object[][] getDataAndHeaders() {
+    protected Object[][] getDataAndHeaders() {
         try (BufferedReader br = new BufferedReader(new FileReader(FILE_NAME))) {
             String header = br.readLine();
             String[] headers = readHeaders(header);
@@ -233,9 +221,9 @@ public class DatabaseLib extends Actions implements WindowListener {
 
     // Adds all books from BookDatabase
     private void addAllBooks(ArrayList<Object[]> dataRows) {
-        
-        for(int i = 0; i < BookDataBase.MainBookList.size(); i++){
-            
+
+        for (int i = 0; i < BookDataBase.MainBookList.size(); i++) {
+
             addToList(dataRows, BookDataBase.MainBookList.returnData(i));
         }
     }
@@ -257,15 +245,15 @@ public class DatabaseLib extends Actions implements WindowListener {
     
         int buttonWidth = 250;
         int buttonHeight = 30;
-    
+
         tableButton.setMaximumSize(new Dimension(buttonWidth, buttonHeight));
-    
+
         leftPanel.add(tableButton);
-    
+
         Color buttonColor = new Color(150, 182, 197);
         tableButton.setBackground(buttonColor);
         tableButton.setForeground(Color.BLACK);
-    
+
         tableButton.addActionListener(e -> {
             mainPanel.add(tablePanel, BorderLayout.CENTER);
             mainPanel.revalidate();
@@ -276,24 +264,22 @@ public class DatabaseLib extends Actions implements WindowListener {
         logoutButton.setMaximumSize(new Dimension(buttonWidth, buttonHeight)); // Set maximum size for logout button
         logoutButton.setBackground(buttonColor);
         logoutButton.setForeground(Color.BLACK);
-    
+
         // Action listener for logout button
         logoutButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Handle logout functionality
-                jf.dispose(); // Close the current window
-                LoginFrame.Login(); // Open the login frame again
+                jf.dispose(); 
+                LoginFrame.Login();
             }
         });
-    
-        leftPanel.add(logoutButton); // Add logout button below the table button
-    
+
+        leftPanel.add(logoutButton); 
+
         Border border = BorderFactory.createLineBorder(Color.BLACK);
         leftPanel.setBorder(BorderFactory.createCompoundBorder(border, BorderFactory.createEmptyBorder(1, 1, 1, 1)));
         jf.add(leftPanel, BorderLayout.WEST);
     }
-    
 
     public static void main(String[] args) {
         new DatabaseLib();
