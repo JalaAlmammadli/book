@@ -2,7 +2,6 @@ package gui_library;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -24,7 +23,6 @@ import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableRowSorter;
 
@@ -37,6 +35,10 @@ public class UserGUI extends DatabaseLib {
     private JTable personalDatabaseTable;
     private JTextField personalDatabaseSearchField;
     private Set<Object> addedBooks = new HashSet<>();
+
+    public static void main(String[] args) {
+        new UserGUI();
+    }
 
     @Override
     public void initializeTable(Object[][] headersAndData) {
@@ -82,26 +84,56 @@ public class UserGUI extends DatabaseLib {
 
     }
 
-    class ButtonRenderer extends JButton implements TableCellRenderer {
+    @Override
+    public void addLeftPanels() {
+        JPanel leftPanel = new JPanel();
+        leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
 
-        public ButtonRenderer() {
-            setOpaque(true);
-        }
+        JButton tableButton = new JButton("General Database");
+        JButton personalDatabaseButton = new JButton("Personal Database");
 
-        @Override
-        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
-                int row, int column) {
-            String buttonText = (value != null && value.equals("Added")) ? "Added" : "Add";
-            setText(buttonText);
+        int buttonWidth = 250;
+        int buttonHeight = 30;
+        tableButton.setMaximumSize(new Dimension(buttonWidth, buttonHeight));
+        personalDatabaseButton.setMaximumSize(new Dimension(buttonWidth, buttonHeight));
 
-            if (value != null && value.equals("Added")) {
-                setBackground(new Color(0xB0A695)); 
-            } else {
-                setBackground(new Color(0xE5E1DA)); 
+        leftPanel.add(tableButton);
+        leftPanel.add(personalDatabaseButton);
+
+        Color buttonColor = new Color(150, 182, 197);
+        tableButton.setBackground(buttonColor);
+        personalDatabaseButton.setBackground(buttonColor);
+
+        Color textColor = Color.BLACK;
+        tableButton.setForeground(textColor);
+        personalDatabaseButton.setForeground(textColor);
+
+        tableButton.addActionListener(e -> {
+            showTablePanel();
+        });
+
+        personalDatabaseButton.addActionListener(e -> {
+            showPersonalDatabasePanel();
+        });
+
+        JButton logoutButton = new JButton("Logout");
+        logoutButton.setMaximumSize(new Dimension(buttonWidth, buttonHeight));
+        logoutButton.setBackground(buttonColor);
+        logoutButton.setForeground(Color.BLACK);
+
+        logoutButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                jf.dispose();
+                LoginFrame.Login();
             }
+        });
 
-            return this;
-        }
+        leftPanel.add(logoutButton);
+        Border border = BorderFactory.createLineBorder(Color.BLACK);
+        leftPanel.setBorder(BorderFactory.createCompoundBorder(border, BorderFactory.createEmptyBorder(1, 1, 1, 1)));
+
+        jf.add(leftPanel, BorderLayout.WEST);
     }
 
     private void addToPersonalDatabase(int row) {
@@ -186,79 +218,6 @@ public class UserGUI extends DatabaseLib {
         personalDatabaseTableModel.addRow(rowData);
     }
 
-    @Override
-    public void addLeftPanels() {
-        JPanel leftPanel = new JPanel();
-        leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
-
-        JButton tableButton = new JButton("General Database");
-        JButton personalDatabaseButton = new JButton("Personal Database");
-
-        int buttonWidth = 250;
-        int buttonHeight = 30;
-        tableButton.setMaximumSize(new Dimension(buttonWidth, buttonHeight));
-        personalDatabaseButton.setMaximumSize(new Dimension(buttonWidth, buttonHeight));
-
-        leftPanel.add(tableButton);
-        leftPanel.add(personalDatabaseButton);
-
-        Color buttonColor = new Color(150, 182, 197);
-        tableButton.setBackground(buttonColor);
-        personalDatabaseButton.setBackground(buttonColor);
-
-        Color textColor = Color.BLACK;
-        tableButton.setForeground(textColor);
-        personalDatabaseButton.setForeground(textColor);
-
-        tableButton.addActionListener(e -> {
-            showTablePanel();
-        });
-
-        personalDatabaseButton.addActionListener(e -> {
-            showPersonalDatabasePanel();
-        });
-
-        JButton logoutButton = new JButton("Logout");
-        logoutButton.setMaximumSize(new Dimension(buttonWidth, buttonHeight));
-        logoutButton.setBackground(buttonColor);
-        logoutButton.setForeground(Color.BLACK);
-
-        logoutButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                jf.dispose(); 
-                LoginFrame.Login(); 
-            }
-        });
-
-        leftPanel.add(logoutButton); 
-        Border border = BorderFactory.createLineBorder(Color.BLACK);
-        leftPanel.setBorder(BorderFactory.createCompoundBorder(border, BorderFactory.createEmptyBorder(1, 1, 1, 1)));
-
-        jf.add(leftPanel, BorderLayout.WEST);
-    }
-
-    private void showTablePanel() {
-        if (personalDatabasePanel != null) {
-            mainPanel.remove(personalDatabasePanel);
-        }
-        mainPanel.add(tablePanel, BorderLayout.CENTER);
-        mainPanel.revalidate();
-        mainPanel.repaint();
-    }
-
-    private void showPersonalDatabasePanel() {
-        if (personalDatabasePanel == null) {
-            initializePersonalDatabasePanel();
-        }
-        if (tablePanel != null) {
-            mainPanel.remove(tablePanel);
-        }
-        mainPanel.add(personalDatabasePanel, BorderLayout.CENTER);
-        mainPanel.revalidate();
-        mainPanel.repaint();
-    }
-
     private void initializePersonalDatabasePanel() {
         personalDatabasePanel = new JPanel();
         personalDatabasePanel.setLayout(new BorderLayout());
@@ -304,6 +263,37 @@ public class UserGUI extends DatabaseLib {
 
         JScrollPane scrollPane = new JScrollPane(personalDatabaseTable);
         personalDatabasePanel.add(scrollPane, BorderLayout.CENTER);
+
+        personalDatabaseTable.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                int column = personalDatabaseTable.getColumnModel().getColumnIndexAtX(e.getX());
+                int row = e.getY() / personalDatabaseTable.getRowHeight();
+
+                if (column == 8) {
+                    openUserRatingWindow(row);
+                } else if (column == 9) {
+                    openUserReviewWindow(row);
+                }
+            }
+        });
+    }
+
+    private void openUserRatingWindow(int row) {
+        // Get the selected title and author from the personalDatabaseTableModel
+        String selectedTitle = personalDatabaseTableModel.getValueAt(row, 0).toString();
+        String selectedAuthor = personalDatabaseTableModel.getValueAt(row, 1).toString();
+
+        // Open the UserRatingWindow with the selected title and author
+        new UserRatingWindow(selectedTitle, selectedAuthor);
+    }
+
+    private void openUserReviewWindow(int row) {
+        // Get the selected title and author from the personalDatabaseTableModel
+        String selectedTitle = personalDatabaseTableModel.getValueAt(row, 0).toString();
+        String selectedAuthor = personalDatabaseTableModel.getValueAt(row, 1).toString();
+
+        // Open the UserReviewWindow with the selected title and author
+        new UserReviewWindow(selectedTitle, selectedAuthor);
     }
 
     private void addPersonalDatabaseSearchFunctionality() {
@@ -349,8 +339,24 @@ public class UserGUI extends DatabaseLib {
         }
     }
 
-    public static void main(String[] args) {
-        new UserGUI();
+    private void showTablePanel() {
+        if (personalDatabasePanel != null) {
+            mainPanel.remove(personalDatabasePanel);
+        }
+        mainPanel.add(tablePanel, BorderLayout.CENTER);
+        mainPanel.revalidate();
+        mainPanel.repaint();
     }
 
+    private void showPersonalDatabasePanel() {
+        if (personalDatabasePanel == null) {
+            initializePersonalDatabasePanel();
+        }
+        if (tablePanel != null) {
+            mainPanel.remove(tablePanel);
+        }
+        mainPanel.add(personalDatabasePanel, BorderLayout.CENTER);
+        mainPanel.revalidate();
+        mainPanel.repaint();
+    }
 }
