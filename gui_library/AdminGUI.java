@@ -1,15 +1,15 @@
 package gui_library;
 
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
+import gui_library.admin_crud.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.util.Arrays;
-
-import gui_library.admin_crud.*;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import lang_change.Lang;
 
 public class AdminGUI extends DatabaseLib {
     private JButton addBookButton;
@@ -21,15 +21,14 @@ public class AdminGUI extends DatabaseLib {
     public AdminGUI() {
         super();
 
-        addBookButton = new JButton("Add New Book");
-        deleteBookButton = new JButton("Delete Book");
-        removeReviewButton = new JButton("Remove Review");
-        deleteUserButton = new JButton("Delete User");
+        addBookButton = new JButton(Lang.addNewBook);
+        deleteBookButton = new JButton(Lang.deleteBook);
+        removeReviewButton = new JButton(Lang.removeReview);
+        deleteUserButton = new JButton(Lang.deleteUser);
 
         addBookButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 
-                System.out.println("Hello");
                 new AddBook();
             }
         });
@@ -57,7 +56,7 @@ public class AdminGUI extends DatabaseLib {
     // Method to initialize the table
     public void initializeTable(Object[][] headersAndData) {
         column = Arrays.copyOf((String[]) headersAndData[0], ((String[]) headersAndData[0]).length + 1);
-        column[column.length - 1] = "<html><b>Operation</b></html>";
+        column[column.length - 1] = "<html><b>" + Lang.operation + "</b></html>";
 
         data = new Object[headersAndData.length - 1][column.length];
         for (int i = 1; i < headersAndData.length; i++) {
@@ -104,7 +103,7 @@ public class AdminGUI extends DatabaseLib {
 
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-            setText("<html><b>Edit</b></html>");
+            setText("<html><b>" + Lang.editBook + "</b></html>");
             setFont(table.getFont());
             setForeground(Color.BLACK);
             setBackground(new Color(0xE5E1DA));

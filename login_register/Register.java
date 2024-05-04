@@ -11,7 +11,9 @@ package login_register;
 import database_system.UserDataBase;
 import database_system.exceptions.IllegalMemberException;
 import entities.user_and_admin.User;
-import entities.user_and_admin.exceptions.*;;
+import entities.user_and_admin.exceptions.*;
+import lang_change.Lang;
+;
 
 public class Register {
 
@@ -39,11 +41,11 @@ public class Register {
             throws IllegalPasswordException, IllegalUsernameException, IllegalMemberException {
 
         if (!password.equals(password2)) {
-            throw new IllegalPasswordException("Passwords don't match");
+            throw new IllegalPasswordException(Lang.passwordsUnmatch);
         }
 
         if (username.toLowerCase().equals("admin")) {
-            throw new IllegalUsernameException(username + " is reserved");
+            throw new IllegalUsernameException(Lang.adminIsReserved);
         }
 
         if (!UserDataBase.MainUserList.contains(username)) {
@@ -56,6 +58,6 @@ public class Register {
             return false;
         }
 
-        throw new IllegalUsernameException("Account already exists");
+        throw new IllegalUsernameException(Lang.existingUsername);
     }
 }

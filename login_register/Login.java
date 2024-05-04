@@ -11,6 +11,7 @@ package login_register;
 import database_system.UserDataBase;
 import database_system.exceptions.IllegalMemberException;
 import entities.user_and_admin.Admin;
+import lang_change.Lang;
 import login_register.login_exceptions.WrongUserException;
 import program_settings.Parametres;
 import program_settings.Status;
@@ -71,7 +72,7 @@ public class Login {
             return true;
 
         } else {
-            throw new WrongUserException("Wrong username or password");
+            throw new WrongUserException(Lang.wrongUsernameOrPassword);
         }
     }
 }

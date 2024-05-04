@@ -17,19 +17,43 @@ Yanlış istifadəçi adi və ya şifrə
 Kitab məlumat bazasi
 Kitab məlumat bazasi - Admin
 
+Əsas məlumat bazası
 Ad
 Müəllif
-Reyting
+Reytinq
 Rəylər
+Rəy yoxdur
+Reytinq yoxdur
 
+Şəxsi məlumat bazasi
 Status
+Sərf olunmuş vaxt
 Başlama vaxtı
 Bitmə vaxtı
+İstifadəçi Rəyi
+İstifadəçi Reytinqi
+Başlanılmayıb
+Kitab əlavə olunub
 
 Əlavə et
+Əlavə olunub
 Sil
+Kitab əlavə et
+Kitab əlavə olunub:
+Rəy əlavə et
+Reytinq əlavə et
+Axtar
 
-Kİtab əlavə et
-Kitab sil
+Dəyişdir
+Yeni kİtab əlavə et
+Kitabı sil
 İstifadəçini sil
 Rəyi sil
+admin artıq tutulub
+Operasiya
+
+Fayldan yükləmək uğursuz oldu
+Fayldan oxumaq uğursuz oldu
+Səhf
+
+Cıxış

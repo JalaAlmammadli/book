@@ -15,21 +15,45 @@ Password must min 8 and max 32 symbols
 Username must be min 2 and max 32 symbols
 
 Book Database
-Book Database - Admin
+Book Database Admin
 
+General Database
 Title
 Author
 Rating
 Reviews
+No Reviews
+No Ratings
 
+Personal Database
 Status
-Start date
-End date
+Time Spent
+Start Date
+End Date
+User Review
+User Rating
+Not Started
+Book already added.
 
 Add
+Added
 Remove
-
 Add Book
-Remove Book
+Added Book:
+Add Review
+Add Rating
+Search
+
+Edit
+Add New Book
+Delete Book
 Delete User
-Delete Review
+Remove Review
+admin is reserved
+Operation
+
+Failed to load data from file
+Failed to read data from file
+Error
+
+Log out

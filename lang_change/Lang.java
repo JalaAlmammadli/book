@@ -33,25 +33,51 @@ public class Lang {
     public static String tableTitleAdmin;
 
     // General Database
+    public static String generalDatabase;
     public static String bookTitle;
     public static String bookAuthor;
     public static String bookRating;
     public static String bookReviews;
+    public static String noReviews;
+    public static String noRating;
 
     //Personal Database
+    public static String personalDatabase;
     public static String bookStatus;
+    public static String bookSpentTime;
     public static String bookStartDate;
     public static String bookEndDate;
+    public static String userReview;
+    public static String userRating;
+    public static String notStarted;
+    public static String bookAlreadyAdded;
     
     // Database functionalities
-    public static String addBookToPersonal;
+    public static String bookAdd;
+    public static String bookAdded;
     public static String removeBookFromPersonal;
+    public static String addBook;
+    public static String addedBook;
+    public static String addReview;
+    public static String addRating;
+    public static String search;
 
     // Admin
-    public static String addBook;
-    public static String removeBook;
+    public static String editBook;
+    public static String addNewBook;
+    public static String deleteBook;
     public static String deleteUser;
-    public  static String deleteReview;
+    public static String removeReview;
+    public static String adminIsReserved;
+    public static String operation;
+
+    // File errors
+    public static String loadFailed;
+    public static String readingFailed;
+    public static String error;
+
+    // User
+    public static String logOut;
     
     protected static void change(Language lang){
 
@@ -70,6 +96,7 @@ public class Lang {
         // Reading data and assigning strings
         try(BufferedReader bf = new BufferedReader(new FileReader(readDataFrom))){
             
+            // Login Register Page
             loginTitle = bf.readLine();
             registerTitle = bf.readLine();
             usernameLabel = bf.readLine();
@@ -82,6 +109,7 @@ public class Lang {
 
             bf.readLine();
 
+            // Login Register Exceptions
             wrongUsernameOrPassword = bf.readLine();
             existingUsername = bf.readLine();
             passwordsUnmatch = bf.readLine();
@@ -90,33 +118,68 @@ public class Lang {
 
             bf.readLine();
 
+            // Table page
             tableTitle = bf.readLine();
             tableTitleAdmin = bf.readLine();
 
             bf.readLine();
 
+            // General Database
+            generalDatabase = bf.readLine();
             bookTitle = bf.readLine();
             bookAuthor = bf.readLine();
             bookRating = bf.readLine();
             bookReviews = bf.readLine();
+            noReviews = bf.readLine();
+            noRating = bf.readLine();
 
             bf.readLine();
 
+            // Personal Database
+            personalDatabase = bf.readLine();
             bookStatus = bf.readLine();
+            bookSpentTime = bf.readLine();
             bookStartDate = bf.readLine();
             bookEndDate = bf.readLine();
+            userReview = bf.readLine();
+            userRating = bf.readLine();
+            notStarted = bf.readLine();
+            bookAlreadyAdded = bf.readLine();
 
             bf.readLine();
 
-            addBookToPersonal = bf.readLine();
+            // Database functionalities
+            bookAdd = bf.readLine();
+            bookAdded = bf.readLine();
             removeBookFromPersonal = bf.readLine();
+            addBook = bf.readLine();
+            addedBook = bf.readLine();
+            addReview = bf.readLine();
+            addRating = bf.readLine();
+            search = bf.readLine();
 
             bf.readLine();
             
-            addBook = bf.readLine();
-            removeBook = bf.readLine();
+            // Admin
+            editBook = bf.readLine();
+            addNewBook = bf.readLine();
+            deleteBook = bf.readLine();
             deleteUser = bf.readLine();
-            deleteReview = bf.readLine();
+            removeReview = bf.readLine();
+            adminIsReserved = bf.readLine();
+            operation = bf.readLine();
+
+            bf.readLine();
+
+            // File errors
+            loadFailed = bf.readLine();
+            readingFailed = bf.readLine();
+            error = bf.readLine();
+
+            bf.readLine();
+
+            // User
+            logOut = bf.readLine();
 
         } catch (Exception e) {
         }

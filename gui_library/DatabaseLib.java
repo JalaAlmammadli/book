@@ -5,21 +5,19 @@ import database_system.BookDataBase;
 import entities.book.Book;
 import gui_elements.Actions;
 import gui_log_reg.LoginFrame;
-
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.*;
 import java.util.ArrayList;
-import java.awt.event.ActionListener;
-
-import java.awt.event.ActionEvent;
-
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.*;
+import lang_change.Lang;
 
 public class DatabaseLib extends Actions implements WindowListener {
     private static final String FILE_NAME = "./brodsky.csv";
@@ -48,13 +46,12 @@ public class DatabaseLib extends Actions implements WindowListener {
     @Override
     public void windowClosing(WindowEvent e) {
 
-        System.out.println("closing");
         SaveData.save();
         System.exit(0);
     }
 
     private void initializeGUI() {
-        jf = new JFrame("Book Database");
+        jf = new JFrame(Lang.tableTitle);
         jf.setPreferredSize(new Dimension(1050, 650));
         mainPanel = new JPanel(new BorderLayout());
         tablePanel = new JPanel(new BorderLayout());
@@ -69,7 +66,7 @@ public class DatabaseLib extends Actions implements WindowListener {
             addReviewColumnMouseListener();
             customizeTableAppearance();
         } else {
-            JOptionPane.showMessageDialog(null, "Failed to load data from file.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, Lang.loadFailed, Lang.error, JOptionPane.ERROR_MESSAGE);
         }
 
         mainPanel.add(tablePanel);
@@ -99,7 +96,7 @@ public class DatabaseLib extends Actions implements WindowListener {
 
     protected void addSearchFunctionality() {
         searchField = new JTextField(20);
-        JButton searchButton = new JButton("Search");
+        JButton searchButton = new JButton(Lang.search);
         Color buttonHeaderColor = new Color(173, 196, 206);
         searchButton.setBackground(buttonHeaderColor);
         searchButton.setForeground(Color.BLACK);
@@ -195,7 +192,7 @@ public class DatabaseLib extends Actions implements WindowListener {
             ArrayList<Object[]> dataRows = readDataRows(br);
             return assembleResult(headers, dataRows);
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Error reading data from file.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, Lang.readingFailed, Lang.error, JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
             return null;
         }
@@ -205,10 +202,10 @@ public class DatabaseLib extends Actions implements WindowListener {
         if (header != null) {
             String[] headers = header.split(",", -1);
             String[] finalHeaders = new String[headers.length + 2];
-            finalHeaders[0] = "<html><b>Title</b></html>";
-            finalHeaders[1] = "<html><b>Author</b></html>";
-            finalHeaders[headers.length] = "<html><b>Rating</b></html>";
-            finalHeaders[headers.length + 1] = "<html><b>Review</b></html>";
+            finalHeaders[0] = "<html><b>" + Lang.bookTitle + "</b></html>";
+            finalHeaders[1] = "<html><b>" + Lang.bookAuthor + "</b></html>";
+            finalHeaders[headers.length] = "<html><b>" + Lang.bookRating + "</b></html>";
+            finalHeaders[headers.length + 1] = "<html><b>" + Lang.bookReviews + "</b></html>";
             return finalHeaders;
         }
         return null;
@@ -248,7 +245,7 @@ public class DatabaseLib extends Actions implements WindowListener {
     }
 
     private void addToList(ArrayList<Object[]> dataRows, String[] data) {
-        Object[] dataRow = new Object[] { data[0], data[1], "No Rating", "No Review" };
+        Object[] dataRow = new Object[] { data[0], data[1], Lang.noRating, Lang.noReviews };
         dataRows.add(dataRow);
     }
 
@@ -256,7 +253,7 @@ public class DatabaseLib extends Actions implements WindowListener {
         JPanel leftPanel = new JPanel();
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS)); // Use vertical layout
     
-        JButton tableButton = new JButton("General Database");
+        JButton tableButton = new JButton(Lang.generalDatabase);
     
         int buttonWidth = 250;
         int buttonHeight = 30;
@@ -275,7 +272,7 @@ public class DatabaseLib extends Actions implements WindowListener {
             mainPanel.repaint();
         });
         
-        JButton logoutButton = new JButton("Log out");
+        JButton logoutButton = new JButton(Lang.logOut);
         logoutButton.setMaximumSize(new Dimension(buttonWidth, buttonHeight)); // Set maximum size for logout button
         logoutButton.setBackground(buttonColor);
         logoutButton.setForeground(Color.BLACK);
