@@ -234,6 +234,7 @@ public class DatabaseLib extends Actions implements WindowListener {
         }
     }
 
+    // Adds all books from BookDatabase
     private void addAllBooks(ArrayList<Object[]> dataRows) {
         
         for(int i = 0; i < BookDataBase.MainBookList.size(); i++){
