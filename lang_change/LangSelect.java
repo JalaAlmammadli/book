@@ -1,7 +1,7 @@
 package lang_change;
 
+import app_runner.RunApp;
 import gui_elements.Button;
-import gui_log_reg.LoginFrame;
 import java.awt.event.ActionEvent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -33,14 +33,28 @@ public class LangSelect extends JFrame{
         azButton.getObject().addActionListener((ActionEvent e) -> {
 
             Lang.change(Language.AZE);
-            LoginFrame.Login();
+
+            RunApp run = new RunApp();
+            run.start();
+
+            try {
+                run.join();
+            } catch (InterruptedException ex){
+            }
             frame.dispose();
         });
 
         engButton.getObject().addActionListener((ActionEvent e) -> {
 
             Lang.change(Language.ENG);
-            LoginFrame.Login();
+            
+            RunApp run = new RunApp();
+            run.start();
+
+            try {
+                run.join();
+            } catch (InterruptedException ex){
+            }
             frame.dispose();
         });
     }
