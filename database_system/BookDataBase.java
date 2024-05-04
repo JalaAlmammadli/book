@@ -71,4 +71,10 @@ public class BookDataBase extends AbstractDataBase<Book>{
         String data[] = {book.getTitle(), book.getAuthor()};
         return data;
     }
+
+    public String[] returnData(Book book){
+        
+        String data[] = {book.getTitle(), book.getAuthor()};
+        return data;
+    }
 }

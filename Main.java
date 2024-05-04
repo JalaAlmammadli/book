@@ -7,11 +7,10 @@
  * 
  */
 
- import app_runner.ReadData;
- import app_runner.RunApp;
-  import database_system.BookDataBase;
-  import database_system.exceptions.IllegalMemberException;
-  import entities.book.Book;
+import database_system.BookDataBase;
+import database_system.exceptions.IllegalMemberException;
+import entities.book.Book;
+import lang_change.LangSelect;
   
   class Main {
   
@@ -35,18 +34,21 @@
           // System.out.println(UserDataBase.contains(user1.getUsername()));
           // UserDataBase.writeData();
   
-          ReadData.read();
+        //   ReadData.read();
   
-          RunApp app = new RunApp();
-          app.setPriority(10);
-          app.start();
+        //   RunApp app = new RunApp();
+        //   app.setPriority(10);
+        //   app.start();
   
-          try {
-              app.join();
-          } catch (InterruptedException | IllegalMonitorStateException e) {
-              System.out.println(e);
-          }
+        //   try {
+        //       app.join();
+        //   } catch (InterruptedException | IllegalMonitorStateException e) {
+        //       System.out.println(e);
+        //   }
+
+        new LangSelect();
  
+        // SwingUtilities.invokeLater(() -> new AddBook());
          
   
           // try (BufferedReader br = new BufferedReader(new FileReader("./brodsky.csv")))

@@ -1,16 +1,14 @@
 package gui_library;
 
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
+import gui_library.admin_crud.AddBook;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.JButton;
+import javax.swing.JPanel;
 
 public class AdminGUI extends DatabaseLib {
-    private JButton addMovieButton;
+    private JButton addBookButton;
     private JButton deleteMovieButton;
     private JButton removeReviewButton;
     private JButton deleteUserButton;
@@ -18,14 +16,15 @@ public class AdminGUI extends DatabaseLib {
     public AdminGUI() {
         super();
 
-        addMovieButton = new JButton("Add New Book");
+        addBookButton = new JButton("Add New Book");
         deleteMovieButton = new JButton("Delete Book");
         removeReviewButton = new JButton("Remove Review");
         deleteUserButton = new JButton("Delete User");
 
-        addMovieButton.addActionListener(new ActionListener() {
+        addBookButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                
+                System.out.println("Hello");
+                new AddBook();
             }
         });
 
@@ -53,28 +52,12 @@ public class AdminGUI extends DatabaseLib {
         super.initializeTable(headersAndData); 
 
         JPanel buttonPanel = new JPanel();
-        buttonPanel.add(addMovieButton);
+        buttonPanel.add(addBookButton);
         buttonPanel.add(deleteMovieButton);
         buttonPanel.add(removeReviewButton);
         buttonPanel.add(deleteUserButton);
 
         mainPanel.add(buttonPanel, BorderLayout.SOUTH);
-    }
-
-    public void addNewMovie(String title, String author, String rating, String review) {
-
-    }
-
-    public void deleteMovie(int rowIndex) {
-
-    }
-
-    public void removeReview(int rowIndex) {
-
-    }
-
-    public void deleteUserAccount(String username) {
-
     }
 
     public static void main(String[] args) {

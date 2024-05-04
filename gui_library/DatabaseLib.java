@@ -2,6 +2,7 @@ package gui_library;
 
 import app_runner.*;
 import database_system.BookDataBase;
+import entities.book.Book;
 import gui_elements.Actions;
 import gui_log_reg.LoginFrame;
 
@@ -26,6 +27,9 @@ public class DatabaseLib extends Actions implements WindowListener {
     static final int AUTHOR_COLUMN_INDEX = 1;
     static final int RATING_COLUMN_INDEX = 2;
     static final int REVIEW_COLUMN_INDEX = 3;
+
+    // Table's book list
+    ArrayList<Object[]> dataRows = new ArrayList<>();
 
     protected JFrame jf;
     protected JPanel mainPanel;
@@ -211,7 +215,6 @@ public class DatabaseLib extends Actions implements WindowListener {
     }
 
     private ArrayList<Object[]> readDataRows(BufferedReader br) throws IOException {
-        ArrayList<Object[]> dataRows = new ArrayList<>();
 
         addAllBooks(dataRows);
 
@@ -237,6 +240,10 @@ public class DatabaseLib extends Actions implements WindowListener {
             
             addToList(dataRows, BookDataBase.MainBookList.returnData(i));
         }
+    }
+
+    public void addBookToList(Book book){
+        addToList(dataRows, BookDataBase.MainBookList.returnData(book));
     }
 
     private void addToList(ArrayList<Object[]> dataRows, String[] data) {

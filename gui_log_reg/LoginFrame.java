@@ -31,6 +31,7 @@ import gui_elements.*;
 import gui_library.AdminGUI;
 import gui_library.DatabaseLib;
 import gui_library.UserGUI;
+import lang_change.Lang;
 
 public class LoginFrame {
         // Frame objects
@@ -69,7 +70,7 @@ public class LoginFrame {
                 jpanel = new JPanel();
                 jframe = new JFrame();
                 jframe.setSize(350, 230);
-                jframe.setTitle("Login");
+                jframe.setTitle(Lang.loginTitle);
                 jframe.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 jframe.setLocationRelativeTo(null);
                 jframe.add(jpanel);
@@ -85,13 +86,13 @@ public class LoginFrame {
 
                 /* Labels*************************************************************** */
                 // Username label
-                Userlabel = new Label(10, 20, 80, 25, "Username:", jpanel);
+                Userlabel = new Label(10, 20, 80, 25, Lang.usernameLabel, jpanel);
 
                 // Password label
-                passwordlabel = new Label(10, 70, 80, 25, "Password:", jpanel);
+                passwordlabel = new Label(10, 70, 80, 25, Lang.passwordLabel, jpanel);
 
                 // Label near register button
-                registerText = new Label(10, 165, 200, 25, "Do not you have an account?", jpanel);
+                registerText = new Label(10, 165, 200, 25, Lang.dontHaveAccount, jpanel);
 
                 // Information for user
                 infoForUser = new Label(100, 100, 300, 25, null, jpanel);
@@ -105,7 +106,7 @@ public class LoginFrame {
                 /*********************************************************************** */
 
                 // Register link***********************************************************
-                registerLink = new Label(190, 165, 200, 25, "<html><u>Register here</u></html>", jpanel);
+                registerLink = new Label(190, 165, 200, 25, "<html><u>" + Lang.registerHere +"</u></html>", jpanel);
                 registerLink.getObject().setForeground(Color.blue);
                 registerLink.getObject().setCursor(new Cursor(Cursor.HAND_CURSOR));
                 registerLink.getObject().addMouseListener(new MouseAdapter() {
@@ -118,7 +119,7 @@ public class LoginFrame {
                 // **************************************************************************
 
                 /* Login button************************************************************** */
-                loginButton = new Button(130, 130, 100, 25, "Login", jpanel);
+                loginButton = new Button(130, 130, 100, 25, Lang.loginTitle, jpanel);
                 loginButton.getObject().addActionListener(new ActionListener() {
                         public void actionPerformed(ActionEvent e) {
                                 String user = userText.getObject().getText();
