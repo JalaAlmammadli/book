@@ -35,9 +35,10 @@ public class AdminGUI extends DatabaseLib {
 
         deleteBookButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
+                new DeleteBook(); 
             }
         });
+        
 
         removeReviewButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -111,8 +112,7 @@ public class AdminGUI extends DatabaseLib {
             return this;
         }
     }
-
-
+    
     public static void main(String[] args) {
         new AdminGUI();
     }

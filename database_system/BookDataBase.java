@@ -77,4 +77,16 @@ public class BookDataBase extends AbstractDataBase<Book>{
         String data[] = {book.getTitle(), book.getAuthor()};
         return data;
     }
+
+    public Book deleteBook(String bookTitle, String author) {
+        for (Book book : list) {
+            if (book.getTitle().equals(bookTitle) && book.getAuthor().equals(author)) {
+                list.remove(book);
+                nameList.remove(bookTitle);
+                writeData(); 
+                return book;
+            }
+        }
+        return null; 
+    }
 }
