@@ -3,6 +3,9 @@ package gui_library;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+
+import lang_change.Lang;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,7 +18,7 @@ public class UserRatingWindow extends JFrame {
         super("User Rating");
 
         Object[][] bookData = { { title, author, "" } }; 
-        String[] bookColumns = { "Title", "Author", "Rating" };
+        String[] bookColumns = { Lang.bookTitle, Lang.bookAuthor, Lang.bookRating };
 
         DefaultTableModel bookModel = new DefaultTableModel(bookData, bookColumns) {
             @Override
@@ -35,7 +38,6 @@ public class UserRatingWindow extends JFrame {
         JTableHeader bookHeader = bookTable.getTableHeader();
         bookHeader.setBackground(Color.decode("#ADC4CE"));
         
-        // Set the selection background color to be transparent
         bookTable.setSelectionBackground(new Color(0, 0, 0, 0));
 
         JScrollPane bookScrollPane = new JScrollPane(bookTable);

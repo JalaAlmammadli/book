@@ -3,6 +3,9 @@ package gui_library;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+
+import lang_change.Lang;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,7 +18,7 @@ public class UserReviewWindow extends JFrame {
         super("User Review");
 
         Object[][] userData = { { title, author, "" } };
-        String[] userColumns = { "Title", "Author", "Review" };
+        String[] userColumns = { Lang.bookTitle, Lang.bookAuthor, Lang.bookReviews };
 
         DefaultTableModel userModel = new DefaultTableModel(userData, userColumns) {
             @Override

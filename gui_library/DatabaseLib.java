@@ -52,7 +52,7 @@ public class DatabaseLib extends Actions implements WindowListener {
 
     private void initializeGUI() {
         jf = new JFrame(Lang.tableTitle);
-        jf.setPreferredSize(new Dimension(1050, 650));
+        jf.setPreferredSize(new Dimension(1150, 650));
         mainPanel = new JPanel(new BorderLayout());
         tablePanel = new JPanel(new BorderLayout());
 
@@ -165,9 +165,9 @@ public class DatabaseLib extends Actions implements WindowListener {
 
         TableColumnModel columnModel = jt.getTableHeader().getColumnModel();
         columnModel.getColumn(TITLE_COLUMN_INDEX).setPreferredWidth(200);
-        columnModel.getColumn(AUTHOR_COLUMN_INDEX).setPreferredWidth(200);
-        columnModel.getColumn(RATING_COLUMN_INDEX).setPreferredWidth(170);
-        columnModel.getColumn(REVIEW_COLUMN_INDEX).setPreferredWidth(200);
+        columnModel.getColumn(AUTHOR_COLUMN_INDEX).setPreferredWidth(230);
+        columnModel.getColumn(RATING_COLUMN_INDEX).setPreferredWidth(130);
+        columnModel.getColumn(REVIEW_COLUMN_INDEX).setPreferredWidth(170);
 
         jt.setRowHeight(30);
         jt.getTableHeader().setResizingAllowed(false);
