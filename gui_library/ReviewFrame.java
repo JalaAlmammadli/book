@@ -2,6 +2,9 @@ package gui_library;
 
 import javax.swing.*;
 import javax.swing.table.*;
+
+import lang_change.Lang;
+
 import java.awt.*;
 
 public class ReviewFrame extends JFrame {
@@ -10,7 +13,7 @@ public class ReviewFrame extends JFrame {
 
         // Create data for the book table
         Object[][] bookData = { { title, author, rating } };
-        String[] bookColumns = { "Title", "Author", "Rating" };
+        String[] bookColumns = { Lang.bookTitle, Lang.bookAuthor, Lang.bookRating };
 
         // Create and configure the book table
         JTable bookTable = new JTable(bookData, bookColumns);
@@ -21,7 +24,7 @@ public class ReviewFrame extends JFrame {
 
         // Create data for the user review table
         Object[][] userData = { { username, "", "" } };
-        String[] userColumns = { "Username", "User Rating", "User Review" };
+        String[] userColumns = { Lang.usernameLabel, Lang.userRating, Lang.userReview };
 
         // Create and configure the user review table
         JTable userTable = new JTable(userData, userColumns);
