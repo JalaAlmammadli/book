@@ -1,17 +1,17 @@
 package gui_library;
 
-import gui_log_reg.LoginFrame;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -27,7 +27,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableRowSorter;
-import lang_change.Lang;
+
+import gui_log_reg.LoginFrame;
 
 public class UserGUI extends DatabaseLib {
 
@@ -37,14 +38,14 @@ public class UserGUI extends DatabaseLib {
     private JTextField personalDatabaseSearchField;
     private Set<Object> addedBooks = new HashSet<>();
 
-    public UserGUI(){
-        super();
+    public static void main(String[] args) {
+        new UserGUI();
     }
 
     @Override
     public void initializeTable(Object[][] headersAndData) {
         column = Arrays.copyOf((String[]) headersAndData[0], ((String[]) headersAndData[0]).length + 1);
-        column[column.length - 1] = "<html><b>" + Lang.addBook + "</b></html>";
+        column[column.length - 1] = "<html><b>Add Book</b></html>";
         data = new Object[headersAndData.length - 1][column.length];
 
         for (int i = 1; i < headersAndData.length; i++) {
@@ -85,27 +86,56 @@ public class UserGUI extends DatabaseLib {
 
     }
 
-    class ButtonRenderer extends JButton implements TableCellRenderer {
+    @Override
+    public void addLeftPanels() {
+        JPanel leftPanel = new JPanel();
+        leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
 
-        public ButtonRenderer() {
-            setOpaque(true);
-        }
+        JButton tableButton = new JButton("General Database");
+        JButton personalDatabaseButton = new JButton("Personal Database");
 
-        @Override
-        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
-                int row, int column) {
-            String buttonText = (value != null && value.equals(Lang.bookAdd)) ? Lang.bookAdded : Lang.bookAdd;
-            setText(buttonText);
+        int buttonWidth = 250;
+        int buttonHeight = 30;
+        tableButton.setMaximumSize(new Dimension(buttonWidth, buttonHeight));
+        personalDatabaseButton.setMaximumSize(new Dimension(buttonWidth, buttonHeight));
 
-            // Set background color based on the value
-            if (value != null && value.equals(Lang.bookAdd)) {
-                setBackground(new Color(0xB0A695)); // Change to whatever color you prefer
-            } else {
-                setBackground(new Color(0xE5E1DA)); // Change to whatever color you prefer
+        leftPanel.add(tableButton);
+        leftPanel.add(personalDatabaseButton);
+
+        Color buttonColor = new Color(150, 182, 197);
+        tableButton.setBackground(buttonColor);
+        personalDatabaseButton.setBackground(buttonColor);
+
+        Color textColor = Color.BLACK;
+        tableButton.setForeground(textColor);
+        personalDatabaseButton.setForeground(textColor);
+
+        tableButton.addActionListener(e -> {
+            showTablePanel();
+        });
+
+        personalDatabaseButton.addActionListener(e -> {
+            showPersonalDatabasePanel();
+        });
+
+        JButton logoutButton = new JButton("Logout");
+        logoutButton.setMaximumSize(new Dimension(buttonWidth, buttonHeight));
+        logoutButton.setBackground(buttonColor);
+        logoutButton.setForeground(Color.BLACK);
+
+        logoutButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                jf.dispose();
+                LoginFrame.Login();
             }
+        });
 
-            return this;
-        }
+        leftPanel.add(logoutButton);
+        Border border = BorderFactory.createLineBorder(Color.BLACK);
+        leftPanel.setBorder(BorderFactory.createCompoundBorder(border, BorderFactory.createEmptyBorder(1, 1, 1, 1)));
+
+        jf.add(leftPanel, BorderLayout.WEST);
     }
 
     private void addToPersonalDatabase(int row) {
@@ -116,13 +146,13 @@ public class UserGUI extends DatabaseLib {
 
         Object bookIdentifier = rowData[0];
         if (addedBooks.contains(bookIdentifier)) {
-            System.out.println(Lang.bookAlreadyAdded);
+            System.out.println("Book already added.");
             return;
         }
 
         addedBooks.add(bookIdentifier);
 
-        rowData[4] = Lang.notStarted;
+        rowData[4] = "Not started";
 
         if (rowData.length > 7) {
             Object startDate = rowData[6];
@@ -138,18 +168,18 @@ public class UserGUI extends DatabaseLib {
 
         if (rowData.length > 9) {
             if (rowData[8] == null) {
-                rowData[8] = Lang.addRating;
+                rowData[8] = "Add rating";
             }
             if (rowData[9] == null) {
-                rowData[9] = Lang.addReview;
+                rowData[9] = "Add review";
             }
         }
 
-        jt.setValueAt(Lang.bookAdd, row, column.length - 1);
+        jt.setValueAt("Added", row, column.length - 1);
 
         addRowToPersonalDatabasePanel(rowData);
 
-        System.out.println(Lang.addedBook + rowData[0]);
+        System.out.println("Added book: " + rowData[0]);
     }
 
     private void addRowToPersonalDatabasePanel(Object[] rowData) {
@@ -160,10 +190,10 @@ public class UserGUI extends DatabaseLib {
         if (personalDatabaseTableModel == null) {
             personalDatabaseTableModel = new DefaultTableModel();
             personalDatabaseTable = new JTable(personalDatabaseTableModel);
-            personalDatabaseTableModel.addColumn(Lang.bookTitle);
-            personalDatabaseTableModel.addColumn(Lang.bookAuthor);
-            personalDatabaseTableModel.addColumn(Lang.bookRating);
-            personalDatabaseTableModel.addColumn(Lang.bookReviews);
+            personalDatabaseTableModel.addColumn("Title");
+            personalDatabaseTableModel.addColumn("Author");
+            personalDatabaseTableModel.addColumn("Rating");
+            personalDatabaseTableModel.addColumn("Review");
 
             personalDatabaseTable.getTableHeader().setForeground(Color.BLACK);
             personalDatabaseTable.getTableHeader().setBackground(Color.decode("#ADC4CE"));
@@ -190,97 +220,22 @@ public class UserGUI extends DatabaseLib {
         personalDatabaseTableModel.addRow(rowData);
     }
 
-    @Override
-    public void addLeftPanels() {
-        JPanel leftPanel = new JPanel();
-        leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
-
-        JButton tableButton = new JButton(Lang.generalDatabase);
-        JButton personalDatabaseButton = new JButton(Lang.personalDatabase);
-
-        int buttonWidth = 250;
-        int buttonHeight = 30;
-        tableButton.setMaximumSize(new Dimension(buttonWidth, buttonHeight));
-        personalDatabaseButton.setMaximumSize(new Dimension(buttonWidth, buttonHeight));
-
-        leftPanel.add(tableButton);
-        leftPanel.add(personalDatabaseButton);
-
-        Color buttonColor = new Color(150, 182, 197);
-        tableButton.setBackground(buttonColor);
-        personalDatabaseButton.setBackground(buttonColor);
-
-        Color textColor = Color.BLACK;
-        tableButton.setForeground(textColor);
-        personalDatabaseButton.setForeground(textColor);
-
-        tableButton.addActionListener(e -> {
-            showTablePanel();
-        });
-
-        personalDatabaseButton.addActionListener(e -> {
-            showPersonalDatabasePanel();
-        });
-    
-        JButton logoutButton = new JButton(Lang.logOut);
-        logoutButton.setMaximumSize(new Dimension(buttonWidth, buttonHeight)); // Set maximum size for logout button
-        logoutButton.setBackground(buttonColor);
-        logoutButton.setForeground(Color.BLACK);
-    
-        // Action listener for logout button
-        logoutButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Handle logout functionality
-                jf.dispose(); // Close the current window
-                LoginFrame.Login(); // Open the login frame again
-            }
-        });
-    
-        leftPanel.add(logoutButton); // Add logout button below the table button
-        Border border = BorderFactory.createLineBorder(Color.BLACK);
-        leftPanel.setBorder(BorderFactory.createCompoundBorder(border, BorderFactory.createEmptyBorder(1, 1, 1, 1)));
-
-        jf.add(leftPanel, BorderLayout.WEST);
-    }
-
-    private void showTablePanel() {
-        if (personalDatabasePanel != null) {
-            mainPanel.remove(personalDatabasePanel);
-        }
-        mainPanel.add(tablePanel, BorderLayout.CENTER);
-        mainPanel.revalidate();
-        mainPanel.repaint();
-    }
-
-    private void showPersonalDatabasePanel() {
-        if (personalDatabasePanel == null) {
-            initializePersonalDatabasePanel();
-        }
-        if (tablePanel != null) {
-            mainPanel.remove(tablePanel);
-        }
-        mainPanel.add(personalDatabasePanel, BorderLayout.CENTER);
-        mainPanel.revalidate();
-        mainPanel.repaint();
-    }
-
     private void initializePersonalDatabasePanel() {
         personalDatabasePanel = new JPanel();
         personalDatabasePanel.setLayout(new BorderLayout());
 
         addPersonalDatabaseSearchFunctionality();
         personalDatabaseTableModel = new DefaultTableModel();
-        personalDatabaseTableModel.addColumn("<html><b>" + Lang.bookTitle + "</b></html>");
-        personalDatabaseTableModel.addColumn("<html><b>" + Lang.bookAuthor + "</b></html>");
-        personalDatabaseTableModel.addColumn("<html><b>" + Lang.bookRating + "</b></html>");
-        personalDatabaseTableModel.addColumn("<html><b>" + Lang.bookReviews + "</b></html>");
-        personalDatabaseTableModel.addColumn("<html><b>" + Lang.bookStatus + "</b></html>");
-        personalDatabaseTableModel.addColumn("<html><b>" + Lang.bookSpentTime + "</b></html>");
-        personalDatabaseTableModel.addColumn("<html><b>" + Lang.bookStartDate + "</b></html>");
-        personalDatabaseTableModel.addColumn("<html><b>" + Lang.bookEndDate + "</b></html>");
-        personalDatabaseTableModel.addColumn("<html><b>" + Lang.userRating + "</b></html>");
-        personalDatabaseTableModel.addColumn("<html><b>" + Lang.userReview + "</b></html>");
+        personalDatabaseTableModel.addColumn("<html><b>Title</b></html>");
+        personalDatabaseTableModel.addColumn("<html><b>Author</b></html>");
+        personalDatabaseTableModel.addColumn("<html><b>Rating</b></html>");
+        personalDatabaseTableModel.addColumn("<html><b>Review</b></html>");
+        personalDatabaseTableModel.addColumn("<html><b>Status</b></html>");
+        personalDatabaseTableModel.addColumn("<html><b>Time Spent</b></html>");
+        personalDatabaseTableModel.addColumn("<html><b>Start Date</b></html>");
+        personalDatabaseTableModel.addColumn("<html><b>End Date</b></html>");
+        personalDatabaseTableModel.addColumn("<html><b>User Rating</b></html>");
+        personalDatabaseTableModel.addColumn("<html><b>User Review</b></html>");
 
         personalDatabaseTable = new JTable(personalDatabaseTableModel);
         personalDatabaseTable.getTableHeader().setReorderingAllowed(false);
@@ -310,11 +265,42 @@ public class UserGUI extends DatabaseLib {
 
         JScrollPane scrollPane = new JScrollPane(personalDatabaseTable);
         personalDatabasePanel.add(scrollPane, BorderLayout.CENTER);
+
+        personalDatabaseTable.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                int column = personalDatabaseTable.getColumnModel().getColumnIndexAtX(e.getX());
+                int row = e.getY() / personalDatabaseTable.getRowHeight();
+
+                if (column == 8) {
+                    openUserRatingWindow(row);
+                } else if (column == 9) {
+                    openUserReviewWindow(row);
+                }
+            }
+        });
+    }
+
+    private void openUserRatingWindow(int row) {
+        // Get the selected title and author from the personalDatabaseTableModel
+        String selectedTitle = personalDatabaseTableModel.getValueAt(row, 0).toString();
+        String selectedAuthor = personalDatabaseTableModel.getValueAt(row, 1).toString();
+
+        // Open the UserRatingWindow with the selected title and author
+        new UserRatingWindow(selectedTitle, selectedAuthor);
+    }
+
+    private void openUserReviewWindow(int row) {
+        // Get the selected title and author from the personalDatabaseTableModel
+        String selectedTitle = personalDatabaseTableModel.getValueAt(row, 0).toString();
+        String selectedAuthor = personalDatabaseTableModel.getValueAt(row, 1).toString();
+
+        // Open the UserReviewWindow with the selected title and author
+        new UserReviewWindow(selectedTitle, selectedAuthor);
     }
 
     private void addPersonalDatabaseSearchFunctionality() {
         personalDatabaseSearchField = new JTextField(20);
-        JButton searchButton = new JButton(Lang.search);
+        JButton searchButton = new JButton("Search");
         Color buttonHeaderColor = new Color(173, 196, 206);
         searchButton.setBackground(buttonHeaderColor);
         searchButton.setForeground(Color.BLACK);
@@ -355,8 +341,24 @@ public class UserGUI extends DatabaseLib {
         }
     }
 
-    public static void main(String[] args) {
-        new UserGUI();
+    private void showTablePanel() {
+        if (personalDatabasePanel != null) {
+            mainPanel.remove(personalDatabasePanel);
+        }
+        mainPanel.add(tablePanel, BorderLayout.CENTER);
+        mainPanel.revalidate();
+        mainPanel.repaint();
     }
 
+    private void showPersonalDatabasePanel() {
+        if (personalDatabasePanel == null) {
+            initializePersonalDatabasePanel();
+        }
+        if (tablePanel != null) {
+            mainPanel.remove(tablePanel);
+        }
+        mainPanel.add(personalDatabasePanel, BorderLayout.CENTER);
+        mainPanel.revalidate();
+        mainPanel.repaint();
+    }
 }
