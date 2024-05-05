@@ -3,6 +3,8 @@ package gui_library;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
+import lang_change.Lang;
+
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -30,7 +32,7 @@ public class TableListeners {
             if (column == reviewColumnIndex) {
                 Object reviewValue = table.getValueAt(row, column);
 
-                if (reviewValue != null && reviewValue.toString().equals("No Review")) {
+                if (reviewValue != null && reviewValue.toString().equals(Lang.noReviews)) {
                     String username = (String) reviewValue;
                     String title = (String) table.getValueAt(row, DatabaseLib.TITLE_COLUMN_INDEX);
                     String author = (String) table.getValueAt(row, DatabaseLib.AUTHOR_COLUMN_INDEX);
