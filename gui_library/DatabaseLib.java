@@ -18,6 +18,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.*;
 import lang_change.Lang;
+import program_settings.Parametres;
 
 public class DatabaseLib extends Actions implements WindowListener {
     private static final String FILE_NAME = "./brodsky.csv";
@@ -79,7 +80,7 @@ public class DatabaseLib extends Actions implements WindowListener {
         mainPanel.repaint();
     }
 
-    protected void initializeTable(Object[][] headersAndData) {
+    protected  void initializeTable(Object[][] headersAndData) {
         column = (String[]) headersAndData[0];
         data = new Object[headersAndData.length - 1][column.length];
         for (int i = 1; i < headersAndData.length; i++) {

@@ -7,6 +7,7 @@ package gui_log_reg;
  * 
  */
 
+import app_runner.MainTableGUI;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
@@ -145,9 +146,9 @@ public class LoginFrame {
                                                 jframe.dispose();
 
                                                 if (Parametres.getUserStatus() == Status.ADMIN) {
-                                                        new AdminGUI();
+                                                        MainTableGUI.databaseLib = new AdminGUI();
                                                 } else {
-                                                        new UserGUI();
+                                                        MainTableGUI.databaseLib = new UserGUI();
                                                 }
                                         }
                                 } catch (WrongUserException | IllegalMemberException ex) {

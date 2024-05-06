@@ -27,6 +27,8 @@ public class Parametres {
     private static User active_user;
 
     // Location of data folder
+    public static final String USERS_PATH = "./data/user_list.csv";
+    public static final String BOOKS_PATH = "./data/book_list.csv";
     public static final String USER_PATH = "./data/users/";
     public static final String USER_BOOK_PATH = "./data/users/added_books/";
     public static final String USER_REVIEW_PATH = "./data/users/reviews/";
