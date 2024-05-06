@@ -1,18 +1,21 @@
 package gui_library;
 
-import gui_library.admin_crud.*;
+import gui_library.admin_crud.AddBook;
+import gui_library.admin_crud.DeleteBook;
+import gui_library.admin_crud.EditBookFrame;
+import lang_change.Lang;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+
+import entities.book.Book;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.util.Arrays;
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
-
-import database_system.BookDataBase;
-import entities.book.Book;
-import lang_change.Lang;
 
 public class AdminGUI extends DatabaseLib {
     private JButton addBookButton;
@@ -84,12 +87,20 @@ public class AdminGUI extends DatabaseLib {
         jt.getColumnModel().getColumn(column.length - 1).setPreferredWidth(100);
         jt.getColumnModel().getColumn(column.length - 1).setCellRenderer(new ButtonRenderer());
 
-        js = new JScrollPane(jt);
-        tablePanel.add(js, BorderLayout.CENTER);
-
         jt.addMouseListener(new MouseAdapter() {
-
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int row = jt.rowAtPoint(evt.getPoint());
+                int col = jt.columnAtPoint(evt.getPoint());
+                if (col == column.length - 1) {
+                    String title = (String) model.getValueAt(row, TITLE_COLUMN_INDEX);
+                    String author = (String) model.getValueAt(row, AUTHOR_COLUMN_INDEX);
+                    new EditBookFrame(title, author, AdminGUI.this, model);
+                }
+            }
         });
+
+        JScrollPane js = new JScrollPane(jt);
+        tablePanel.add(js, BorderLayout.CENTER);
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(addBookButton);

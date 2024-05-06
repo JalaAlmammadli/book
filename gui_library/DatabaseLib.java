@@ -22,8 +22,8 @@ import program_settings.Parametres;
 
 public class DatabaseLib extends Actions implements WindowListener {
     private static final String FILE_NAME = "./brodsky.csv";
-    static final int TITLE_COLUMN_INDEX = 0;
-    static final int AUTHOR_COLUMN_INDEX = 1;
+    public static final int TITLE_COLUMN_INDEX = 0;
+    public static final int AUTHOR_COLUMN_INDEX = 1;
     static final int RATING_COLUMN_INDEX = 2;
     static final int REVIEW_COLUMN_INDEX = 3;
 

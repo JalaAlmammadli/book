@@ -12,6 +12,7 @@ import database_system.ReviewDataBase;
 import database_system.exceptions.IllegalMemberException;
 import entities.book.Book;
 import entities.user_and_admin.User;
+import lang_change.LangSelect;
 import program_settings.SettingsControl;
   
   class Main {
@@ -39,7 +40,7 @@ import program_settings.SettingsControl;
 
 
         
-        // new LangSelect();
+        new LangSelect();
  
         // SwingUtilities.invokeLater(() -> new AddBook());
          

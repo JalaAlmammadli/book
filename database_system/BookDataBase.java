@@ -91,4 +91,21 @@ public class BookDataBase extends AbstractDataBase<Book> {
         return null;
     }
 
+    public Book editBook(String originalTitle, String originalAuthor, String newTitle, String newAuthor) {
+        Book bookToEdit = null;
+        for (Book book : list) {
+            if (book.getTitle().equals(originalTitle) && book.getAuthor().equals(originalAuthor)) {
+                bookToEdit = book;
+                break;
+            }
+        }
+
+        if (bookToEdit != null) {
+            bookToEdit.setTitle(newTitle);
+            bookToEdit.setAuthor(newAuthor);
+            writeData();
+        }
+        return bookToEdit;
+    }
+
 }
