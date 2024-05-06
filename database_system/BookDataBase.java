@@ -9,7 +9,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class BookDataBase extends AbstractDataBase<Book>{
+public class BookDataBase extends AbstractDataBase<Book> {
 
     public static BookDataBase MainBookList = new BookDataBase();
 
@@ -65,16 +65,30 @@ public class BookDataBase extends AbstractDataBase<Book>{
         super.nameList.add(book.getTitle());
     }
 
-    public String[] returnData(int index){
+    public String[] returnData(int index) {
 
         Book book = MainBookList.getMemberByIndex(index);
-        String data[] = {book.getTitle(), book.getAuthor()};
+        String data[] = { book.getTitle(), book.getAuthor() };
         return data;
     }
 
-    public String[] returnData(Book book){
-        
-        String data[] = {book.getTitle(), book.getAuthor()};
+    public String[] returnData(Book book) {
+
+        String data[] = { book.getTitle(), book.getAuthor() };
         return data;
     }
+
+    public Book deleteBook(String bookTitle, String author) {
+        for (int i = 0; i < list.size(); i++) {
+            Book book = list.get(i);
+            if (book.getTitle().equals(bookTitle) && book.getAuthor().equals(author)) {
+                list.remove(i);
+                nameList.remove(bookTitle);
+                writeData();
+                return book;
+            }
+        }
+        return null;
+    }
+
 }

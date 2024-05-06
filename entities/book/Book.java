@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
+import database_system.BookDataBase;
+
 public class Book extends AbstractWork {
 
     private Book(String bookTitle, String author) {
@@ -34,5 +36,9 @@ public class Book extends AbstractWork {
         Book book = new Book(bookTitle, author);
         book.setIndex(AbstractWork.index++);
         return book;
+    }
+
+    public static Book deleteBook(String bookTitle, String author) {
+        return BookDataBase.MainBookList.deleteBook(bookTitle, author);
     }
 }

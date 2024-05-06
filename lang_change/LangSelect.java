@@ -37,8 +37,8 @@ public class LangSelect extends JFrame {
         panel.setLayout(null);
         panel.setVisible(true);
 
-        JLabel azeIcon = new JLabel(new ImageIcon(getResizedImage("./azerbaijan.png", 35, 35)));
-        JLabel engIcon = new JLabel(new ImageIcon(getResizedImage("./united-kingdom.png", 35, 35)));
+        JLabel azeIcon = new JLabel(new ImageIcon(getResizedImage("./images/azerbaijan.png", 35, 35)));
+        JLabel engIcon = new JLabel(new ImageIcon(getResizedImage("./images/united-kingdom.png", 35, 35)));
 
         azeIcon.setBounds(80, 40, 48, 48);
         engIcon.setBounds(80, 100, 48, 48);
