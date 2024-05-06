@@ -9,6 +9,9 @@ import java.util.Arrays;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
+
+import database_system.BookDataBase;
+import entities.book.Book;
 import lang_change.Lang;
 
 public class AdminGUI extends DatabaseLib {
@@ -17,7 +20,6 @@ public class AdminGUI extends DatabaseLib {
     private JButton removeReviewButton;
     private JButton deleteUserButton;
 
-    // Constructor
     public AdminGUI() {
         super();
 
@@ -26,19 +28,19 @@ public class AdminGUI extends DatabaseLib {
         removeReviewButton = new JButton(Lang.removeReview);
         deleteUserButton = new JButton(Lang.deleteUser);
 
+        addBookButton.setBackground(new Color(0xE5E1DA));
+        deleteBookButton.setBackground(new Color(0xE5E1DA));
+        removeReviewButton.setBackground(new Color(0xE5E1DA));
+        deleteUserButton.setBackground(new Color(0xE5E1DA));
+
         addBookButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                
+
                 new AddBook();
             }
         });
 
-        deleteBookButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                new DeleteBook(); 
-            }
-        });
-        
+        deleteBookButton.addActionListener(new DeleteBook(this, TITLE_COLUMN_INDEX, AUTHOR_COLUMN_INDEX));        
 
         removeReviewButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -53,8 +55,6 @@ public class AdminGUI extends DatabaseLib {
         });
     }
 
-
-    // Method to initialize the table
     public void initializeTable(Object[][] headersAndData) {
         column = Arrays.copyOf((String[]) headersAndData[0], ((String[]) headersAndData[0]).length + 1);
         column[column.length - 1] = "<html><b>" + Lang.operation + "</b></html>";
@@ -103,16 +103,15 @@ public class AdminGUI extends DatabaseLib {
         }
 
         @Override
-        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
+                int row, int column) {
             setText("<html><b>" + Lang.editBook + "</b></html>");
             setFont(table.getFont());
             setForeground(Color.BLACK);
-            setBackground(new Color(0xE5E1DA));
-            setBorder(BorderFactory.createLineBorder(Color.GRAY));
             return this;
         }
     }
-    
+
     public static void main(String[] args) {
         new AdminGUI();
     }

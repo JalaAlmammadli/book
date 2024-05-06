@@ -33,11 +33,11 @@ public class DatabaseLib extends Actions implements WindowListener {
     protected JPanel mainPanel;
     public JPanel tablePanel;
     protected JScrollPane js;
-    protected JTable jt;
+    public JTable jt;
     private JTextField searchField;
     protected String[] column;
     protected Object[][] data;
-    protected DefaultTableModel model;
+    public DefaultTableModel model;
 
     public DatabaseLib() {
         SwingUtilities.invokeLater(this::initializeGUI);

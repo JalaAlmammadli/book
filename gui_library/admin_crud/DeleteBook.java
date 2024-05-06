@@ -1,54 +1,45 @@
 package gui_library.admin_crud;
 
-
 import java.awt.event.ActionEvent;
-import javax.swing.JFrame;
+import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.WindowConstants;
-import gui_library.AdminGUI;
+
+import database_system.BookDataBase;
 import entities.book.Book;
-import gui_elements.Button;
-import gui_elements.Label;
-import gui_elements.TextField;
+import gui_library.AdminGUI;
 import lang_change.Lang;
 
-public class DeleteBook extends JFrame {
-    TextField field1;
-    TextField field2;
-    Button button;
-    JPanel panel;
-    JFrame frame;
+public class DeleteBook implements ActionListener {
+    private AdminGUI adminGUI;
+    private int TITLE_COLUMN_INDEX;
+    private int AUTHOR_COLUMN_INDEX;
 
-    public DeleteBook() {
-        frame = new JFrame(Lang.deleteBook);
-        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        frame.setBounds(500, 250, 350, 200);
-        frame.setResizable(false);
+    public DeleteBook(AdminGUI adminGUI, int titleColumnIndex, int authorColumnIndex) {
+        this.adminGUI = adminGUI;
+        this.TITLE_COLUMN_INDEX = titleColumnIndex;
+        this.AUTHOR_COLUMN_INDEX = authorColumnIndex;
+    }
 
-        panel = new JPanel();
-        panel.setLayout(null);
-        frame.add(panel);
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        int selectedRow = adminGUI.jt.getSelectedRow();
+        if (selectedRow != -1) {
+            String bookTitle = (String) adminGUI.jt.getValueAt(selectedRow, TITLE_COLUMN_INDEX);
+            String author = (String) adminGUI.jt.getValueAt(selectedRow, AUTHOR_COLUMN_INDEX);
 
-        new Label(10, 30, 50, 25, Lang.bookTitle, panel);
-        new Label(10, 70, 50, 25, Lang.bookAuthor, panel);
+            int option = JOptionPane.showConfirmDialog(null, "Do you want to delete " + bookTitle + "book?" , "Confirm Deletion", JOptionPane.YES_NO_OPTION);
 
-        field1 = new TextField(70, 30, 200, 25, 25, panel);
-        field2 = new TextField(70, 70, 200, 25, 25, panel);
-
-        button = new Button(120, 120, 100, 25, Lang.confirm, panel);
-        button.getObject().addActionListener((ActionEvent e) -> {
-
-            Book deletedBook = Book.deleteBook(field1.getObject().getText(), field2.getObject().getText());
-            if (deletedBook != null) {
-                JOptionPane.showMessageDialog(frame, "Book deleted successfully: " + deletedBook.getTitle());
-                frame.dispose();
-            } else {
-                JOptionPane.showMessageDialog(frame, "Book not found.");
+            if (option == JOptionPane.YES_OPTION) {
+                Book deletedBook = BookDataBase.MainBookList.deleteBook(bookTitle, author);
+                if (deletedBook != null) {
+                    adminGUI.model.removeRow(selectedRow);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Book not found!", "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
-
-        });
-
-        frame.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(null, "Please select a book to delete!", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
     }
 }

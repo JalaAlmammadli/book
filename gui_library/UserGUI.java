@@ -208,7 +208,7 @@ public class UserGUI extends DatabaseLib {
             columnModel.getColumn(AUTHOR_COLUMN_INDEX).setPreferredWidth(200);
             columnModel.getColumn(RATING_COLUMN_INDEX).setPreferredWidth(170);
             columnModel.getColumn(REVIEW_COLUMN_INDEX).setPreferredWidth(260);
-
+            
             personalDatabaseTable.setRowHeight(30);
             personalDatabaseTable.getTableHeader().setResizingAllowed(false);
             
@@ -242,7 +242,7 @@ public class UserGUI extends DatabaseLib {
         personalDatabaseTable.getTableHeader().setForeground(Color.BLACK);
         personalDatabaseTable.getTableHeader().setBackground(Color.decode("#ADC4CE"));
         personalDatabaseTable.getTableHeader()
-        .setPreferredSize(new Dimension(personalDatabaseTable.getTableHeader().getWidth(), 40));
+        .setPreferredSize(new Dimension(personalDatabaseTable.getTableHeader().getWidth(), 50));
         personalDatabaseTable.setForeground(Color.BLACK);
         personalDatabaseTable.setSelectionBackground(Color.decode("#F1F0E8"));
         personalDatabaseTable.setSelectionForeground(Color.BLACK);
