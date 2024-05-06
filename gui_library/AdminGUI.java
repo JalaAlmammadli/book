@@ -35,12 +35,11 @@ public class AdminGUI extends DatabaseLib {
 
         addBookButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
-                new AddBook();
+                new AddBook(AdminGUI.this);
             }
         });
 
-        deleteBookButton.addActionListener(new DeleteBook(this, TITLE_COLUMN_INDEX, AUTHOR_COLUMN_INDEX));        
+        deleteBookButton.addActionListener(new DeleteBook(this, TITLE_COLUMN_INDEX, AUTHOR_COLUMN_INDEX));
 
         removeReviewButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -53,6 +52,11 @@ public class AdminGUI extends DatabaseLib {
 
             }
         });
+    }
+
+    public void addBookToList(Book book) {
+        Object[] rowData = { book.getTitle(), book.getAuthor(), Lang.noRating, Lang.noReviews };
+        model.addRow(rowData);
     }
 
     public void initializeTable(Object[][] headersAndData) {

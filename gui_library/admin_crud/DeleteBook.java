@@ -27,7 +27,8 @@ public class DeleteBook implements ActionListener {
             String bookTitle = (String) adminGUI.jt.getValueAt(selectedRow, TITLE_COLUMN_INDEX);
             String author = (String) adminGUI.jt.getValueAt(selectedRow, AUTHOR_COLUMN_INDEX);
 
-            int option = JOptionPane.showConfirmDialog(null, "Do you want to delete " + bookTitle + "book?" , "Confirm Deletion", JOptionPane.YES_NO_OPTION);
+            int option = JOptionPane.showConfirmDialog(null, "Do you want to delete " + bookTitle + " book?",
+                    "Confirm Deletion", JOptionPane.YES_NO_OPTION);
 
             if (option == JOptionPane.YES_OPTION) {
                 Book deletedBook = BookDataBase.MainBookList.deleteBook(bookTitle, author);
