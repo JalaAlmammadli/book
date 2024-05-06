@@ -1,8 +1,9 @@
 package entities.review;
 
+import entities.other.CheckFile;
 import entities.other.UserOpinion;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -28,6 +29,21 @@ public class Review extends UserOpinion {
 
     public static Review createReview(String username, String title, String content){
         Review review = new Review(username, title, content);
+        
+        if(!CheckFile.check(Parametres.USER_REVIEW_PATH, username));{
+
+            try {
+                new File(Parametres.USER_REVIEW_PATH + username + Parametres.FILE_FORMAT).createNewFile();
+            } catch (IOException e) {
+            }
+        }
+        if(!CheckFile.check(Parametres.BOOK_REVIEW_PATH, title)){
+
+            try {
+                new File(Parametres.BOOK_REVIEW_PATH + title + Parametres.FILE_FORMAT).createNewFile();
+            } catch (IOException e) {
+            }
+        }
 
         write(review, Parametres.USER_REVIEW_PATH + username + Parametres.FILE_FORMAT);
         write(review, Parametres.BOOK_REVIEW_PATH + title + Parametres.FILE_FORMAT);
@@ -82,25 +98,6 @@ public class Review extends UserOpinion {
     public static void setGeneralIndex(int newIndex) {
         if (newIndex >= 0) {
             generalIndex = newIndex;
-        }
-    }
-
-    public static void writeLastIndex() {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter("./program_settings/review_index.txt"))) {
-            bw.write(generalIndex);
-
-        } catch (IOException e) {
-            System.out.println("error during writing last review index");
-        }
-    }
-
-    public static void readLastIndex() {
-        try (BufferedReader br = new BufferedReader(new FileReader("./program_settings/review_index.txt"))) {
-
-            generalIndex = Integer.parseInt(br.readLine());
-
-        } catch (IOException e) {
-            System.out.println("error during writing last review index");
         }
     }
 }
