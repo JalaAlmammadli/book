@@ -1,2 +1,3 @@
-review_index=21
+review_index=27
+rating_index=4
 login_user=Unknown

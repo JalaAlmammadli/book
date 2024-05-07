@@ -1,31 +1,29 @@
 package database_system;
 
+import entities.book.Book;
+import entities.rating.Rating;
+import entities.user_and_admin.User;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-
-import entities.book.Book;
-import entities.rating.Rating;
-import entities.review.Review;
-import entities.user_and_admin.User;
 import program_settings.Parametres;
 
 public class RatingDataBase {
 
-     public static void addRating(User user, Book book, int content){
-        Rating.createRating(user.getUsername(), book.getTitle(), content);
+     public static void addRating(User user, Book book, double rate){
+        Rating.createRating(user.getUsername(), book.getTitle(), rate);
         
         File file = new File(Parametres.RATING_PATH + "rating" + Rating.getGeneralIndex() + Parametres.FILE_FORMAT);
 
         try(BufferedWriter bw = new BufferedWriter(new FileWriter(file))){
             file.createNewFile();
 
-            bw.write(user.getUsername() + "|" + book.getTitle() + "|" + content);
+            bw.write(user.getUsername() + "|" + book.getTitle() + "|" + rate);
         }catch(IOException e){
-            System.out.println("Error while creating a review");
+            System.out.println("Error while creating a rating");
         }
     }
 
@@ -42,11 +40,11 @@ public class RatingDataBase {
     }
 
     // Finds review in the reviews folder
-    public static Review findRating(int reviewIndex){
+    public static Rating findRating(int ratingIndex){
 
         File review_folder = new File(Parametres.REVIEW_PATH);
         for(File file : review_folder.listFiles()){
-            if(file.getName().equals("review" + reviewIndex)){
+            if(file.getName().equals("rating" + ratingIndex)){
                 return fileToRating(file);
             }
         }
@@ -54,13 +52,13 @@ public class RatingDataBase {
     }
 
     // Converts file data to Review object
-    static Review fileToRating(File file){
+    static Rating fileToRating(File file){
 
         try(BufferedReader br = new BufferedReader(new FileReader(file))) {
             
             String data[] = br.readLine().split("|", -1);
 
-            return Review.createReview(data[0], data[1], data[2]);
+            return Rating.createRating(data[0], data[1], Double.parseDouble(data[2]));
         } catch (Exception e) {
         }
 
@@ -69,9 +67,9 @@ public class RatingDataBase {
 
 
     // This method will return specific data of review
-    private static String getRatingData(Review r, int dataIndex){
+    private static String getRatingData(Rating r, int dataIndex){
 
-        try(BufferedReader br = new BufferedReader(new FileReader(Parametres.REVIEW_PATH + "review" + r.getIndex() + Parametres.FILE_FORMAT));){
+        try(BufferedReader br = new BufferedReader(new FileReader(Parametres.REVIEW_PATH + "rating" + r.getIndex() + Parametres.FILE_FORMAT));){
 
             String line = br.readLine();
 
@@ -86,17 +84,17 @@ public class RatingDataBase {
     }
 
     // Return user by whom review was written
-    static String getRatingAuthor(Review r){
+    static String getRatingAuthor(Rating r){
         return getRatingData(r, 0);
     }
 
     // Return book that was reviewed
-    static String getRatingBook(Review r){
+    static String getRatingBook(Rating r){
         return getRatingData(r, 1);
     }
 
     // Return content of the review
-    static String getRatingContent(Review r){
+    static String getRatingContent(Rating r){
         return getRatingData(r, 2);
     }
 }

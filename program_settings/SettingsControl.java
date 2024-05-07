@@ -1,5 +1,6 @@
 package program_settings;
 
+import entities.rating.Rating;
 import entities.review.Review;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -14,6 +15,7 @@ public class SettingsControl {
         try (BufferedReader bf = new BufferedReader(new FileReader(Parametres.SETTINGS_PATH))) {
 
             Review.setGeneralIndex(Integer.parseInt(bf.readLine().split("=")[1]));
+            Rating.setGeneralIndex(Integer.parseInt(bf.readLine().split("=")[1]));
 
             String user = bf.readLine().split("=")[1];
             if(user.equals("Unknown")){
@@ -31,6 +33,9 @@ public class SettingsControl {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(Parametres.SETTINGS_PATH))) {
 
             bw.write("review_index=" + Review.getGeneralIndex());
+            bw.newLine();
+
+            bw.write("rating_index=" + Rating.getGeneralIndex());
             bw.newLine();
 
             bw.append("login_user=Unknown");
