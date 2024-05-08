@@ -8,13 +8,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.swing.AbstractCellEditor;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -29,7 +26,6 @@ import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableRowSorter;
 import lang_change.Lang;
@@ -45,15 +41,18 @@ public class UserGUI extends DatabaseLib {
     private Set<Object> addedBooks = new HashSet<>();
     private SpinnerDateModel startDateModel;
     private SpinnerDateModel endDateModel;
+    @SuppressWarnings("unused")
     private JSpinner startDateSpinner;
+    @SuppressWarnings("unused")
     private JSpinner endDateSpinner;
 
-    public UserGUI(){
+    public UserGUI() {
         super();
     }
 
     @Override
     public void initializeTable(Object[][] headersAndData) {
+        // Overrided to customize table initialization
         column = Arrays.copyOf((String[]) headersAndData[0], ((String[]) headersAndData[0]).length + 1);
         column[column.length - 1] = "<html><b>" + Lang.addBook + "</b></html>";
         data = new Object[headersAndData.length - 1][column.length];
@@ -98,6 +97,7 @@ public class UserGUI extends DatabaseLib {
 
     @Override
     public void addLeftPanels() {
+        // Overrided to customize left panel addition
         JPanel leftPanel = new JPanel();
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
 
@@ -137,19 +137,19 @@ public class UserGUI extends DatabaseLib {
         logoutButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Handle logout functionality
-                jf.dispose(); // Close the current window
-                LoginFrame.Login(); // Open the login frame again
+                jf.dispose(); 
+                LoginFrame.Login(); 
             }
         });
 
-        leftPanel.add(logoutButton); // Add logout button below the table button
+        leftPanel.add(logoutButton);
         Border border = BorderFactory.createLineBorder(Color.BLACK);
         leftPanel.setBorder(BorderFactory.createCompoundBorder(border, BorderFactory.createEmptyBorder(1, 1, 1, 1)));
 
         jf.add(leftPanel, BorderLayout.WEST);
     }
 
+    // Method to add selected book to personal database
     private void addToPersonalDatabase(int row) {
         Object[] rowData = new Object[column.length];
         for (int i = 0; i < column.length; i++) {
@@ -194,6 +194,7 @@ public class UserGUI extends DatabaseLib {
         System.out.println(Lang.addedBook + rowData[0]);
     }
 
+    // Method to add a row to personal database panel
     private void addRowToPersonalDatabasePanel(Object[] rowData) {
         if (personalDatabasePanel == null) {
             initializePersonalDatabasePanel();
@@ -232,6 +233,7 @@ public class UserGUI extends DatabaseLib {
         personalDatabaseTableModel.addRow(rowData);
     }
 
+    // Method to initialize personal database panel
     private void initializePersonalDatabasePanel() {
         personalDatabasePanel = new JPanel();
         personalDatabasePanel.setLayout(new BorderLayout());
@@ -293,8 +295,8 @@ public class UserGUI extends DatabaseLib {
 
         startDateModel = new SpinnerDateModel();
         endDateModel = new SpinnerDateModel();
-        startDateSpinner = new JSpinner(startDateModel); 
-        endDateSpinner = new JSpinner(endDateModel); 
+        startDateSpinner = new JSpinner(startDateModel);
+        endDateSpinner = new JSpinner(endDateModel);
 
         personalDatabaseTable.getColumnModel().getColumn(START_DATE_COLUMN_INDEX)
                 .setCellEditor(new DateCellEditor());
@@ -305,6 +307,7 @@ public class UserGUI extends DatabaseLib {
         personalDatabaseTable.getTableHeader().setReorderingAllowed(false);
     }
 
+    // Method to open user rating window
     private void openUserRatingWindow(int row) {
         String selectedTitle = personalDatabaseTableModel.getValueAt(row, 0).toString();
         String selectedAuthor = personalDatabaseTableModel.getValueAt(row, 1).toString();
@@ -312,6 +315,7 @@ public class UserGUI extends DatabaseLib {
         new UserRatingWindow(selectedTitle, selectedAuthor);
     }
 
+    // Method to open user review window
     private void openUserReviewWindow(int row) {
         String selectedTitle = personalDatabaseTableModel.getValueAt(row, 0).toString();
         String selectedAuthor = personalDatabaseTableModel.getValueAt(row, 1).toString();
@@ -319,6 +323,7 @@ public class UserGUI extends DatabaseLib {
         new UserReviewWindow(selectedTitle, selectedAuthor);
     }
 
+    // Method to add search functionality to personal database
     private void addPersonalDatabaseSearchFunctionality() {
         personalDatabaseSearchField = new JTextField(20);
         JButton searchButton = new JButton(Lang.search);
@@ -351,6 +356,7 @@ public class UserGUI extends DatabaseLib {
         });
     }
 
+    // Method to search personal database
     private void searchPersonalDatabase() {
         String searchText = personalDatabaseSearchField.getText().trim().toLowerCase();
         TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(personalDatabaseTableModel);
@@ -362,6 +368,7 @@ public class UserGUI extends DatabaseLib {
         }
     }
 
+    // Method to show table panel
     private void showTablePanel() {
         if (personalDatabasePanel != null) {
             mainPanel.remove(personalDatabasePanel);
@@ -371,6 +378,7 @@ public class UserGUI extends DatabaseLib {
         mainPanel.repaint();
     }
 
+    // Method to show personal database panel
     private void showPersonalDatabasePanel() {
         if (personalDatabasePanel == null) {
             initializePersonalDatabasePanel();

@@ -16,7 +16,6 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.SpinnerDateModel;
-import javax.swing.WindowConstants;
 import javax.swing.table.TableCellEditor;
 
 class DateCellEditor extends AbstractCellEditor implements TableCellEditor {

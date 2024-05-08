@@ -18,10 +18,12 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.*;
 import lang_change.Lang;
-import program_settings.Parametres;
 
 public class DatabaseLib extends Actions implements WindowListener {
+    // File name to save data
     private static final String FILE_NAME = "./brodsky.csv";
+
+    // Index constants for columns
     public static final int TITLE_COLUMN_INDEX = 0;
     public static final int AUTHOR_COLUMN_INDEX = 1;
     static final int RATING_COLUMN_INDEX = 2;
@@ -46,21 +48,22 @@ public class DatabaseLib extends Actions implements WindowListener {
 
     @Override
     public void windowClosing(WindowEvent e) {
-
+        // Saved data before closing the window
         SaveData.save();
         System.exit(0);
     }
 
     private void initializeGUI() {
+        // Initialized GUI components
         jf = new JFrame(Lang.tableTitle);
         jf.setPreferredSize(new Dimension(1150, 650));
         mainPanel = new JPanel(new BorderLayout());
         tablePanel = new JPanel(new BorderLayout());
 
         // It will track the changes in the window
-        // DONT DELETE THIS
         jf.addWindowListener(this);
 
+        // Loaded data and initializeed table
         Object[][] headersAndData = getDataAndHeaders();
         if (headersAndData != null) {
             initializeTable(headersAndData);
@@ -70,6 +73,7 @@ public class DatabaseLib extends Actions implements WindowListener {
             JOptionPane.showMessageDialog(null, Lang.loadFailed, Lang.error, JOptionPane.ERROR_MESSAGE);
         }
 
+        // Added components to main panel
         mainPanel.add(tablePanel);
         addLeftPanels();
         jf.add(mainPanel);
@@ -80,7 +84,8 @@ public class DatabaseLib extends Actions implements WindowListener {
         mainPanel.repaint();
     }
 
-    protected  void initializeTable(Object[][] headersAndData) {
+    protected void initializeTable(Object[][] headersAndData) {
+        // Initializeed table with data
         column = (String[]) headersAndData[0];
         data = new Object[headersAndData.length - 1][column.length];
         for (int i = 1; i < headersAndData.length; i++) {
@@ -96,6 +101,7 @@ public class DatabaseLib extends Actions implements WindowListener {
     }
 
     protected void addSearchFunctionality() {
+        // Added search functionality to the table
         searchField = new JTextField(20);
         JButton searchButton = new JButton(Lang.search);
         Color buttonHeaderColor = new Color(173, 196, 206);
@@ -128,6 +134,7 @@ public class DatabaseLib extends Actions implements WindowListener {
     }
 
     private void search() {
+        // Performed search based on entered text
         String searchText = searchField.getText().trim().toLowerCase();
         TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
         jt.setRowSorter(sorter);
@@ -139,10 +146,12 @@ public class DatabaseLib extends Actions implements WindowListener {
     }
 
     private void addReviewColumnMouseListener() {
+        // Added mouse listener to review column for specific action
         jt.addMouseListener(new TableListeners.ReviewColumnMouseListener(jt, REVIEW_COLUMN_INDEX));
     }
 
     private void propertyJFrame() {
+        // Set properties of JFrame
         jf.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         jf.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
@@ -156,6 +165,7 @@ public class DatabaseLib extends Actions implements WindowListener {
     }
 
     private void customizeTableAppearance() {
+        // Customized table appearance
         jt.getTableHeader().setForeground(Color.BLACK);
         jt.getTableHeader().setBackground(Color.decode("#ADC4CE"));
         jt.getTableHeader().setPreferredSize(new Dimension(jt.getTableHeader().getWidth(), 40));
@@ -175,6 +185,7 @@ public class DatabaseLib extends Actions implements WindowListener {
     }
 
     protected Object[][] getDataAndHeaders() {
+        // Readed data and headers from file
         try (BufferedReader br = new BufferedReader(new FileReader(FILE_NAME))) {
             String header = br.readLine();
             String[] headers = readHeaders(header);
@@ -188,6 +199,7 @@ public class DatabaseLib extends Actions implements WindowListener {
     }
 
     protected String[] readHeaders(String header) {
+        // Readed and modified headers
         if (header != null) {
             String[] headers = header.split(",", -1);
             String[] finalHeaders = new String[headers.length + 2];
@@ -201,13 +213,13 @@ public class DatabaseLib extends Actions implements WindowListener {
     }
 
     private ArrayList<Object[]> readDataRows(BufferedReader br) throws IOException {
-
+        // Readed data rows from file
         addAllBooks(dataRows);
-
         return dataRows;
     }
 
     private Object[][] assembleResult(String[] headers, ArrayList<Object[]> dataRows) {
+        // Assembled data and headers
         if (headers != null && !dataRows.isEmpty()) {
             Object[][] result = new Object[dataRows.size() + 1][headers.length];
             result[0] = headers;
@@ -220,16 +232,14 @@ public class DatabaseLib extends Actions implements WindowListener {
         }
     }
 
-    // Adds all books from BookDatabase
+    // Added all books from BookDatabase
     private void addAllBooks(ArrayList<Object[]> dataRows) {
-
         for (int i = 0; i < BookDataBase.MainBookList.size(); i++) {
-
             addToList(dataRows, BookDataBase.MainBookList.returnData(i));
         }
     }
 
-    public void addBookToList(Book book){
+    public void addBookToList(Book book) {
         addToList(dataRows, BookDataBase.MainBookList.returnData(book));
     }
 
@@ -239,11 +249,12 @@ public class DatabaseLib extends Actions implements WindowListener {
     }
 
     public void addLeftPanels() {
+        // Added left panel components
         JPanel leftPanel = new JPanel();
-        leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS)); // Use vertical layout
-    
+        leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
+
         JButton tableButton = new JButton(Lang.generalDatabase);
-    
+
         int buttonWidth = 250;
         int buttonHeight = 30;
 
@@ -260,7 +271,7 @@ public class DatabaseLib extends Actions implements WindowListener {
             mainPanel.revalidate();
             mainPanel.repaint();
         });
-        
+
         JButton logoutButton = new JButton(Lang.logOut);
         logoutButton.setMaximumSize(new Dimension(buttonWidth, buttonHeight)); // Set maximum size for logout button
         logoutButton.setBackground(buttonColor);
@@ -270,19 +281,15 @@ public class DatabaseLib extends Actions implements WindowListener {
         logoutButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                jf.dispose(); 
+                jf.dispose();
                 LoginFrame.Login();
             }
         });
 
-        leftPanel.add(logoutButton); 
+        leftPanel.add(logoutButton);
 
         Border border = BorderFactory.createLineBorder(Color.BLACK);
         leftPanel.setBorder(BorderFactory.createCompoundBorder(border, BorderFactory.createEmptyBorder(1, 1, 1, 1)));
         jf.add(leftPanel, BorderLayout.WEST);
-    }
-
-    public static void main(String[] args) {
-        new DatabaseLib();
     }
 }
