@@ -21,11 +21,11 @@ import program_settings.SettingsControl;
           // UserDataBase.loadData();
   
  
-          SettingsControl.read();
-          User user1 = User.createUser("user1234", "1234567890");
-          Book book1 = Book.createBook("book3", "author");
-          RatingDataBase.addRating(user1, book1, 4);
-          SettingsControl.write();
+        //   SettingsControl.read();
+        //   User user1 = User.createUser("user1234", "1234567890");
+        //   Book book1 = Book.createBook("book3", "author");
+        //   RatingDataBase.addRating(user1, book1, 4);
+        //   SettingsControl.write();
  
           // try {
           // UserDataBase.add(user1);
