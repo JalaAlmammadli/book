@@ -15,7 +15,7 @@ import program_settings.Parametres;
 public class RatingDataBase {
 
      public static void addRating(User user, Book book, double rate){
-        Rating.createRating(user.getUsername(), book.getTitle(), rate);
+        Rating.createRating(user.getUsername(), book.getTitle(), book.getAuthor(), rate);
         
         File file = new File(Parametres.RATING_PATH + "rating" + Rating.getGeneralIndex() + Parametres.FILE_FORMAT);
 
@@ -31,13 +31,12 @@ public class RatingDataBase {
     // removes review from reviews folder
     public static void removeRating(int ratingIndex){
 
-        ControlOpinion.deleteReviewFromEntity(ratingIndex, Parametres.USER_REVIEW_PATH + getRatingAuthor(ratingIndex) + Parametres.FILE_FORMAT);
-        ControlOpinion.deleteReviewFromEntity(ratingIndex, Parametres.BOOK_REVIEW_PATH + getRatingBook(ratingIndex) + Parametres.FILE_FORMAT);
+        ControlOpinion.deleteOpinionFromEntity(ratingIndex, Parametres.USER_RATING_PATH + getRatingAuthor(ratingIndex) + Parametres.FILE_FORMAT);
 
 
         File rating_folder = new File(Parametres.RATING_PATH);
         for(File file : rating_folder.listFiles()){
-            if(file.getName().equals("Rating" + ratingIndex)){
+            if(file.getName().equals("rating" + ratingIndex + Parametres.FILE_FORMAT)){
                 file.delete();
                 return;
             }
@@ -62,8 +61,9 @@ public class RatingDataBase {
         try(BufferedReader br = new BufferedReader(new FileReader(file))) {
             
             String data[] = br.readLine().split(" ; ", -1);
+            String bookData[] = data[1].split("_");
 
-            return Rating.createRating(data[0], data[1], Double.parseDouble(data[2]));
+            return Rating.createRating(data[0], bookData[0], bookData[1], Double.parseDouble(data[2]));
         } catch (Exception e) {
         }
 
@@ -99,7 +99,7 @@ public class RatingDataBase {
     }
 
     // Return content of the review
-    public static Float getRatingContent(int rating_index){
-        return Float.parseFloat(getRatingData(rating_index, 2));
+    public static Double getRatingContent(int rating_index){
+        return Double.parseDouble(getRatingData(rating_index, 2));
     }
 }

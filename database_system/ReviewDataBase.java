@@ -31,12 +31,12 @@ public class ReviewDataBase {
     // removes review from reviews folder
     public static void removeReview(int reviewIndex){
 
-        ControlOpinion.deleteReviewFromEntity(reviewIndex, Parametres.USER_REVIEW_PATH + getReviewAuthor(reviewIndex) + Parametres.FILE_FORMAT);
-        ControlOpinion.deleteReviewFromEntity(reviewIndex, Parametres.BOOK_REVIEW_PATH + getReviewBook(reviewIndex) + Parametres.FILE_FORMAT);
+        ControlOpinion.deleteOpinionFromEntity(reviewIndex, Parametres.USER_REVIEW_PATH + getReviewAuthor(reviewIndex) + Parametres.FILE_FORMAT);
+        ControlOpinion.deleteOpinionFromEntity(reviewIndex, Parametres.BOOK_REVIEW_PATH + getReviewBook(reviewIndex) + Parametres.FILE_FORMAT);
 
         File review_folder = new File(Parametres.REVIEW_PATH);
         for(File file : review_folder.listFiles()){
-            if(file.getName().equals("review" + reviewIndex)){
+            if(file.getName().equals("review" + reviewIndex + Parametres.FILE_FORMAT)){
 
                 file.delete();
                 return;

@@ -27,7 +27,7 @@ public class Rating extends UserOpinion {
         this.rate = rate;
     }
 
-    public static Rating createRating(String username, String title, double rate){
+    public static Rating createRating(String username, String title, String author, double rate){
         Rating rating = new Rating(username, title, rate);
 
         if(!CheckFile.check(Parametres.USER_RATING_PATH, username));{
@@ -37,8 +37,16 @@ public class Rating extends UserOpinion {
             } catch (IOException e) {
             }
         }
+        if(!CheckFile.check(Parametres.BOOK_RATING_PATH, title)){
+
+            try {
+                new File(Parametres.BOOK_RATING_PATH + title + "_" + author + Parametres.FILE_FORMAT).createNewFile();
+            } catch (IOException e) {
+            }
+        }
 
         write(rating, Parametres.USER_RATING_PATH + username + Parametres.FILE_FORMAT);
+        write(rating, Parametres.BOOK_RATING_PATH + title + "_" + author + Parametres.FILE_FORMAT);
 
         return rating;
     }

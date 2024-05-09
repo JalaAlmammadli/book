@@ -29,7 +29,7 @@ public class ControlOpinion {
         return null;
     }
 
-    public static void deleteReviewFromEntity(Integer review_index, String path){
+    public static void deleteOpinionFromEntity(Integer review_index, String path){
 
         try(BufferedReader br = new BufferedReader(new FileReader(path))){
 

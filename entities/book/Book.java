@@ -1,6 +1,7 @@
 package entities.book;
 
 import database_system.BookDataBase;
+import database_system.RatingDataBase;
 import entities.other.ControlOpinion;
 import java.io.BufferedReader;
 import java.io.File;
@@ -50,5 +51,35 @@ public class Book extends AbstractWork {
         return BookDataBase.MainBookList.deleteBook(bookTitle, author);
     }
 
+    public double countTotalRating(){
 
+        double count = 0;
+        int ratings[] = readRatings();
+
+        if(ratings == null) return 0;
+        
+        for(int rating : ratings){
+            count += RatingDataBase.getRatingContent(rating);
+        }
+
+        return count/ratings.length;
+    }
+
+    private int[] readRatings(){
+        try(BufferedReader br = new BufferedReader(new FileReader(Parametres.BOOK_RATING_PATH + getTitle() + "_" + getAuthor() + Parametres.FILE_FORMAT))){
+
+            String ratings[] = br.readLine().split(" ");
+            int rating_indexes[] = new int[ratings.length];
+
+            for(int i = 0; i < ratings.length; i++){
+                rating_indexes[i] = Integer.parseInt(ratings[i]);
+            }
+
+            return rating_indexes;
+        }catch(IOException e){
+
+        }
+
+        return null;
+    }
 }

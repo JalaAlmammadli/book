@@ -4,7 +4,6 @@ public abstract class AbstractWork {
 
     protected  String title;
     protected  String author;
-    protected  double totalRating;
 
     public AbstractWork(String title, String author) {
         setTitle(title);
@@ -37,14 +36,6 @@ public abstract class AbstractWork {
         else if (author.length() < 64) {
             this.author = author;
         }
-    }
-
-    public double getRating() {
-        return totalRating;
-    }
-
-    public void setRating(double totalRating) {
-        this.totalRating = totalRating;
     }
 
     // public static void writeLastIndex() {

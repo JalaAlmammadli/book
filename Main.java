@@ -23,7 +23,7 @@ import program_settings.SettingsControl;
           SettingsControl.read();
           User user1 = User.createUser("user1234", "1234567890");
           Book book1 = Book.createBook("book3", "author");
-          RatingDataBase.addRating(user1, book1, 4);
+          RatingDataBase.addRating(user1, book1, 3);
           SettingsControl.write();
 
           int[] rating = user1.getAllRatings();
@@ -32,7 +32,7 @@ import program_settings.SettingsControl;
         //     System.out.println(i);
         //   }
 
-          System.out.println(RatingDataBase.getRatingContent(51));
+          System.out.println(book1.countTotalRating());
 
           
  
