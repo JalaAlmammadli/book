@@ -67,9 +67,9 @@ public class RatingDataBase {
 
 
     // This method will return specific data of review
-    private static String getRatingData(Rating r, int dataIndex){
+    private static String getRatingData(int rating_index, int dataIndex){
 
-        try(BufferedReader br = new BufferedReader(new FileReader(Parametres.REVIEW_PATH + "rating" + r.getIndex() + Parametres.FILE_FORMAT));){
+        try(BufferedReader br = new BufferedReader(new FileReader(Parametres.REVIEW_PATH + "rating" + rating_index + Parametres.FILE_FORMAT));){
 
             String line = br.readLine();
 
@@ -84,17 +84,17 @@ public class RatingDataBase {
     }
 
     // Return user by whom review was written
-    static String getRatingAuthor(Rating r){
-        return getRatingData(r, 0);
+    static String getRatingAuthor(int rating_index){
+        return getRatingData(rating_index, 0);
     }
 
     // Return book that was reviewed
-    static String getRatingBook(Rating r){
-        return getRatingData(r, 1);
+    static String getRatingBook(int rating_index){
+        return getRatingData(rating_index, 1);
     }
 
     // Return content of the review
-    static String getRatingContent(Rating r){
-        return getRatingData(r, 2);
+    static String getRatingContent(int rating_index){
+        return getRatingData(rating_index, 2);
     }
 }

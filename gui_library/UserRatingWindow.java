@@ -46,8 +46,8 @@ public class UserRatingWindow extends JFrame {
         bookPanel.setBorder(BorderFactory.createTitledBorder("Book Details"));
         bookPanel.add(bookScrollPane);
 
-        saveButton = new JButton("Save");
-        saveButton.setBackground(Color.decode("#E5E1DA")); // Set background color
+        saveButton = new JButton(Lang.confirm);
+        saveButton.setBackground(Color.decode("#E5E1DA")); 
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

@@ -14,6 +14,9 @@ import entities.book.Book;
 import entities.user_and_admin.User;
 import lang_change.LangSelect;
 import program_settings.SettingsControl;
+import gui_library.*;
+import gui_library.admin_crud.*;
+import gui_log_reg.*;
   
   class Main {
   

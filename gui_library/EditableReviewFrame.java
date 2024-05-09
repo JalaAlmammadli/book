@@ -3,6 +3,8 @@ package gui_library;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import lang_change.Lang;
+
 
 public class EditableReviewFrame extends JFrame {
     private JTextField ratingField;
@@ -28,7 +30,7 @@ public class EditableReviewFrame extends JFrame {
         reviewPanel.add(reviewScrollPane);
 
         // Create save button
-        JButton saveButton = new JButton("Save");
+        JButton saveButton = new JButton(Lang.confirm);
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
