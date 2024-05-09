@@ -12,6 +12,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.*;
 import java.util.ArrayList;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
@@ -22,6 +23,7 @@ import lang_change.Lang;
 public class DatabaseLib extends Actions implements WindowListener {
     // File name to save data
     private static final String FILE_NAME = "./brodsky.csv";
+    protected Sorting sortingGeneral; // Change the type of sorting field
 
     // Index constants for columns
     public static final int TITLE_COLUMN_INDEX = 0;
@@ -63,12 +65,13 @@ public class DatabaseLib extends Actions implements WindowListener {
         // It will track the changes in the window
         jf.addWindowListener(this);
 
-        // Loaded data and initializeed table
+        // Loaded data and initialized table
         Object[][] headersAndData = getDataAndHeaders();
         if (headersAndData != null) {
             initializeTable(headersAndData);
             addReviewColumnMouseListener();
             customizeTableAppearance();
+            sorting(); // Add this line to set up table sorting
         } else {
             JOptionPane.showMessageDialog(null, Lang.loadFailed, Lang.error, JOptionPane.ERROR_MESSAGE);
         }
@@ -84,8 +87,14 @@ public class DatabaseLib extends Actions implements WindowListener {
         mainPanel.repaint();
     }
 
+    private void sorting() {
+        TableRowSorter<TableModel> sorter = new TableRowSorter<>(model);
+        jt.setRowSorter(sorter);
+        sortingGeneral = new Sorting(jt, sorter);
+    }
+
     protected void initializeTable(Object[][] headersAndData) {
-        // Initializeed table with data
+        // Initialized table with data
         column = (String[]) headersAndData[0];
         data = new Object[headersAndData.length - 1][column.length];
         for (int i = 1; i < headersAndData.length; i++) {
@@ -185,7 +194,7 @@ public class DatabaseLib extends Actions implements WindowListener {
     }
 
     protected Object[][] getDataAndHeaders() {
-        // Readed data and headers from file
+        // Read data and headers from file
         try (BufferedReader br = new BufferedReader(new FileReader(FILE_NAME))) {
             String header = br.readLine();
             String[] headers = readHeaders(header);
@@ -199,7 +208,7 @@ public class DatabaseLib extends Actions implements WindowListener {
     }
 
     protected String[] readHeaders(String header) {
-        // Readed and modified headers
+        // Read and modify headers
         if (header != null) {
             String[] headers = header.split(",", -1);
             String[] finalHeaders = new String[headers.length + 2];
@@ -213,13 +222,13 @@ public class DatabaseLib extends Actions implements WindowListener {
     }
 
     private ArrayList<Object[]> readDataRows(BufferedReader br) throws IOException {
-        // Readed data rows from file
+        // Read data rows from file
         addAllBooks(dataRows);
         return dataRows;
     }
 
     private Object[][] assembleResult(String[] headers, ArrayList<Object[]> dataRows) {
-        // Assembled data and headers
+        // Assemble data and headers
         if (headers != null && !dataRows.isEmpty()) {
             Object[][] result = new Object[dataRows.size() + 1][headers.length];
             result[0] = headers;
@@ -232,7 +241,7 @@ public class DatabaseLib extends Actions implements WindowListener {
         }
     }
 
-    // Added all books from BookDatabase
+    // Add all books from BookDatabase
     private void addAllBooks(ArrayList<Object[]> dataRows) {
         for (int i = 0; i < BookDataBase.MainBookList.size(); i++) {
             addToList(dataRows, BookDataBase.MainBookList.returnData(i));

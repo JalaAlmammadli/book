@@ -2,6 +2,7 @@ package gui_library;
 
 import gui_library.admin_crud.AddBook;
 import gui_library.admin_crud.DeleteBook;
+import gui_library.admin_crud.DeleteUser;
 import gui_library.admin_crud.EditBookFrame;
 import lang_change.Lang;
 
@@ -56,7 +57,8 @@ public class AdminGUI extends DatabaseLib {
 
         deleteUserButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // will be done
+                DeleteUser deleteUser = new DeleteUser();
+                deleteUser.deleteUserAction();
             }
         });
     }
