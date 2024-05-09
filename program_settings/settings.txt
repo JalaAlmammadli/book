@@ -1,2 +1,2 @@
 review_index=27
-rating_index=46
+rating_index=53

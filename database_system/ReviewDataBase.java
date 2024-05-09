@@ -22,7 +22,7 @@ public class ReviewDataBase {
         try(BufferedWriter bw = new BufferedWriter(new FileWriter(file))){
             file.createNewFile();
 
-            bw.write(user.getUsername() + "|||" + book.getTitle() + "_" + book.getAuthor() + "|||" + content);
+            bw.write(user.getUsername() + " ; " + book.getTitle() + "_" + book.getAuthor() + " ; " + content);
         }catch(IOException e){
             System.out.println("Error while creating a review");
         }
@@ -61,7 +61,7 @@ public class ReviewDataBase {
 
         try(BufferedReader br = new BufferedReader(new FileReader(file))) {
             
-            String data[] = br.readLine().split("|||", -1);
+            String data[] = br.readLine().split(" ; ", -1);
             int index = Integer.parseInt(file.getName().split("review").toString().split(".txt").toString());
 
             return Review.readReview(data[0], data[1], data[2], index);
@@ -78,7 +78,7 @@ public class ReviewDataBase {
         try(BufferedReader br = new BufferedReader(new FileReader(Parametres.REVIEW_PATH + "review" + review_index + Parametres.FILE_FORMAT));){
 
             String line = br.readLine();
-            String[] data = line.split("|||", -1);
+            String[] data = line.split(" ; ", -1);
             return  data[dataIndex];
         }catch(IOException ex){
         }

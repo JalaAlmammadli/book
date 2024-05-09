@@ -28,11 +28,11 @@ import program_settings.SettingsControl;
 
           int[] rating = user1.getAllRatings();
 
-          for(int i : rating){
-            System.out.println(i);
-          }
+        //   for(int i : rating){
+        //     System.out.println(i);
+        //   }
 
-          System.out.println(RatingDataBase.getRatingAuthor(44));
+          System.out.println(RatingDataBase.getRatingContent(51));
 
           
  

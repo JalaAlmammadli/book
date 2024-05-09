@@ -22,7 +22,7 @@ public class RatingDataBase {
         try(BufferedWriter bw = new BufferedWriter(new FileWriter(file))){
             file.createNewFile();
 
-            bw.write(user.getUsername() + "|||" + book.getTitle() + "_" + book.getAuthor() + "|||" + rate);
+            bw.write(user.getUsername() + " ; " + book.getTitle() + "_" + book.getAuthor() + " ; " + rate);
         }catch(IOException e){
             System.out.println("Error while creating a rating");
         }
@@ -61,7 +61,7 @@ public class RatingDataBase {
 
         try(BufferedReader br = new BufferedReader(new FileReader(file))) {
             
-            String data[] = br.readLine().split("|||", -1);
+            String data[] = br.readLine().split(" ; ", -1);
 
             return Rating.createRating(data[0], data[1], Double.parseDouble(data[2]));
         } catch (Exception e) {
@@ -78,10 +78,7 @@ public class RatingDataBase {
 
             String line = br.readLine();
 
-            System.out.println(line);
-
-            String[] data = line.split("|||", -1);
-            System.out.println(data[2]);
+            String[] data = line.split(" ; ");
 
             return  data[dataIndex];
         }catch(IOException ex){
@@ -102,7 +99,7 @@ public class RatingDataBase {
     }
 
     // Return content of the review
-    public static String getRatingContent(int rating_index){
-        return getRatingData(rating_index, 2);
+    public static Float getRatingContent(int rating_index){
+        return Float.parseFloat(getRatingData(rating_index, 2));
     }
 }
