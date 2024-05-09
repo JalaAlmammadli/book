@@ -27,6 +27,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import lang_change.Lang;
 
@@ -137,8 +138,8 @@ public class UserGUI extends DatabaseLib {
         logoutButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                jf.dispose(); 
-                LoginFrame.Login(); 
+                jf.dispose();
+                LoginFrame.Login();
             }
         });
 
@@ -156,7 +157,10 @@ public class UserGUI extends DatabaseLib {
             rowData[i] = jt.getValueAt(row, i);
         }
 
-        Object bookIdentifier = rowData[0];
+        String bookTitle = (String) rowData[0];
+        String bookAuthor = (String) rowData[1];
+        String bookIdentifier = bookTitle + " - " + bookAuthor; // Unique identifier for the book
+
         if (addedBooks.contains(bookIdentifier)) {
             System.out.println(Lang.bookAlreadyAdded);
             return;
@@ -234,6 +238,7 @@ public class UserGUI extends DatabaseLib {
     }
 
     // Method to initialize personal database panel
+    @SuppressWarnings("unchecked")
     private void initializePersonalDatabasePanel() {
         personalDatabasePanel = new JPanel();
         personalDatabasePanel.setLayout(new BorderLayout());
@@ -305,6 +310,8 @@ public class UserGUI extends DatabaseLib {
                 .setCellEditor(new DateCellEditor());
 
         personalDatabaseTable.getTableHeader().setReorderingAllowed(false);
+        personalDatabaseTable.setRowSorter(new TableRowSorter<>(personalDatabaseTableModel));
+        new Sorting(personalDatabaseTable, (TableRowSorter<TableModel>) personalDatabaseTable.getRowSorter());
     }
 
     // Method to open user rating window
