@@ -1,56 +1,63 @@
 package gui_library;
 
 
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
-
+import database_system.BookDataBase;
 import database_system.ReviewDataBase;
-
-import java.awt.*;
+import database_system.exceptions.IllegalMemberException;
+import gui_elements.*;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.*;
 import program_settings.Parametres;
 
 public class UserReviewWindow extends JFrame {
-    private JTable userTable;
+    private JFrame frame;
+    private JPanel panel;
+    private JTextArea textArea;
     private JButton saveButton;
+    private Label titleLabel;
+    private Label authorLabel;
+    private Label ratingLabel;
     private String title;
     private String author;
 
-    public UserReviewWindow(String title, String author, String content) {
+    public UserReviewWindow(String title, String author) {
         super("User Review");
 
         this.title = title;
         this.author = author;
 
-        Object[][] userData = {{title, author, content}};
-        String[] userColumns = {"Book Title", "Book Author", "Book Reviews"};
+        this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        this.setBounds(500, 350, 500, 400);
+        this.setResizable(false);
+        this.setVisible(true);
 
-        DefaultTableModel userModel = new DefaultTableModel(userData, userColumns) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return column == 2;
-            }
-        };
+        panel = new JPanel();
+        panel.setLayout(null);
+        this.add(panel);
 
-        userTable = new JTable(userModel);
-        userTable.setRowHeight(20);
-        JTableHeader userHeader = userTable.getTableHeader();
-        userHeader.setBackground(Color.decode("#ADC4CE"));
 
-        JScrollPane userScrollPane = new JScrollPane(userTable);
+        titleLabel = new Label(10, 10, 150, 20, "Title: " + title, panel);
+        authorLabel = new Label(10, 40, 150, 20, "Author: " + author, panel);
+        try {
+            Double rating = BookDataBase.MainBookList.getMember(title, author).countTotalRating();
+            ratingLabel = new Label(10, 70, 150, 20, "Rating: " + rating.toString(), panel);   
+        } catch (IllegalMemberException e) {
+        }
 
-        JPanel userPanel = new JPanel(new GridLayout(0, 1));
-        userPanel.setBorder(BorderFactory.createTitledBorder("Book Details"));
-        userPanel.add(userScrollPane);
+
+        textArea = new JTextArea(10, 25);
+        textArea.setBounds(50, 100, 400, 150);
+        panel.add(textArea);
 
         saveButton = new JButton("Save");
+        saveButton.setBounds(200, 275, 100, 25);
         saveButton.setBackground(Color.decode("#E5E1DA"));
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String reviewContent = getContentFromTable(); // Get review text from table
+                String reviewContent = textArea.getText(); // Get review text from table
                 if (!reviewContent.isEmpty()) {
                     ReviewDataBase.addReview(Parametres.getActiveUser(), title, author, reviewContent);
                     JOptionPane.showMessageDialog(UserReviewWindow.this, "Review saved successfully!");
@@ -59,21 +66,8 @@ public class UserReviewWindow extends JFrame {
                 }
             }
         });
+        panel.add(saveButton);
 
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.add(saveButton);
 
-        setLayout(new BorderLayout());
-        add(userPanel, BorderLayout.CENTER);
-        add(buttonPanel, BorderLayout.SOUTH);
-
-        setPreferredSize(new Dimension(400, 150));
-        pack();
-        setVisible(true);
-        setLocationRelativeTo(null);
-    }
-
-    private String getContentFromTable() {
-        return (String) userTable.getValueAt(0, 2);
     }
 }

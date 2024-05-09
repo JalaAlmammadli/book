@@ -332,7 +332,7 @@ public class UserGUI extends DatabaseLib {
         for (Window window : Window.getWindows()) {
             if (window instanceof UserReviewWindow) {
                 UserReviewWindow reviewWindow = (UserReviewWindow) window;
-                if (reviewWindow.getTitle().equals(selectedTitle) && reviewWindow.author.equals(selectedAuthor)) {
+                if (reviewWindow.getTitle().equals(selectedTitle) && reviewWindow.getTitle().equals(selectedAuthor)) {
                     // If window is already open, bring it to front and return
                     reviewWindow.toFront();
                     return;
@@ -341,7 +341,7 @@ public class UserGUI extends DatabaseLib {
         }
     
         // If review window is not open, create a new one
-        new UserReviewWindow(selectedTitle, selectedAuthor, "");
+        new UserReviewWindow(selectedTitle, selectedAuthor);
     }
     
     
@@ -413,5 +413,5 @@ public class UserGUI extends DatabaseLib {
         mainPanel.add(personalDatabasePanel, BorderLayout.CENTER);
         mainPanel.revalidate();
         mainPanel.repaint();
-    }
+    }
 }

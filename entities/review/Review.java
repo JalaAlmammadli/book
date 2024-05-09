@@ -40,7 +40,7 @@ public class Review extends UserOpinion {
         if(!CheckFile.check(Parametres.BOOK_REVIEW_PATH, title)){
 
             try {
-                new File(Parametres.BOOK_REVIEW_PATH + title + Parametres.FILE_FORMAT).createNewFile();
+                new File(Parametres.BOOK_REVIEW_PATH + title + "_" + author + Parametres.FILE_FORMAT).createNewFile();
             } catch (IOException e) {
             }
         }

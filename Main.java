@@ -8,12 +8,9 @@
  */
 
  import database_system.BookDataBase;
- import database_system.RatingDataBase;
  import database_system.exceptions.IllegalMemberException;
  import entities.book.Book;
- import entities.user_and_admin.User;
 import lang_change.LangSelect;
-import program_settings.SettingsControl;
    
    class Main {
    
@@ -21,14 +18,14 @@ import program_settings.SettingsControl;
            // UserDataBase.loadData();
    
   
-           SettingsControl.read();
-           User user1 = User.createUser("user1234", "1234567890");
-           Book book1 = Book.createBook("book3", "author");
-           RatingDataBase.addRating(user1, book1, 4);
-           SettingsControl.write();
+        //    SettingsControl.read();
+        //    User user1 = User.createUser("user1234", "1234567890");
+        //    Book book1 = Book.createBook("book3", "author");
+        //    RatingDataBase.addRating(user1, book1, 4);
+        //    SettingsControl.write();
  
 
-          int[] rating = user1.getAllRatings();
+        //   int[] rating = user1.getAllRatings();
 
         //   for(int i : rating){
         //     System.out.println(i);
@@ -50,11 +47,8 @@ import program_settings.SettingsControl;
            // System.out.println(UserDataBase.contains(user1.getUsername()));
            // UserDataBase.writeData();
    
-         // new LangSelect();
+         new LangSelect();
  
- 
-         
-          new LangSelect();
   
          // SwingUtilities.invokeLater(() -> new AddBook());
           
