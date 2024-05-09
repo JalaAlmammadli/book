@@ -12,6 +12,7 @@ import database_system.RatingDataBase;
 import database_system.exceptions.IllegalMemberException;
 import entities.book.Book;
 import entities.user_and_admin.User;
+import lang_change.LangSelect;
 import program_settings.SettingsControl;
   
   class Main {
@@ -20,11 +21,11 @@ import program_settings.SettingsControl;
           // UserDataBase.loadData();
   
  
-          SettingsControl.read();
-          User user1 = User.createUser("user1234", "1234567890");
-          Book book1 = Book.createBook("book3", "author");
-          RatingDataBase.addRating(user1, book1, 4);
-          SettingsControl.write();
+        //   SettingsControl.read();
+        //   User user1 = User.createUser("user1234", "1234567890");
+        //   Book book1 = Book.createBook("book3", "author");
+        //   RatingDataBase.addRating(user1, book1, 4);
+        //   SettingsControl.write();
  
           // try {
           // UserDataBase.add(user1);
@@ -38,23 +39,23 @@ import program_settings.SettingsControl;
 
 
         
-        // new LangSelect();
+        new LangSelect();
  
         // SwingUtilities.invokeLater(() -> new AddBook());
          
   
-          // try (BufferedReader br = new BufferedReader(new FileReader("./brodsky.csv")))
-          // {
+        //   try (BufferedReader br = new BufferedReader(new FileReader("./brodsky.csv")))
+        //   {
   
-          // String str;
-          // br.readLine();
-          // while ((str = br.readLine()) != null) {
-          // // Added by Orkhan*****************
-          // add(str);
-          // }
-          // } catch (IOException | IllegalMemberException e) {
-          // System.out.println(e);
-          // }
+        //   String str;
+        //   br.readLine();
+        //   while ((str = br.readLine()) != null) {
+
+        //   add(str);
+        //   }
+        //   } catch (IOException | IllegalMemberException e) {
+        //   System.out.println(e);
+        //   }
       }
   
       static void add(String line) throws IllegalMemberException {
@@ -68,10 +69,14 @@ import program_settings.SettingsControl;
                   } else if (titles[i].startsWith(" ")) {
                       titles[i] = titles[i].replaceFirst(" ", "");
                   }
+
+                  //Burda kitab yaranir atir book databaseye
                   BookDataBase.MainBookList.add(Book.createBook(titles[i], row[1]));
               }
           } else if (line.charAt(line.length() - 1) == '\"') {
               String row[] = line.split(",\"", -1);
+
+              //Burda kitab yaranir atir book databaseye
               BookDataBase.MainBookList.add(Book.createBook(row[0], row[1].replaceAll("\"", "")));
   
           } else {
@@ -82,6 +87,8 @@ import program_settings.SettingsControl;
               } else if (row[1].equals("")) {
                   row[1] = "Unknown";
               }
+
+              //Burda kitab yaranir atir book databaseye
               BookDataBase.MainBookList.add(Book.createBook(row[0], row[1]));
           }
       }

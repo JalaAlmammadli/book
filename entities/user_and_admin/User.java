@@ -8,17 +8,14 @@
 
 package entities.user_and_admin;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-
-import program_settings.Parametres;
-import database_system.exceptions.IllegalMemberException;
-import entities.user_and_admin.AbstractUser;
+import entities.other.GetOpinion;
 import entities.user_and_admin.exceptions.IllegalPasswordException;
 import entities.user_and_admin.exceptions.IllegalUsernameException;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import program_settings.Parametres;
 
 public class User extends AbstractUser {
 
@@ -79,5 +76,13 @@ public class User extends AbstractUser {
 
     public String toString() {
         return "[ username: " + super.getUsername() + " ]";
+    }
+
+    public int[] getAllReviews(){
+        return GetOpinion.getAllOpinion(Parametres.USER_REVIEW_PATH + getUsername() + Parametres.FILE_FORMAT);
+    }
+
+    public int[] getAllRatings(){
+        return GetOpinion.getAllOpinion(Parametres.USER_RATING_PATH + getUsername() + Parametres.FILE_FORMAT);
     }
 }

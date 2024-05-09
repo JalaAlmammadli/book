@@ -1,11 +1,12 @@
 package entities.book;
 
+import database_system.BookDataBase;
+import entities.other.GetOpinion;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-
-import database_system.BookDataBase;
+import program_settings.Parametres;
 
 public class Book extends AbstractWork {
 
@@ -27,6 +28,10 @@ public class Book extends AbstractWork {
         return null;
     }
 
+    public int[] getAllReviews(){
+        return GetOpinion.getAllOpinion(Parametres.BOOK_REVIEW_PATH + super.title + Parametres.FILE_FORMAT);
+    }
+
     public static Book readBook(String title, String author) {
 
         return new Book(title, author);
@@ -34,7 +39,6 @@ public class Book extends AbstractWork {
 
     public static Book createBook(String bookTitle, String author) {
         Book book = new Book(bookTitle, author);
-        book.setIndex(AbstractWork.index++);
         return book;
     }
 

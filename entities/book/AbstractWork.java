@@ -1,18 +1,10 @@
 package entities.book;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-
 public abstract class AbstractWork {
 
-    private String title;
-    private String author;
-    private double totalRating;
-    protected static int index;
-    protected int workIndex;
+    protected  String title;
+    protected  String author;
+    protected  double totalRating;
 
     public AbstractWork(String title, String author) {
         setTitle(title);
@@ -53,30 +45,22 @@ public abstract class AbstractWork {
         this.totalRating = totalRating;
     }
 
-    public int getIndex() {
-        return workIndex;
-    }
+    // public static void writeLastIndex() {
+    //     try (BufferedWriter bw = new BufferedWriter(new FileWriter("./program_settings/book_index.txt"))) {
+    //         bw.write(index);
 
-    protected void setIndex(int index) {
-        workIndex = index;
-    }
+    //     } catch (IOException e) {
+    //         System.out.println("error during writing last books index");
+    //     }
+    // }
 
-    public static void writeLastIndex() {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter("./program_settings/book_index.txt"))) {
-            bw.write(index);
+    // public static void readLastIndex() {
+    //     try (BufferedReader br = new BufferedReader(new FileReader("./program_settings/book_index.txt"))) {
 
-        } catch (IOException e) {
-            System.out.println("error during writing last books index");
-        }
-    }
+    //         index = Integer.parseInt(br.readLine());
 
-    public static void readLastIndex() {
-        try (BufferedReader br = new BufferedReader(new FileReader("./program_settings/book_index.txt"))) {
-
-            index = Integer.parseInt(br.readLine());
-
-        } catch (IOException e) {
-            System.out.println("error during writing last books index");
-        }
-    }
+    //     } catch (IOException e) {
+    //         System.out.println("error during writing last books index");
+    //     }
+    // }
 }
