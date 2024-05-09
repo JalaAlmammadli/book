@@ -1,6 +1,7 @@
 package database_system;
 
 import entities.book.Book;
+import entities.other.ControlOpinion;
 import entities.review.Review;
 import entities.user_and_admin.User;
 import java.io.BufferedReader;
@@ -14,14 +15,14 @@ import program_settings.Parametres;
 public class ReviewDataBase {
 
     public static void addReview(User user, Book book, String content){
-        Review.createReview(user.getUsername(), book.getTitle(), content);
+        Review.createReview(user.getUsername(), book.getTitle(), book.getAuthor(), content);
         
         File file = new File(Parametres.REVIEW_PATH + "review" + Review.getGeneralIndex() + Parametres.FILE_FORMAT);
 
         try(BufferedWriter bw = new BufferedWriter(new FileWriter(file))){
             file.createNewFile();
 
-            bw.write(user.getUsername() + "|" + book.getTitle() + "|" + content);
+            bw.write(user.getUsername() + "|||" + book.getTitle() + "_" + book.getAuthor() + "|||" + content);
         }catch(IOException e){
             System.out.println("Error while creating a review");
         }
@@ -30,9 +31,13 @@ public class ReviewDataBase {
     // removes review from reviews folder
     public static void removeReview(int reviewIndex){
 
+        ControlOpinion.deleteReviewFromEntity(reviewIndex, Parametres.USER_REVIEW_PATH + getReviewAuthor(reviewIndex) + Parametres.FILE_FORMAT);
+        ControlOpinion.deleteReviewFromEntity(reviewIndex, Parametres.BOOK_REVIEW_PATH + getReviewBook(reviewIndex) + Parametres.FILE_FORMAT);
+
         File review_folder = new File(Parametres.REVIEW_PATH);
         for(File file : review_folder.listFiles()){
             if(file.getName().equals("review" + reviewIndex)){
+
                 file.delete();
                 return;
             }
@@ -56,7 +61,7 @@ public class ReviewDataBase {
 
         try(BufferedReader br = new BufferedReader(new FileReader(file))) {
             
-            String data[] = br.readLine().split("|", -1);
+            String data[] = br.readLine().split("|||", -1);
             int index = Integer.parseInt(file.getName().split("review").toString().split(".txt").toString());
 
             return Review.readReview(data[0], data[1], data[2], index);
@@ -73,29 +78,26 @@ public class ReviewDataBase {
         try(BufferedReader br = new BufferedReader(new FileReader(Parametres.REVIEW_PATH + "review" + review_index + Parametres.FILE_FORMAT));){
 
             String line = br.readLine();
-
-            String[] data = line.split("|", -1);
-
+            String[] data = line.split("|||", -1);
             return  data[dataIndex];
         }catch(IOException ex){
-
         }
-
         return null;
     }
 
+
     // Return user by whom review was written
-    static String getReviewAuthor(int review_index){
+    public static String getReviewAuthor(int review_index){
         return getReviewData(review_index, 0);
     }
 
-    // Return book that was reviewed
-    static String getReviewBook(int review_index){
-        return getReviewData(review_index, 1);
+    // Return book(Title and author) that was reviewed
+    public static String[] getReviewBook(int review_index){
+        return getReviewData(review_index, 1).split("_");
     }
 
     // Return content of the review
-    static String getReviewContent(int review_index){
+    public static String getReviewContent(int review_index){
         return getReviewData(review_index, 2);
     }
 }

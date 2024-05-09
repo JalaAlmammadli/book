@@ -8,7 +8,7 @@
 
 package entities.user_and_admin;
 
-import entities.other.GetOpinion;
+import entities.other.ControlOpinion;
 import entities.user_and_admin.exceptions.IllegalPasswordException;
 import entities.user_and_admin.exceptions.IllegalUsernameException;
 import java.io.BufferedReader;
@@ -79,10 +79,10 @@ public class User extends AbstractUser {
     }
 
     public int[] getAllReviews(){
-        return GetOpinion.getAllOpinion(Parametres.USER_REVIEW_PATH + getUsername() + Parametres.FILE_FORMAT);
+        return ControlOpinion.getAllOpinion(Parametres.USER_REVIEW_PATH + getUsername() + Parametres.FILE_FORMAT);
     }
 
     public int[] getAllRatings(){
-        return GetOpinion.getAllOpinion(Parametres.USER_RATING_PATH + getUsername() + Parametres.FILE_FORMAT);
+        return ControlOpinion.getAllOpinion(Parametres.USER_RATING_PATH + getUsername() + Parametres.FILE_FORMAT);
     }
 }

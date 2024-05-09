@@ -18,6 +18,7 @@ public abstract class AbstractWork {
     public void setTitle(String title) {
         if (title == null || title.strip().equals("")) {
             this.title = "Unknown";
+            return;
         } else if (title.length() < 64) {
             this.title = title;
         }
@@ -31,8 +32,9 @@ public abstract class AbstractWork {
     public void setAuthor(String author) {
         if (author == null || author.strip().equals("")) {
             this.author = "Unknown";
+            return;
         }
-        if (author.length() < 64) {
+        else if (author.length() < 64) {
             this.author = author;
         }
     }
