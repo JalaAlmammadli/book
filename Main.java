@@ -12,7 +12,8 @@
  import database_system.exceptions.IllegalMemberException;
  import entities.book.Book;
  import entities.user_and_admin.User;
- import program_settings.SettingsControl;
+import lang_change.LangSelect;
+import program_settings.SettingsControl;
    
    class Main {
    
@@ -32,7 +33,7 @@
          //     System.out.println(i);
          //   }
  
-           System.out.println(RatingDataBase.getRatingContent(59));
+           //System.out.println(RatingDataBase.getRatingContent(59));
  
            
   
@@ -48,7 +49,7 @@
  
  
          
-         // new LangSelect();
+          new LangSelect();
   
          // SwingUtilities.invokeLater(() -> new AddBook());
           

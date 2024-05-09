@@ -12,8 +12,8 @@ import database_system.exceptions.IllegalMemberException;
 
 public abstract class AbstractDataBase<T>{
 
-    protected  ArrayList<T> list = new ArrayList<T>();
-    protected  ArrayList<String> nameList = new ArrayList<>();
+    public  ArrayList<T> list = new ArrayList<T>();
+    public  ArrayList<String> nameList = new ArrayList<>();
 
 
     public AbstractDataBase(){
