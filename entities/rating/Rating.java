@@ -30,7 +30,7 @@ public class Rating extends UserOpinion {
     public static Rating createRating(String username, String title, double rate){
         Rating rating = new Rating(username, title, rate);
 
-                if(!CheckFile.check(Parametres.USER_REVIEW_PATH, username));{
+        if(!CheckFile.check(Parametres.USER_RATING_PATH, username));{
 
             try {
                 new File(Parametres.USER_RATING_PATH + username + Parametres.FILE_FORMAT).createNewFile();
