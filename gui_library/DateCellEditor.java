@@ -18,6 +18,8 @@ import javax.swing.JTable;
 import javax.swing.SpinnerDateModel;
 import javax.swing.table.TableCellEditor;
 
+import lang_change.Lang;
+
 class DateCellEditor extends AbstractCellEditor implements TableCellEditor {
     private SpinnerDateModel dateModel;
     private JSpinnerDate dateSpinner;
@@ -37,7 +39,7 @@ class DateCellEditor extends AbstractCellEditor implements TableCellEditor {
             }
         });
 
-        confirmButton = new JButton("Confirm");// we should create lang for confirm button
+        confirmButton = new JButton(Lang.confirm);
         confirmButton.setBackground(new Color(235, 226, 213));
         confirmButton.addActionListener(new ActionListener() {
             @Override
