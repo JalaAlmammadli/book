@@ -7,7 +7,8 @@ import lang_change.Lang;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 
 import entities.book.Book;
 
@@ -26,6 +27,7 @@ public class AdminGUI extends DatabaseLib {
     public AdminGUI() {
         super();
 
+        // Initialized buttons
         addBookButton = new JButton(Lang.addNewBook);
         deleteBookButton = new JButton(Lang.deleteBook);
         removeReviewButton = new JButton(Lang.removeReview);
@@ -36,6 +38,7 @@ public class AdminGUI extends DatabaseLib {
         removeReviewButton.setBackground(new Color(0xE5E1DA));
         deleteUserButton.setBackground(new Color(0xE5E1DA));
 
+        // Added action listeners to buttons
         addBookButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 new AddBook(AdminGUI.this);
@@ -44,24 +47,27 @@ public class AdminGUI extends DatabaseLib {
 
         deleteBookButton.addActionListener(new DeleteBook(this, TITLE_COLUMN_INDEX, AUTHOR_COLUMN_INDEX));
 
+        // Action listener placeholders for remove review and delete user buttons
         removeReviewButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
+                // To be implemented
             }
         });
 
         deleteUserButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
+                // will be done
             }
         });
     }
 
+    // Method to add a book to the JTable
     public void addBookToList(Book book) {
         Object[] rowData = { book.getTitle(), book.getAuthor(), Lang.noRating, Lang.noReviews };
         model.addRow(rowData);
     }
 
+    // Method to initialize the JTable with data
     public void initializeTable(Object[][] headersAndData) {
         column = Arrays.copyOf((String[]) headersAndData[0], ((String[]) headersAndData[0]).length + 1);
         column[column.length - 1] = "<html><b>" + Lang.operation + "</b></html>";
@@ -82,11 +88,13 @@ public class AdminGUI extends DatabaseLib {
             }
         };
 
+        // Created JTable
         jt = new JTable(model);
         jt.getTableHeader().setReorderingAllowed(false);
         jt.getColumnModel().getColumn(column.length - 1).setPreferredWidth(100);
         jt.getColumnModel().getColumn(column.length - 1).setCellRenderer(new ButtonRenderer());
 
+        // Added mouse listener to JTable for edit functionality
         jt.addMouseListener(new MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 int row = jt.rowAtPoint(evt.getPoint());
@@ -99,9 +107,11 @@ public class AdminGUI extends DatabaseLib {
             }
         });
 
+        // Added JTable to JScrollPane and add to tablePanel
         JScrollPane js = new JScrollPane(jt);
         tablePanel.add(js, BorderLayout.CENTER);
 
+        // Created button panel and add buttons
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(addBookButton);
         buttonPanel.add(deleteBookButton);
@@ -109,25 +119,9 @@ public class AdminGUI extends DatabaseLib {
         buttonPanel.add(deleteUserButton);
 
         mainPanel.add(buttonPanel, BorderLayout.SOUTH);
-    }
 
-    public class ButtonRenderer extends JButton implements TableCellRenderer {
-        public ButtonRenderer() {
-            setOpaque(true);
-            setBackground(new Color(0xE5E1DA));
-        }
-
-        @Override
-        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
-                int row, int column) {
-            setText("<html><b>" + Lang.editBook + "</b></html>");
-            setFont(table.getFont());
-            setForeground(Color.BLACK);
-            return this;
-        }
-    }
-
-    public static void main(String[] args) {
-        new AdminGUI();
+        TableColumnModel columnModel = jt.getColumnModel();
+        TableColumn editColumn = columnModel.getColumn(columnModel.getColumnCount() - 1);
+        editColumn.setCellRenderer(new EditButtonRenderer());
     }
 }

@@ -26,7 +26,7 @@ public class DatabaseLib extends Actions implements WindowListener {
     // Index constants for columns
     public static final int TITLE_COLUMN_INDEX = 0;
     public static final int AUTHOR_COLUMN_INDEX = 1;
-    static final int RATING_COLUMN_INDEX = 2;
+    public static final int RATING_COLUMN_INDEX = 2;
     static final int REVIEW_COLUMN_INDEX = 3;
 
     // Table's book list
@@ -147,7 +147,7 @@ public class DatabaseLib extends Actions implements WindowListener {
 
     private void addReviewColumnMouseListener() {
         // Added mouse listener to review column for specific action
-        jt.addMouseListener(new TableListeners.ReviewColumnMouseListener(jt, REVIEW_COLUMN_INDEX));
+        jt.addMouseListener(new ReviewColumnMouseListener(jt, REVIEW_COLUMN_INDEX));
     }
 
     private void propertyJFrame() {
