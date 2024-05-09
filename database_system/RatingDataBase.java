@@ -1,6 +1,7 @@
 package database_system;
 
 import entities.book.Book;
+import entities.other.ControlOpinion;
 import entities.rating.Rating;
 import entities.user_and_admin.User;
 import java.io.BufferedReader;
@@ -21,7 +22,7 @@ public class RatingDataBase {
         try(BufferedWriter bw = new BufferedWriter(new FileWriter(file))){
             file.createNewFile();
 
-            bw.write(user.getUsername() + "|" + book.getTitle() + "|" + rate);
+            bw.write(user.getUsername() + " ; " + book.getTitle() + "_" + book.getAuthor() + " ; " + rate);
         }catch(IOException e){
             System.out.println("Error while creating a rating");
         }
@@ -29,6 +30,10 @@ public class RatingDataBase {
 
     // removes review from reviews folder
     public static void removeRating(int ratingIndex){
+
+        ControlOpinion.deleteReviewFromEntity(ratingIndex, Parametres.USER_REVIEW_PATH + getRatingAuthor(ratingIndex) + Parametres.FILE_FORMAT);
+        ControlOpinion.deleteReviewFromEntity(ratingIndex, Parametres.BOOK_REVIEW_PATH + getRatingBook(ratingIndex) + Parametres.FILE_FORMAT);
+
 
         File rating_folder = new File(Parametres.RATING_PATH);
         for(File file : rating_folder.listFiles()){
@@ -56,7 +61,7 @@ public class RatingDataBase {
 
         try(BufferedReader br = new BufferedReader(new FileReader(file))) {
             
-            String data[] = br.readLine().split("|", -1);
+            String data[] = br.readLine().split(" ; ", -1);
 
             return Rating.createRating(data[0], data[1], Double.parseDouble(data[2]));
         } catch (Exception e) {
@@ -67,34 +72,34 @@ public class RatingDataBase {
 
 
     // This method will return specific data of review
-    private static String getRatingData(Rating r, int dataIndex){
+    private static String getRatingData(int rating_index, int dataIndex){
 
-        try(BufferedReader br = new BufferedReader(new FileReader(Parametres.REVIEW_PATH + "rating" + r.getIndex() + Parametres.FILE_FORMAT));){
+        try(BufferedReader br = new BufferedReader(new FileReader(Parametres.RATING_PATH + "rating" + rating_index + Parametres.FILE_FORMAT));){
 
             String line = br.readLine();
 
-            String[] data = line.split("|", -1);
+            String[] data = line.split(" ; ");
 
             return  data[dataIndex];
         }catch(IOException ex){
-
+            System.out.println("Reading the file failed");
         }
 
         return null;
     }
 
     // Return user by whom review was written
-    static String getRatingAuthor(Rating r){
-        return getRatingData(r, 0);
+    public static String getRatingAuthor(int rating_index){
+        return getRatingData(rating_index, 0);
     }
 
     // Return book that was reviewed
-    static String getRatingBook(Rating r){
-        return getRatingData(r, 1);
+    public static String[] getRatingBook(int rating_index){
+        return getRatingData(rating_index, 1).split("_");
     }
 
     // Return content of the review
-    static String getRatingContent(Rating r){
-        return getRatingData(r, 2);
+    public static Float getRatingContent(int rating_index){
+        return Float.parseFloat(getRatingData(rating_index, 2));
     }
 }

@@ -27,10 +27,10 @@ public class Review extends UserOpinion {
         setContent(content);
     }
 
-    public static Review createReview(String username, String title, String content){
+    public static Review createReview(String username, String title, String author, String content){
         Review review = new Review(username, title, content);
         
-        if(!CheckFile.check(Parametres.USER_REVIEW_PATH, username));{
+        if(!CheckFile.check(Parametres.USER_REVIEW_PATH, username)){
 
             try {
                 new File(Parametres.USER_REVIEW_PATH + username + Parametres.FILE_FORMAT).createNewFile();
@@ -46,7 +46,7 @@ public class Review extends UserOpinion {
         }
 
         write(review, Parametres.USER_REVIEW_PATH + username + Parametres.FILE_FORMAT);
-        write(review, Parametres.BOOK_REVIEW_PATH + title + Parametres.FILE_FORMAT);
+        write(review, Parametres.BOOK_REVIEW_PATH + title + "_" + author + Parametres.FILE_FORMAT);
 
         return review;
     }

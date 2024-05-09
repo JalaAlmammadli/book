@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import program_settings.Parametres;
 
 public class BookDataBase extends AbstractDataBase<Book> {
 
@@ -54,17 +55,14 @@ public class BookDataBase extends AbstractDataBase<Book> {
         }
     }
 
+    // Add book to the database
     public void add(Book book) throws IllegalMemberException {
-
-        // if (contains(book.getTitle())) {
-        // throw new IllegalMemberException("User with username " + book.getTitle() + "
-        // already exists");
-        // }
 
         super.add(book);
         super.nameList.add(book.getTitle());
     }
 
+    // Returns some data of the book by index from the database
     public String[] returnData(int index) {
 
         Book book = MainBookList.getMemberByIndex(index);
@@ -78,12 +76,36 @@ public class BookDataBase extends AbstractDataBase<Book> {
         return data;
     }
 
+    // Checks if book with following title and author exists
+    public boolean contains(String title, String author){
+
+        for(Book book : list){
+            if(book.getTitle().equals(title) && book.getAuthor().equals(author)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Return Book object that has following parameters
+    public Book getMember(String title, String author) throws IllegalMemberException{
+
+        for(Book book : list){
+            if(book.getTitle().equals(title) && book.getAuthor().equals(author)){
+                return book;
+            }
+        }
+        
+        throw new IllegalMemberException("There is no such book in the database");
+    }
+
+    // Deletes book from database
     public Book deleteBook(String bookTitle, String author) {
         for (int i = 0; i < list.size(); i++) {
             Book book = list.get(i);
             if (book.getTitle().equals(bookTitle) && book.getAuthor().equals(author)) {
                 list.remove(i);
-                nameList.remove(bookTitle);
+                deleteBookFiles(bookTitle, author);
                 writeData();
                 return book;
             }
@@ -91,6 +113,17 @@ public class BookDataBase extends AbstractDataBase<Book> {
         return null;
     }
 
+    // deletes all files of the book
+    private void deleteBookFiles(String title, String author){
+
+        try {
+            File file = new File(Parametres.BOOK_REVIEW_PATH + title + "_" + author + Parametres.FILE_FORMAT);
+
+        } catch (Exception e) {
+        }
+    }
+
+    // Edits some parameters of the book
     public Book editBook(String originalTitle, String originalAuthor, String newTitle, String newAuthor) {
         Book bookToEdit = null;
         for (Book book : list) {

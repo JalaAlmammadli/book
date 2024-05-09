@@ -17,12 +17,6 @@ public class SettingsControl {
             Review.setGeneralIndex(Integer.parseInt(bf.readLine().split("=")[1]));
             Rating.setGeneralIndex(Integer.parseInt(bf.readLine().split("=")[1]));
 
-            String user = bf.readLine().split("=")[1];
-            if(user.equals("Unknown")){
-                
-            } 
-
-            System.out.println(Review.getGeneralIndex());
         } catch (IOException e) {
             System.out.println("error during reading settings.txt");
         }
@@ -37,8 +31,6 @@ public class SettingsControl {
 
             bw.write("rating_index=" + Rating.getGeneralIndex());
             bw.newLine();
-
-            bw.append("login_user=Unknown");
 
         } catch (IOException e) {
             System.out.println("error during writing to settings.txt");

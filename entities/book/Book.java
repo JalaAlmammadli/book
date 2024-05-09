@@ -1,16 +1,21 @@
 package entities.book;
 
+import database_system.BookDataBase;
+import entities.other.ControlOpinion;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-
-import database_system.BookDataBase;
+import program_settings.Parametres;
 
 public class Book extends AbstractWork {
 
     private Book(String bookTitle, String author) {
         super(bookTitle, author);
+
+        try {
+        } catch (Exception e) {
+        }
     }
 
     public static Book readBook(File file) {
@@ -27,6 +32,10 @@ public class Book extends AbstractWork {
         return null;
     }
 
+    public int[] getAllReviews(){
+        return ControlOpinion.getAllOpinion(Parametres.BOOK_REVIEW_PATH + super.title + Parametres.FILE_FORMAT);
+    }
+
     public static Book readBook(String title, String author) {
 
         return new Book(title, author);
@@ -34,11 +43,12 @@ public class Book extends AbstractWork {
 
     public static Book createBook(String bookTitle, String author) {
         Book book = new Book(bookTitle, author);
-        book.setIndex(AbstractWork.index++);
         return book;
     }
 
     public static Book deleteBook(String bookTitle, String author) {
         return BookDataBase.MainBookList.deleteBook(bookTitle, author);
     }
+
+
 }
