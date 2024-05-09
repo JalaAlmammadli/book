@@ -4,6 +4,7 @@ import gui_log_reg.LoginFrame;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -27,6 +28,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import lang_change.Lang;
 
@@ -137,8 +139,8 @@ public class UserGUI extends DatabaseLib {
         logoutButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                jf.dispose(); 
-                LoginFrame.Login(); 
+                jf.dispose();
+                LoginFrame.Login();
             }
         });
 
@@ -156,7 +158,10 @@ public class UserGUI extends DatabaseLib {
             rowData[i] = jt.getValueAt(row, i);
         }
 
-        Object bookIdentifier = rowData[0];
+        String bookTitle = (String) rowData[0];
+        String bookAuthor = (String) rowData[1];
+        String bookIdentifier = bookTitle + " - " + bookAuthor; // Unique identifier for the book
+
         if (addedBooks.contains(bookIdentifier)) {
             System.out.println(Lang.bookAlreadyAdded);
             return;
@@ -234,6 +239,7 @@ public class UserGUI extends DatabaseLib {
     }
 
     // Method to initialize personal database panel
+    @SuppressWarnings("unchecked")
     private void initializePersonalDatabasePanel() {
         personalDatabasePanel = new JPanel();
         personalDatabasePanel.setLayout(new BorderLayout());
@@ -305,6 +311,8 @@ public class UserGUI extends DatabaseLib {
                 .setCellEditor(new DateCellEditor());
 
         personalDatabaseTable.getTableHeader().setReorderingAllowed(false);
+        personalDatabaseTable.setRowSorter(new TableRowSorter<>(personalDatabaseTableModel));
+        new Sorting(personalDatabaseTable, (TableRowSorter<TableModel>) personalDatabaseTable.getRowSorter());
     }
 
     // Method to open user rating window
@@ -319,9 +327,25 @@ public class UserGUI extends DatabaseLib {
     private void openUserReviewWindow(int row) {
         String selectedTitle = personalDatabaseTableModel.getValueAt(row, 0).toString();
         String selectedAuthor = personalDatabaseTableModel.getValueAt(row, 1).toString();
-
-        new UserReviewWindow(selectedTitle, selectedAuthor);
+    
+        // Check if a review window is already open for the selected book
+        for (Window window : Window.getWindows()) {
+            if (window instanceof UserReviewWindow) {
+                UserReviewWindow reviewWindow = (UserReviewWindow) window;
+                if (reviewWindow.getTitle().equals(selectedTitle) && reviewWindow.author.equals(selectedAuthor)) {
+                    // If window is already open, bring it to front and return
+                    reviewWindow.toFront();
+                    return;
+                }
+            }
+        }
+    
+        // If review window is not open, create a new one
+        new UserReviewWindow(selectedTitle, selectedAuthor, "");
     }
+    
+    
+    
 
     // Method to add search functionality to personal database
     private void addPersonalDatabaseSearchFunctionality() {
@@ -389,5 +413,5 @@ public class UserGUI extends DatabaseLib {
         mainPanel.add(personalDatabasePanel, BorderLayout.CENTER);
         mainPanel.revalidate();
         mainPanel.repaint();
-    }
+    }
 }

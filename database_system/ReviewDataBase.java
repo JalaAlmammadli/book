@@ -1,6 +1,5 @@
 package database_system;
 
-import entities.book.Book;
 import entities.other.ControlOpinion;
 import entities.review.Review;
 import entities.user_and_admin.User;
@@ -14,18 +13,20 @@ import program_settings.Parametres;
 
 public class ReviewDataBase {
 
-    public static void addReview(User user, Book book, String content){
-        Review.createReview(user.getUsername(), book.getTitle(), book.getAuthor(), content);
+    public static Review addReview(User user, String title, String author, String content){
+        Review review = Review.createReview(user.getUsername(), title, author, content);
         
         File file = new File(Parametres.REVIEW_PATH + "review" + Review.getGeneralIndex() + Parametres.FILE_FORMAT);
 
         try(BufferedWriter bw = new BufferedWriter(new FileWriter(file))){
             file.createNewFile();
 
-            bw.write(user.getUsername() + " ; " + book.getTitle() + "_" + book.getAuthor() + " ; " + content);
+            bw.write(user.getUsername() + " ; " + title + "_" + author + " ; " + content);
         }catch(IOException e){
             System.out.println("Error while creating a review");
         }
+
+        return review;
     }
 
     // removes review from reviews folder

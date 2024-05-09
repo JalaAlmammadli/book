@@ -1,24 +1,31 @@
 package gui_library;
 
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
-import lang_change.Lang;
+import database_system.ReviewDataBase;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import program_settings.Parametres;
 
 public class UserReviewWindow extends JFrame {
     private JTable userTable;
     private JButton saveButton;
+    private String title;
+    private String author;
 
-    public UserReviewWindow(String title, String author) {
+    public UserReviewWindow(String title, String author, String content) {
         super("User Review");
 
-        Object[][] userData = { { title, author, "" } };
-        String[] userColumns = { Lang.bookTitle, Lang.bookAuthor, Lang.bookReviews };
+        this.title = title;
+        this.author = author;
+
+        Object[][] userData = {{title, author, content}};
+        String[] userColumns = {"Book Title", "Book Author", "Book Reviews"};
 
         DefaultTableModel userModel = new DefaultTableModel(userData, userColumns) {
             @Override
@@ -38,12 +45,18 @@ public class UserReviewWindow extends JFrame {
         userPanel.setBorder(BorderFactory.createTitledBorder("Book Details"));
         userPanel.add(userScrollPane);
 
-        saveButton = new JButton(Lang.confirm);
-        saveButton.setBackground(Color.decode("#E5E1DA")); 
+        saveButton = new JButton("Save");
+        saveButton.setBackground(Color.decode("#E5E1DA"));
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                saveReview();
+                String reviewContent = getContentFromTable(); // Get review text from table
+                if (!reviewContent.isEmpty()) {
+                    ReviewDataBase.addReview(Parametres.getActiveUser(), title, author, reviewContent);
+                    JOptionPane.showMessageDialog(UserReviewWindow.this, "Review saved successfully!");
+                } else {
+                    JOptionPane.showMessageDialog(UserReviewWindow.this, "Please enter a review before saving.");
+                }
             }
         });
 
@@ -60,14 +73,7 @@ public class UserReviewWindow extends JFrame {
         setLocationRelativeTo(null);
     }
 
-    private void saveReview() {
-        // Get the user review data from the table and save it
-        String title = userTable.getValueAt(0, 0).toString();
-        String author = userTable.getValueAt(0, 1).toString();
-        String review = userTable.getValueAt(0, 2).toString();
-
-        // Perform saving operations here, e.g., updating the database
-
-        dispose(); 
+    private String getContentFromTable() {
+        return (String) userTable.getValueAt(0, 2);
     }
 }
