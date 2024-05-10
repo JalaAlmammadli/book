@@ -40,6 +40,15 @@ Replace your-username with your actual GitHub username. This command will downlo
 
 3. Navigate to the Project Directory: Once the cloning process is complete, navigate to the project directory using the cd command:
 
+   <div>
+    <pre>
+        <code class="language-bash" id="git-clone-code">
+            # git clone https://github.com/ADA-SITE-CSCI-1202/team-project-team-50.git
+        </code>
+    </pre>
+    <button class="copy-button" data-clipboard-target="#git-clone-code"></button>
+</div>
+
 
 
 ## Development Process
