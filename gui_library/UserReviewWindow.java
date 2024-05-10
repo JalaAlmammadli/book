@@ -56,18 +56,19 @@ public class UserReviewWindow extends JFrame {
         saveButton.setBackground(Color.decode("#E5E1DA"));
         saveButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                String reviewContent = textArea.getText(); // Get review text from table
+           public void actionPerformed(ActionEvent e) {
+                String reviewContent = textArea.getText(); // Get review text from textarea
                 if (!reviewContent.isEmpty()) {
                     ReviewDataBase.addReview(Parametres.getActiveUser(), title, author, reviewContent);
                     JOptionPane.showMessageDialog(UserReviewWindow.this, "Review saved successfully!");
+                    // Update user review in personal database panel
+                    UserGUI.updateUserReview(title, author, reviewContent);
                 } else {
                     JOptionPane.showMessageDialog(UserReviewWindow.this, "Please enter a review before saving.");
                 }
             }
         });
         panel.add(saveButton);
-
-
     }
+    
 }

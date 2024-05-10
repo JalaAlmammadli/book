@@ -47,8 +47,7 @@ import lang_change.LangSelect;
            // System.out.println(UserDataBase.contains(user1.getUsername()));
            // UserDataBase.writeData();
    
-         new LangSelect();
- 
+           new LangSelect();
   
          // SwingUtilities.invokeLater(() -> new AddBook());
           
