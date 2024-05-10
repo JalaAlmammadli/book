@@ -18,7 +18,7 @@ import program_settings.Parametres;
 public class UserRatingWindow extends JFrame {
     private JTable bookTable;
     private JButton saveButton;
-
+    
     public UserRatingWindow(String title, String author) {
         super("User Rating");
 

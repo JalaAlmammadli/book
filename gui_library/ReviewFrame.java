@@ -3,11 +3,17 @@ package gui_library;
 import javax.swing.*;
 import javax.swing.table.*;
 
+import database_system.ReviewDataBase;
 import lang_change.Lang;
-
 import java.awt.*;
+import java.awt.event.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class ReviewFrame extends JFrame {
+    private String[] userList;
+
     public ReviewFrame(String title, String author, String rating, String username) {
         super("User Review");
 
@@ -15,7 +21,7 @@ public class ReviewFrame extends JFrame {
         Object[][] bookData = { { title, author, rating } };
         String[] bookColumns = { Lang.bookTitle, Lang.bookAuthor, Lang.bookRating };
 
-        // Create and configure the book table
+                // Create and configure the book table
         JTable bookTable = new JTable(bookData, bookColumns);
         bookTable.setEnabled(false);
         bookTable.setRowHeight(20);
@@ -29,7 +35,7 @@ public class ReviewFrame extends JFrame {
         // Create and configure the user review table
         JTable userTable = new JTable(userData, userColumns);
         userTable.setEnabled(false);
-        userTable.setRowHeight(350);
+        userTable.setRowHeight(20);
         JTableHeader userHeader = userTable.getTableHeader();
         userHeader.setBackground(Color.decode("#ADC4CE"));
 
@@ -46,15 +52,51 @@ public class ReviewFrame extends JFrame {
         userPanel.setBorder(BorderFactory.createTitledBorder("User Review"));
         userPanel.add(userScrollPane);
 
-        // Configure the layout of the frame and add panels
         setLayout(new GridLayout(2, 1));
         add(bookPanel);
         add(userPanel);
 
-        // Set frame properties
-        setPreferredSize(new Dimension(500, 500));
+        setPreferredSize(new Dimension(500, 230));
         pack();
         setVisible(true);
         setLocationRelativeTo(null);
+
+        loadUserList();
+
+        userTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int column = userTable.getColumnModel().getColumnIndex(Lang.usernameLabel); 
+                int row = userTable.rowAtPoint(e.getPoint());
+
+                if (column == 0 && row != -1) {
+                    String selectedUser = showUserListDialog();
+                    if (selectedUser != null) {
+                        openReviewFrame(selectedUser, title, author, rating);
+                    }
+                }
+            }
+        });
+    }
+
+    private String showUserListDialog() {
+        return (String) JOptionPane.showInputDialog(null, "Select a user:", "User List", JOptionPane.PLAIN_MESSAGE, null, userList, null);
+    }
+
+    private void loadUserList() {
+        String userListFilePath = "./data/user_list.csv";
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(userListFilePath))) {
+            userList = reader.lines().map(line -> line.split(";")[0]).toArray(String[]::new);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error loading user list: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }
+
+    private void openReviewFrame(String username, String title, String author, String rating) {
+        dispose();
+        ReviewFrame reviewFrame = new ReviewFrame(title, author, rating, username);
+        reviewFrame.setVisible(true);
     }
 }
