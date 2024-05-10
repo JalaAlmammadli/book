@@ -49,7 +49,25 @@ Replace your-username with your actual GitHub username. This command will downlo
     <button class="copy-button" data-clipboard-target="#git-clone-code"></button>
 </div>
 
+4. Compile the Java Files: Compile all Java source files in the project 
+<div>
+    <pre>
+        <code class="language-bash" id="git-clone-code">
+            javac *.java
+        </code>
+    </pre>
+    <button class="copy-button" data-clipboard-target="#git-clone-code"></button>
+</div>
 
+5. Run the Application: Execute the main application class to start the Book Review System. 
+<div>
+    <pre>
+        <code class="language-bash" id="git-clone-code">
+            java Main
+        </code>
+    </pre>
+    <button class="copy-button" data-clipboard-target="#git-clone-code"></button>
+</div>
 
 ## Development Process
 
@@ -64,5 +82,5 @@ The Book Review System was developed using Java and follows object-oriented prog
 
 ## Presentation
 
-Watch the presentation video below to learn more about the Book Review System and its features:
+Watch the presentation video below to learn more about the Book Review System and its features: 
 
