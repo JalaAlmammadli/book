@@ -9,7 +9,11 @@ import java.util.ArrayList;
 
 public class ControlOpinion {
 
-    public static int[] getAllOpinion(String path){
+    public static int[] getAllOpinion(String path, String name){
+
+        if(!CheckFile.check(path, name)){
+            return null;
+        }
 
         try(BufferedReader br = new BufferedReader(new FileReader(path))) {
             

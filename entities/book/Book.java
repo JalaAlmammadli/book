@@ -55,7 +55,7 @@ public class Book extends AbstractWork {
 
     // Returns array of indexes of all reviews of the book
     public int[] getAllReviews(){
-        return ControlOpinion.getAllOpinion(Parametres.BOOK_REVIEW_PATH + super.title + Parametres.FILE_FORMAT);
+        return ControlOpinion.getAllOpinion(Parametres.BOOK_REVIEW_PATH + super.title + Parametres.FILE_FORMAT, getTitle() + "_" + getAuthor());
     }
 
     public static Book readBook(String title, String author) {

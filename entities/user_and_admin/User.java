@@ -79,10 +79,10 @@ public class User extends AbstractUser {
     }
 
     public int[] getAllReviews(){
-        return ControlOpinion.getAllOpinion(Parametres.USER_REVIEW_PATH + getUsername() + Parametres.FILE_FORMAT);
+        return ControlOpinion.getAllOpinion(Parametres.USER_REVIEW_PATH + getUsername() + Parametres.FILE_FORMAT, getUsername());
     }
 
     public int[] getAllRatings(){
-        return ControlOpinion.getAllOpinion(Parametres.USER_RATING_PATH + getUsername() + Parametres.FILE_FORMAT);
+        return ControlOpinion.getAllOpinion(Parametres.USER_RATING_PATH + getUsername() + Parametres.FILE_FORMAT, getUsername());
     }
 }
