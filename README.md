@@ -30,7 +30,7 @@ To install the Book Review System on your local machine, follow these steps:
 <div>
     <pre>
         <code class="language-bash" id="git-clone-code">
-            # git clone https://github.com/your-username/book-review-system.git
+            # git clone https://github.com/your-username/ADA-SITE-CSCI-1202/team-project-team-50.git
         </code>
     </pre>
     <button class="copy-button" data-clipboard-target="#git-clone-code"></button>
