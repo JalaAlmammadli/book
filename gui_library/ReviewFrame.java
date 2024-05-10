@@ -29,7 +29,7 @@ public class ReviewFrame extends JFrame {
         // Create and configure the user review table
         JTable userTable = new JTable(userData, userColumns);
         userTable.setEnabled(false);
-        userTable.setRowHeight(20);
+        userTable.setRowHeight(350);
         JTableHeader userHeader = userTable.getTableHeader();
         userHeader.setBackground(Color.decode("#ADC4CE"));
 
@@ -52,7 +52,7 @@ public class ReviewFrame extends JFrame {
         add(userPanel);
 
         // Set frame properties
-        setPreferredSize(new Dimension(500, 200));
+        setPreferredSize(new Dimension(500, 500));
         pack();
         setVisible(true);
         setLocationRelativeTo(null);

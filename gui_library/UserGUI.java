@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -36,11 +37,12 @@ public class UserGUI extends DatabaseLib {
 
     private static final int START_DATE_COLUMN_INDEX = 6;
     private static final int END_DATE_COLUMN_INDEX = 7;
+    private final int REMOVE_COLUMN_INDEX = 10; // Index of the Remove column
     private JPanel personalDatabasePanel;
-    private DefaultTableModel personalDatabaseTableModel;
+    private static DefaultTableModel personalDatabaseTableModel;
     private JTable personalDatabaseTable;
     private JTextField personalDatabaseSearchField;
-    private Set<Object> addedBooks = new HashSet<>();
+    private ArrayList<Object> addedBooks = new ArrayList<>();
     private SpinnerDateModel startDateModel;
     private SpinnerDateModel endDateModel;
     @SuppressWarnings("unused")
@@ -256,18 +258,20 @@ public class UserGUI extends DatabaseLib {
         personalDatabaseTableModel.addColumn("<html><b>" + Lang.bookEndDate + "</b></html>");
         personalDatabaseTableModel.addColumn("<html><b>" + Lang.userRating + "</b></html>");
         personalDatabaseTableModel.addColumn("<html><b>" + Lang.userReview + "</b></html>");
-
+        personalDatabaseTableModel.addColumn("<html><b>Remove</b></html>");
+        
         personalDatabaseTable = new JTable(personalDatabaseTableModel);
         personalDatabaseTable.getTableHeader().setReorderingAllowed(false);
-
+        
         personalDatabaseTable.getTableHeader().setForeground(Color.BLACK);
         personalDatabaseTable.getTableHeader().setBackground(Color.decode("#ADC4CE"));
         personalDatabaseTable.getTableHeader()
-                .setPreferredSize(new Dimension(personalDatabaseTable.getTableHeader().getWidth(), 50));
+        .setPreferredSize(new Dimension(personalDatabaseTable.getTableHeader().getWidth(), 50));
         personalDatabaseTable.setForeground(Color.BLACK);
         personalDatabaseTable.setSelectionBackground(Color.decode("#F1F0E8"));
         personalDatabaseTable.setSelectionForeground(Color.BLACK);
-
+        
+        
         TableColumnModel columnModel = personalDatabaseTable.getTableHeader().getColumnModel();
         columnModel.getColumn(0).setPreferredWidth(150);
         columnModel.getColumn(1).setPreferredWidth(170);
@@ -282,10 +286,11 @@ public class UserGUI extends DatabaseLib {
 
         personalDatabaseTable.setRowHeight(30);
         personalDatabaseTable.getTableHeader().setResizingAllowed(false);
-
+        
         JScrollPane scrollPane = new JScrollPane(personalDatabaseTable);
         personalDatabasePanel.add(scrollPane, BorderLayout.CENTER);
-
+        
+        personalDatabaseTable.getColumnModel().getColumn(REMOVE_COLUMN_INDEX).setHeaderValue("<html><b>Remove</b></html>");
         personalDatabaseTable.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 int column = personalDatabaseTable.getColumnModel().getColumnIndexAtX(e.getX());
@@ -295,6 +300,8 @@ public class UserGUI extends DatabaseLib {
                     openUserRatingWindow(row);
                 } else if (column == 9) {
                     openUserReviewWindow(row);
+                } else if (column == 10){
+                    removeRowFromPersonalDatabase(row);
                 }
             }
         });
@@ -303,10 +310,10 @@ public class UserGUI extends DatabaseLib {
         endDateModel = new SpinnerDateModel();
         startDateSpinner = new JSpinner(startDateModel);
         endDateSpinner = new JSpinner(endDateModel);
-
+        
         personalDatabaseTable.getColumnModel().getColumn(START_DATE_COLUMN_INDEX)
-                .setCellEditor(new DateCellEditor());
-
+        .setCellEditor(new DateCellEditor());
+        
         personalDatabaseTable.getColumnModel().getColumn(END_DATE_COLUMN_INDEX)
                 .setCellEditor(new DateCellEditor());
 
@@ -314,6 +321,31 @@ public class UserGUI extends DatabaseLib {
         personalDatabaseTable.setRowSorter(new TableRowSorter<>(personalDatabaseTableModel));
         new Sorting(personalDatabaseTable, (TableRowSorter<TableModel>) personalDatabaseTable.getRowSorter());
     }
+
+    private void removeRowFromPersonalDatabase(int row) {
+        // Get the book title and author from the row being removed
+        String bookTitle = personalDatabaseTableModel.getValueAt(row, 0).toString();
+        String bookAuthor = personalDatabaseTableModel.getValueAt(row, 1).toString();
+    
+        personalDatabaseTableModel.removeRow(row);
+
+        addedBooks.remove(bookTitle + " - " + bookAuthor);
+    
+        for (int i = 0; i < jt.getRowCount(); i++) {
+            String generalBookTitle = jt.getValueAt(i, 0).toString();
+            String generalBookAuthor = jt.getValueAt(i, 1).toString();
+            // If the book is found, update the button appearance to "Add"
+            if (bookTitle.equals(generalBookTitle) && bookAuthor.equals(generalBookAuthor)) {
+                // Update button text to "Add"
+                jt.setValueAt(Lang.bookAdded, i, column.length - 1); 
+                // Update button appearance
+                jt.getColumnModel().getColumn(column.length - 1).setCellRenderer(new ButtonRenderer());
+                jt.repaint(); // Repaint the table to reflect changes
+                break;
+            }
+        }
+    }
+    
 
     // Method to open user rating window
     private void openUserRatingWindow(int row) {
@@ -346,8 +378,6 @@ public class UserGUI extends DatabaseLib {
     }
     
     
-    
-
     // Method to add search functionality to personal database
     private void addPersonalDatabaseSearchFunctionality() {
         personalDatabaseSearchField = new JTextField(20);
@@ -415,4 +445,16 @@ public class UserGUI extends DatabaseLib {
         mainPanel.revalidate();
         mainPanel.repaint();
     }
+
+    public static void updateUserReview(String title, String author, String review) {
+        for (int row = 0; row < personalDatabaseTableModel.getRowCount(); row++) {
+            String bookTitle = personalDatabaseTableModel.getValueAt(row, 0).toString();
+            String bookAuthor = personalDatabaseTableModel.getValueAt(row, 1).toString();
+            if (bookTitle.equals(title) && bookAuthor.equals(author)) {
+                personalDatabaseTableModel.setValueAt(review, row, 9); // Assuming user review column index is 9
+                break;
+            }
+        }
+    }
+    
 }

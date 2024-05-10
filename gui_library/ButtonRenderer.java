@@ -30,4 +30,5 @@ class ButtonRenderer extends JButton implements TableCellRenderer {
 
         return this;
     }
+
 }
