@@ -1,7 +1,2 @@
-<<<<<<< HEAD
-review_index=0
-rating_index=5
-=======
-review_index=27
-rating_index=88
->>>>>>> Bilgeyis
+review_index=7
+rating_index=0

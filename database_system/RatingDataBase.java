@@ -1,6 +1,5 @@
 package database_system;
 
-import entities.book.Book;
 import entities.other.ControlOpinion;
 import entities.rating.Rating;
 import entities.user_and_admin.User;
@@ -14,15 +13,15 @@ import program_settings.Parametres;
 
 public class RatingDataBase {
 
-     public static void addRating(User user, Book book, double rate){
-        Rating.createRating(user.getUsername(), book.getTitle(), book.getAuthor(), rate);
+     public static void addRating(User user, String title, String author, double rate){
+        Rating.createRating(user.getUsername(), title, author, rate);
         
         File file = new File(Parametres.RATING_PATH + "rating" + Rating.getGeneralIndex() + Parametres.FILE_FORMAT);
 
         try(BufferedWriter bw = new BufferedWriter(new FileWriter(file))){
             file.createNewFile();
 
-            bw.write(user.getUsername() + " ; " + book.getTitle() + "_" + book.getAuthor() + " ; " + rate);
+            bw.write(user.getUsername() + " ; " + title + "_" + author + " ; " + rate);
         }catch(IOException e){
             System.out.println("Error while creating a rating");
         }

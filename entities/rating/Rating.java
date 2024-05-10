@@ -15,20 +15,20 @@ public class Rating extends UserOpinion {
     private static int generalIndex;
     private double rate;
 
-    Rating(String user, String book, double rate) {
-        super(user, book);
+    Rating(String user, String book, String author, double rate) {
+        super(user, book, author);
         this.index = ++generalIndex;
         this.rate = rate;
     }
 
-    Rating(String user, String book, double rate, int index) {
-        super(user, book);
+    Rating(String user, String book, String author, double rate, int index) {
+        super(user, book, author);
         this.index = index;
         this.rate = rate;
     }
 
     public static Rating createRating(String username, String title, String author, double rate){
-        Rating rating = new Rating(username, title, rate);
+        Rating rating = new Rating(username, title, author, rate);
 
         if(!CheckFile.check(Parametres.USER_RATING_PATH, username));{
 

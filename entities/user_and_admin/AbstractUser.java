@@ -8,10 +8,9 @@
 
 package entities.user_and_admin;
 
-import java.util.regex.*;
-
 import entities.user_and_admin.exceptions.IllegalPasswordException;
 import entities.user_and_admin.exceptions.IllegalUsernameException;
+import java.util.regex.*;
 
 abstract class AbstractUser {
     private String username;
@@ -45,7 +44,7 @@ abstract class AbstractUser {
     // for now username can only contain english letters, and testUsername() method
     // checks if it only contains english letters.
     private boolean testUsername(String username) {
-        String regex = "^[A-Za-z]\\w{5,29}$";
+        String regex = "^[A-Za-z]\\w{1,29}$";
 
         Pattern p = Pattern.compile(regex);
 

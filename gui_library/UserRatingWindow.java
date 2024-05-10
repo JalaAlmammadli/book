@@ -1,5 +1,6 @@
 package gui_library;
 
+import database_system.RatingDataBase;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -9,6 +10,7 @@ import lang_change.Lang;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import program_settings.Parametres;
 
 public class UserRatingWindow extends JFrame {
     private JTable bookTable;
@@ -75,7 +77,8 @@ public class UserRatingWindow extends JFrame {
         String rating = bookTable.getValueAt(0, 2).toString();
     
         // Perform saving operations here, e.g., updating the database
-    
+        RatingDataBase.addRating(Parametres.getActiveUser(), title, author, WIDTH);
+
         dispose(); 
     }
 }

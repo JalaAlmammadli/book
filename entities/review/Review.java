@@ -15,20 +15,21 @@ public class Review extends UserOpinion {
     private static int generalIndex;
     private String content;
 
-    Review(String user, String book, String content) {
-        super(user, book);
+    Review(String user, String book, String author, String content) {
+        super(user, book, author);
         this.index = ++generalIndex;
         setContent(content);
     }
 
-    Review(String user, String book, String content, int index) {
-        super(user, book);
+    Review(String user, String book, String author, String content, int index) {
+        super(user, book, author);
         this.index = index;
         setContent(content);
     }
 
     public static Review createReview(String username, String title, String author, String content){
-        Review review = new Review(username, title, content);
+        Review review = new Review(username, title, author, content);
+        System.out.println(generalIndex);
         
         if(!CheckFile.check(Parametres.USER_REVIEW_PATH, username)){
 
@@ -72,9 +73,9 @@ public class Review extends UserOpinion {
         }
     }
 
-    public static Review readReview(String username, String title, String content, int index){
+    public static Review readReview(String username, String title, String author, String content, int index){
         
-        return new Review(username, title, content, index);
+        return new Review(username, title, author, content, index);
     }
 
     public String getContent() {

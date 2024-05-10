@@ -52,7 +52,7 @@ public class UserDataBase extends AbstractDataBase<User>{
 
             BufferedWriter bw = new BufferedWriter(new FileWriter("./data/user_list.csv"));
 
-            for (int i = 0; i < super.nameList.size(); i++) {
+            for (int i = 0; i < nameList.size(); i++) {
                 User u = super.list.get(i);
                 bw.write(u.getUsername() + ";" + u.getPassword());
                 bw.newLine();
@@ -123,5 +123,25 @@ public class UserDataBase extends AbstractDataBase<User>{
         }
 
         return false;
+    }
+
+    // This method will return user
+    public User getMember(String name) {
+    
+        return super.list.get(super.nameList.indexOf(name));
+    }
+
+    // This method removes user from user_list by its username
+    public void remove(String name) {
+        if (contains(name)) {
+    
+            super.list.remove(super.list.get(super.nameList.indexOf(name)));
+        }
+    
+        System.out.println("There is no such object in the list");
+    }
+    
+    public boolean contains(String name) {
+        return super.nameList.contains(name) ? true : false;
     }
 }

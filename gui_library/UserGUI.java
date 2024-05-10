@@ -341,7 +341,8 @@ public class UserGUI extends DatabaseLib {
         }
     
         // If review window is not open, create a new one
-        new UserReviewWindow(selectedTitle, selectedAuthor);
+        new UserReviewWindow(selectedTitle, selectedAuthor
+        );
     }
     
     

@@ -1,5 +1,7 @@
 package database_system;
 
+import database_system.exceptions.IllegalMemberException;
+import entities.book.Book;
 import entities.other.ControlOpinion;
 import entities.review.Review;
 import entities.user_and_admin.User;
@@ -14,6 +16,11 @@ import program_settings.Parametres;
 public class ReviewDataBase {
 
     public static Review addReview(User user, String title, String author, String content){
+
+        if(reviewExists(user.getUsername(), title, author)){
+            return null;
+        }
+
         Review review = Review.createReview(user.getUsername(), title, author, content);
         
         File file = new File(Parametres.REVIEW_PATH + "review" + Review.getGeneralIndex() + Parametres.FILE_FORMAT);
@@ -57,16 +64,49 @@ public class ReviewDataBase {
         return null;
     }
 
+    // For personal database
+    public static int getReviewIndex(String username, String title, String author) throws IllegalMemberException{
+
+        User user = UserDataBase.MainUserList.getMember(username);
+        Book book;
+
+        book = BookDataBase.MainBookList.getMember(title, author);
+        int userReviewIndexes[] = user.getAllReviews();
+        int bookReviewIndexes[] = book.getAllReviews();  
+
+        for(int i : userReviewIndexes){
+            for(int j : bookReviewIndexes){
+                if(i == j) return i;
+            }
+        }
+        throw new IllegalMemberException("No review");
+    }
+
+    public static boolean reviewExists(String username, String title, String author){
+
+        File folder = new File(Parametres.REVIEW_PATH);
+
+        for(File file : folder.listFiles()){
+
+            Review r = fileToReview(file);
+            if(r.getWriter().equals(username) && r.getBookTo().equals(title) && r.getBookAuthor().equals(author)) return true;
+        }
+
+        return false;
+    }
+
     // Converts file data to Review object
     static Review fileToReview(File file){
 
         try(BufferedReader br = new BufferedReader(new FileReader(file))) {
             
             String data[] = br.readLine().split(" ; ", -1);
-            int index = Integer.parseInt(file.getName().split("review").toString().split(".txt").toString());
+            int index = Integer.parseInt(file.getName().split("review")[1].split(".txt")[0]);
+            String bookData[] = data[1].split("_");
 
-            return Review.readReview(data[0], data[1], data[2], index);
-        } catch (Exception e) {
+            return Review.readReview(data[0], bookData[0], bookData[1], data[2], index);
+        } catch (IOException e) {
+            System.out.println("Review file does not exists");
         }
 
         return null;

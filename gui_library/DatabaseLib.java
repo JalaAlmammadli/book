@@ -2,7 +2,9 @@ package gui_library;
 
 import app_runner.*;
 import database_system.BookDataBase;
+import database_system.exceptions.IllegalMemberException;
 import entities.book.Book;
+import entities.user_and_admin.User;
 import gui_elements.Actions;
 import gui_log_reg.LoginFrame;
 import java.awt.*;
@@ -253,7 +255,18 @@ public class DatabaseLib extends Actions implements WindowListener {
     }
 
     private void addToList(ArrayList<Object[]> dataRows, String[] data) {
-        Object[] dataRow = new Object[] { data[0], data[1], Lang.noRating, Lang.noReviews };
+
+        Book book;
+        User[] users = null;
+        double totalRating = 0;
+        try {
+            book = BookDataBase.MainBookList.getMember(data[0], data[1]);
+            totalRating = book.countTotalRating();
+            users = book.getAllReviewedUsers();       
+        } catch (IllegalMemberException e) {
+        }
+
+        Object[] dataRow = new Object[] { data[0], data[1], totalRating > 0 ? totalRating : Lang.noRating, users == null ? Lang.noReviews : users[0] + "," + users[1] + "," + users[2]};
         dataRows.add(dataRow);
     }
 

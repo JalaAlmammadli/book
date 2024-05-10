@@ -26,7 +26,6 @@ public class BookDataBase extends AbstractDataBase<Book> {
             while ((line = br.readLine()) != null) {
                 String data[] = line.split(";");
                 super.list.add(Book.readBook(data[0], data[1]));
-                super.nameList.add(data[0]);
             }
         } catch (IOException e) {
             System.out.println(e);
@@ -43,7 +42,7 @@ public class BookDataBase extends AbstractDataBase<Book> {
 
             BufferedWriter bw = new BufferedWriter(new FileWriter("./data/book_list.csv"));
 
-            for (int i = 0; i < super.nameList.size(); i++) {
+            for (int i = 0; i < super.list.size(); i++) {
                 Book b = super.list.get(i);
                 bw.write(b.getTitle() + ";" + b.getAuthor());
                 bw.newLine();
@@ -58,8 +57,12 @@ public class BookDataBase extends AbstractDataBase<Book> {
     // Add book to the database
     public void add(Book book) throws IllegalMemberException {
 
+        for(Book b : super.list){
+            if(b.getTitle().equals(book.getTitle()) && b.getAuthor().equals(book.getAuthor())){
+                throw new IllegalMemberException("Book already exists");
+            }
+        }
         super.add(book);
-        super.nameList.add(book.getTitle());
     }
 
     // Returns some data of the book by index from the database

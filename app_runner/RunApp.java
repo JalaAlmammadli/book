@@ -2,6 +2,7 @@ package app_runner;
 
 import gui_log_reg.LoginFrame;
 
+
 public class RunApp extends Thread {
 
     public synchronized void run() {

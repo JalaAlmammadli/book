@@ -2,7 +2,10 @@ package entities.book;
 
 import database_system.BookDataBase;
 import database_system.RatingDataBase;
+import database_system.ReviewDataBase;
+import database_system.UserDataBase;
 import entities.other.ControlOpinion;
+import entities.user_and_admin.User;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -33,6 +36,24 @@ public class Book extends AbstractWork {
         return null;
     }
 
+    // Retruns array of all users who reviewed the book
+    public User[] getAllReviewedUsers(){
+        int[] reviewIndexes = getAllReviews();
+
+        if(reviewIndexes == null){
+            return null;
+        }
+
+        User[] users = new User[reviewIndexes.length];
+
+        for(int i = 0; i < reviewIndexes.length; i++){
+            users[i] = UserDataBase.MainUserList.getMember(ReviewDataBase.getReviewAuthor(reviewIndexes[i]));
+        }
+
+        return users;
+    }
+
+    // Returns array of indexes of all reviews of the book
     public int[] getAllReviews(){
         return ControlOpinion.getAllOpinion(Parametres.BOOK_REVIEW_PATH + super.title + Parametres.FILE_FORMAT);
     }
@@ -51,6 +72,7 @@ public class Book extends AbstractWork {
         return BookDataBase.MainBookList.deleteBook(bookTitle, author);
     }
 
+    // Count total rating of the book
     public double countTotalRating(){
 
         double count = 0;
@@ -65,6 +87,7 @@ public class Book extends AbstractWork {
         return count/ratings.length;
     }
 
+    // Reads rating data of the book
     private int[] readRatings(){
         try(BufferedReader br = new BufferedReader(new FileReader(Parametres.BOOK_RATING_PATH + getTitle() + "_" + getAuthor() + Parametres.FILE_FORMAT))){
 
