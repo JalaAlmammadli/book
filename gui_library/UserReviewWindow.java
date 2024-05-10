@@ -41,8 +41,8 @@ public class UserReviewWindow extends JFrame {
         titleLabel = new Label(10, 10, 150, 20, "Title: " + title, panel);
         authorLabel = new Label(10, 40, 150, 20, "Author: " + author, panel);
         try {
-            Double rating = BookDataBase.MainBookList.getMember(title, author).countTotalRating();
-            ratingLabel = new Label(10, 70, 150, 20, "Rating: " + rating.toString(), panel);   
+
+            ratingLabel = new Label(10, 70, 150, 20, "Rating: " + BookDataBase.MainBookList.getMember(title, author).countRatingString(), panel);   
         } catch (IllegalMemberException e) {
         }
 
@@ -63,6 +63,7 @@ public class UserReviewWindow extends JFrame {
                     JOptionPane.showMessageDialog(UserReviewWindow.this, "Review saved successfully!");
                     // Update user review in personal database panel
                     UserGUI.updateUserReview(title, author, reviewContent);
+                    dispose();
                 } else {
                     JOptionPane.showMessageDialog(UserReviewWindow.this, "Please enter a review before saving.");
                 }
