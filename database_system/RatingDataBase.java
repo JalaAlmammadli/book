@@ -1,7 +1,9 @@
 package database_system;
 
+import entities.book.Book;
 import entities.other.ControlOpinion;
 import entities.rating.Rating;
+import entities.review.Review;
 import entities.user_and_admin.User;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -9,6 +11,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+
+import database_system.exceptions.IllegalMemberException;
 import program_settings.Parametres;
 
 public class RatingDataBase {
@@ -52,6 +56,40 @@ public class RatingDataBase {
             }
         }
         return null;
+    }
+
+    public static int getRatingIndex(String username, String title, String author) throws IllegalMemberException{
+
+        User user = UserDataBase.MainUserList.getMember(username);
+        Book book;
+
+        book = BookDataBase.MainBookList.getMember(title, author);
+        int userReviewIndexes[] = user.getAllReviews();
+        int bookReviewIndexes[] = book.getAllReviews();  
+
+        for(int i : userReviewIndexes){
+            for(int j : bookReviewIndexes){
+                if(i == j) return i;
+            }
+        }
+        throw new IllegalMemberException("No rating");
+    }
+
+    public static boolean ratingExists(String username, String title, String author){
+
+        File folder = new File(Parametres.REVIEW_PATH);
+        File[] files = folder.listFiles();
+
+        if(files == null){
+            return false;
+        }
+        for(File file : files){
+
+            Rating r = fileToRating(file);
+            if(r.getWriter().equals(username) && r.getBookTo().equals(title) && r.getBookAuthor().equals(author)) return true;
+        }
+
+        return false;
     }
 
     // Converts file data to Review object

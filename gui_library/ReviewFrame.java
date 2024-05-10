@@ -3,7 +3,9 @@ package gui_library;
 import javax.swing.*;
 import javax.swing.table.*;
 
+import database_system.RatingDataBase;
 import database_system.ReviewDataBase;
+import database_system.exceptions.IllegalMemberException;
 import lang_change.Lang;
 import java.awt.*;
 import java.awt.event.*;
@@ -96,7 +98,16 @@ public class ReviewFrame extends JFrame {
 
     private void openReviewFrame(String username, String title, String author, String rating) {
         dispose();
-        ReviewFrame reviewFrame = new ReviewFrame(title, author, rating, username);
+
+        try {
+            String content = ReviewDataBase.getReviewContent(ReviewDataBase.getReviewIndex(username, title, author));
+        } catch (IllegalMemberException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        String rating = RatingDataBase.getRatingContent(RatingDataBase.)
+        ReviewFrame reviewFrame = new ReviewFrame(title, author, rating, username, content);
         reviewFrame.setVisible(true);
     }
 }
