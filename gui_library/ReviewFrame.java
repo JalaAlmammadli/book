@@ -47,7 +47,7 @@ public class ReviewFrame extends JFrame {
 
         // Create panels to hold the tables
         JPanel bookPanel = new JPanel(new GridLayout(0, 1));
-        bookPanel.setBorder(BorderFactory.createTitledBorder("Book Details"));
+        bookPanel.setBorder(BorderFactory.createTitledBorder(Lang.bookDetails));
         bookPanel.add(bookScrollPane);
 
         JPanel userPanel = new JPanel(new GridLayout(0, 1));
@@ -82,7 +82,7 @@ public class ReviewFrame extends JFrame {
     }
 
     private String showUserListDialog() {
-        return (String) JOptionPane.showInputDialog(null, "Select a user:", "User List", JOptionPane.PLAIN_MESSAGE, null, userList, null);
+        return (String) JOptionPane.showInputDialog(null, Lang.selectUser, "User List", JOptionPane.PLAIN_MESSAGE, null, userList, null);
     }
 
     private void loadUserList() {
@@ -106,8 +106,8 @@ public class ReviewFrame extends JFrame {
             e.printStackTrace();
         }
 
-        String rating = RatingDataBase.getRatingContent(RatingDataBase.)
-        ReviewFrame reviewFrame = new ReviewFrame(title, author, rating, username, content);
-        reviewFrame.setVisible(true);
+        // String rating = RatingDataBase.getRatingContent(RatingDataBase.)
+        // ReviewFrame reviewFrame = new ReviewFrame(title, author, rating, username, content);
+        // reviewFrame.setVisible(true);
     }
 }

@@ -5,6 +5,8 @@ import database_system.BookDataBase;
 import database_system.ReviewDataBase;
 import database_system.exceptions.IllegalMemberException;
 import gui_elements.*;
+import lang_change.Lang;
+
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -38,11 +40,11 @@ public class UserReviewWindow extends JFrame {
         this.add(panel);
 
 
-        titleLabel = new Label(10, 10, 150, 20, "Title: " + title, panel);
-        authorLabel = new Label(10, 40, 150, 20, "Author: " + author, panel);
+        titleLabel = new Label(10, 10, 150, 20, Lang.bookTitle + title, panel);
+        authorLabel = new Label(10, 40, 150, 20, Lang.bookAuthor + author, panel);
         try {
 
-            ratingLabel = new Label(10, 70, 150, 20, "Rating: " + BookDataBase.MainBookList.getMember(title, author).countRatingString(), panel);   
+            ratingLabel = new Label(10, 70, 150, 20, Lang.bookRating + BookDataBase.MainBookList.getMember(title, author).countRatingString(), panel);   
         } catch (IllegalMemberException e) {
         }
 
@@ -51,7 +53,7 @@ public class UserReviewWindow extends JFrame {
         textArea.setBounds(50, 100, 400, 150);
         panel.add(textArea);
 
-        saveButton = new JButton("Save");
+        saveButton = new JButton(Lang.confirm);
         saveButton.setBounds(200, 275, 100, 25);
         saveButton.setBackground(Color.decode("#E5E1DA"));
         saveButton.addActionListener(new ActionListener() {

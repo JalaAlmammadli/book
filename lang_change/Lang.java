@@ -79,6 +79,14 @@ public class Lang {
 
     // User
     public static String logOut;
+    public static String removeBook;
+    public static String bookDetails;
+
+    public static String selectUser;
+
+    public static String SelectUserToDelete;
+
+    public static String selectBookToDelete;
     
     protected static void change(Language lang){
 
@@ -182,6 +190,12 @@ public class Lang {
 
             // User
             logOut = br.readLine();
+            selectUser = br.readLine();
+            removeBook = br.readLine();
+            bookDetails = br.readLine();
+            SelectUserToDelete = br.readLine();
+            selectBookToDelete = br.readLine();
+
 
         } catch (Exception e) {
         }

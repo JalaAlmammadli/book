@@ -58,7 +58,7 @@ public class UserRatingWindow extends JFrame {
         JScrollPane bookScrollPane = new JScrollPane(bookTable);
 
         JPanel bookPanel = new JPanel(new GridLayout(0, 1));
-        bookPanel.setBorder(BorderFactory.createTitledBorder("Book Details"));
+        bookPanel.setBorder(BorderFactory.createTitledBorder(Lang.bookDetails));
         bookPanel.add(bookScrollPane);
 
         saveButton = new JButton(Lang.confirm);

@@ -37,7 +37,7 @@ public class UserGUI extends DatabaseLib {
 
     private static final int START_DATE_COLUMN_INDEX = 6;
     private static final int END_DATE_COLUMN_INDEX = 7;
-    private final int REMOVE_COLUMN_INDEX = 10; // Index of the Remove column
+    private final int REMOVE_COLUMN_INDEX = 10; 
     private JPanel personalDatabasePanel;
     private static DefaultTableModel personalDatabaseTableModel;
     private JTable personalDatabaseTable;
@@ -258,7 +258,7 @@ public class UserGUI extends DatabaseLib {
         personalDatabaseTableModel.addColumn("<html><b>" + Lang.bookEndDate + "</b></html>");
         personalDatabaseTableModel.addColumn("<html><b>" + Lang.userRating + "</b></html>");
         personalDatabaseTableModel.addColumn("<html><b>" + Lang.userReview + "</b></html>");
-        personalDatabaseTableModel.addColumn("<html><b>Remove</b></html>");
+        personalDatabaseTableModel.addColumn("<html><b>" + Lang.removeBook + "</b></html>");
         
         personalDatabaseTable = new JTable(personalDatabaseTableModel);
         personalDatabaseTable.getTableHeader().setReorderingAllowed(false);
@@ -290,7 +290,7 @@ public class UserGUI extends DatabaseLib {
         JScrollPane scrollPane = new JScrollPane(personalDatabaseTable);
         personalDatabasePanel.add(scrollPane, BorderLayout.CENTER);
         
-        personalDatabaseTable.getColumnModel().getColumn(REMOVE_COLUMN_INDEX).setHeaderValue("<html><b>Remove</b></html>");
+        personalDatabaseTable.getColumnModel().getColumn(REMOVE_COLUMN_INDEX).setHeaderValue("<html><b>" + Lang.removeBook + "</b></html>");
         personalDatabaseTable.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 int column = personalDatabaseTable.getColumnModel().getColumnIndexAtX(e.getX());

@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
+import lang_change.Lang;
+
 public class DeleteUser {
 
     public static void deleteUser(String username) {
@@ -56,7 +58,7 @@ public class DeleteUser {
             return;
         }
 
-        String selectedUser = (String) JOptionPane.showInputDialog(null, "Select a user to delete:", "Delete User",
+        String selectedUser = (String) JOptionPane.showInputDialog(null, Lang.SelectUserToDelete, "Delete User",
                 JOptionPane.PLAIN_MESSAGE, null, users, users[0]);
 
         if (selectedUser != null) {

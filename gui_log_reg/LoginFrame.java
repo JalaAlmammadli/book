@@ -41,7 +41,6 @@ public class LoginFrame {
         private static JFrame jframe;
 
         // Additional objects
-        private static JCheckBoxMenuItem stayLoginedBox;
         private static Label Userlabel;
         private static Label passwordlabel;
         private static TextField userText;
@@ -80,11 +79,6 @@ public class LoginFrame {
 
                 jframe.setResizable(false);
                 jpanel.setLayout(null);
-
-                /* CheckBox **************************************************************/
-                stayLoginedBox = new JCheckBoxMenuItem("Stay logined");
-                stayLoginedBox.setBounds(10, 130, 100, 25);
-                jpanel.add(stayLoginedBox);
 
                 /* Labels*************************************************************** */
                 // Username label
@@ -142,7 +136,7 @@ public class LoginFrame {
                                 String password = new String(passwordText.getObject().getPassword());
 
                                 try {
-                                        if (Login.tryLogin(user, password, stayLoginedBox.getState())) {
+                                        if (Login.tryLogin(user, password)) {
                                                 jframe.dispose();
 
                                                 if (Parametres.getUserStatus() == Status.ADMIN) {

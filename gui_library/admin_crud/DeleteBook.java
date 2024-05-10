@@ -39,7 +39,7 @@ public class DeleteBook implements ActionListener {
                 }
             }
         } else {
-            JOptionPane.showMessageDialog(null, "Please select a book to delete!", "Error",
+            JOptionPane.showMessageDialog(null, Lang.selectBookToDelete, "Error",
                     JOptionPane.ERROR_MESSAGE);
         }
     }

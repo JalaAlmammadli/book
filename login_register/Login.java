@@ -38,18 +38,11 @@ public class Login {
      * the program.
      */
 
-    public static boolean tryLogin(String username, String password, boolean stay_logined_arg)
+    public static boolean tryLogin(String username, String password)
             throws WrongUserException, IllegalMemberException {
 
         if (loginProcess(username, password)) {
             return true;
-        }
-
-        if (stay_logined_arg == true) {
-            stay_logined = true;
-            System.out.println("Stay logined");
-        } else {
-            stay_logined = false;
         }
 
         return false;
