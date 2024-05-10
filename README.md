@@ -32,7 +32,6 @@ To install the Book Review System on your local machine, follow these steps:
     # git clone https://github.com/your-username/book-review-system.git
    
 </code>
-
 Replace your-username with your actual GitHub username. This command will download the entire project files to your computer.
 
 2. Navigate to the Project Directory: Once the cloning process is complete, navigate to the project directory using the cd command:
