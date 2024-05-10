@@ -10,6 +10,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import lang_change.Lang;
 import program_settings.Parametres;
 
 public class Book extends AbstractWork {
@@ -72,19 +73,26 @@ public class Book extends AbstractWork {
         return BookDataBase.MainBookList.deleteBook(bookTitle, author);
     }
 
+    public String countRatingString(){
+        double[] dataRating = countTotalRating();
+        return dataRating == null ?  Lang.noRating : dataRating[0] + "(" + dataRating[1] + ")";
+    }
+
+    
     // Count total rating of the book
-    public double countTotalRating(){
+    public double[] countTotalRating(){
 
         double count = 0;
         int ratings[] = readRatings();
 
-        if(ratings == null) return 0;
+        if(ratings == null) return null;
         
         for(int rating : ratings){
             count += RatingDataBase.getRatingContent(rating);
         }
 
-        return count/ratings.length;
+        double[] data = {count, (double)ratings.length};
+        return data;
     }
 
     // Reads rating data of the book

@@ -256,17 +256,15 @@ public class DatabaseLib extends Actions implements WindowListener {
 
     private void addToList(ArrayList<Object[]> dataRows, String[] data) {
 
-        Book book;
+        Book book = null;
         User[] users = null;
-        double totalRating = 0;
         try {
             book = BookDataBase.MainBookList.getMember(data[0], data[1]);
-            totalRating = book.countTotalRating();
             users = book.getAllReviewedUsers();       
         } catch (IllegalMemberException e) {
         }
 
-        Object[] dataRow = new Object[] { data[0], data[1], totalRating > 0 ? totalRating : Lang.noRating, users == null ? Lang.noReviews : users[0] + "," + users[1] + "," + users[2]};
+        Object[] dataRow = new Object[] { data[0], data[1], book.countRatingString(), users == null ? Lang.noReviews : users[0] + "," + users[1] + "," + users[2]};
         dataRows.add(dataRow);
     }
 
