@@ -8,26 +8,25 @@
 
 package gui_log_reg;
 
+import database_system.exceptions.IllegalMemberException;
+import entities.user_and_admin.exceptions.IllegalPasswordException;
+import entities.user_and_admin.exceptions.IllegalUsernameException;
+import gui_elements.*;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-
-import database_systems.exceptions.IllegalMemberException;
-import entities.user_and_admin.exceptions.IllegalPasswordException;
-import entities.user_and_admin.exceptions.IllegalUsernameException;
-// Project classes
+import lang_change.Lang;
 import login_register.Register;
-import gui_elements.*;
 
 public class RegisterFrame extends LoginFrame {
 
-    private static boolean calledFromLogin = false;
-    private static boolean returnReg = false;
     // Frame objects
     private static JFrame registrationFrame;
     private static JPanel registrationPanel;
@@ -44,21 +43,18 @@ public class RegisterFrame extends LoginFrame {
     private static Label repeatPasswordLabel;
     private static Label infoForUser;
 
-    public static void Register(boolean calledFromLogin) {
-        openRegistrationForm(calledFromLogin);
-        if (returnReg) {
-            return;
-        }
+    public static synchronized void Register() {
+        openRegistrationForm();
     }
 
     // I made it protected because, I could call it from main
     // and it gave NullPointerException as Login page was not
     // created. So, I made it for security purposes.
-    public static void openRegistrationForm(boolean calledFromLogin) {
+    public static void openRegistrationForm() {
 
         // Frame and Panel settings********************************************
         registrationPanel = new JPanel();
-        registrationFrame = new JFrame("Registration");
+        registrationFrame = new JFrame(Lang.registerTitle);
         registrationFrame.setSize(350, 280);
         registrationFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         registrationFrame.setLocationRelativeTo(null);
@@ -71,16 +67,16 @@ public class RegisterFrame extends LoginFrame {
 
         /* Labels */
         // Username label
-        usernameLabel = new Label(10, 20, 80, 25, "Username:", registrationPanel);
+        usernameLabel = new Label(10, 20, 80, 25, Lang.usernameLabel, registrationPanel);
 
         // Password label
-        passwordLabel = new Label(10, 60, 80, 25, "Password:", registrationPanel);
+        passwordLabel = new Label(10, 60, 80, 25, Lang.passwordLabel, registrationPanel);
 
         // Added by Orkhan
-        repeatPasswordLabel = new Label(10, 100, 120, 25, "Repeat Password:", registrationPanel);
+        repeatPasswordLabel = new Label(10, 100, 120, 25, Lang.repeatPasswordLabel, registrationPanel);
 
         // Login text
-        loginText = new Label(10, 210, 200, 25, "Already have an account?", registrationPanel);
+        loginText = new Label(10, 210, 200, 25, Lang.haveAccount, registrationPanel);
 
         // Information label
         infoForUser = new Label(100, 130, 165, 25, null, registrationPanel);
@@ -98,9 +94,26 @@ public class RegisterFrame extends LoginFrame {
         // *********************************************************************
 
         // Register button******************************************************
-        registerButton = new Button(100, 170, 100, 25, "Register", registrationPanel);
+        registerButton = new Button(100, 170, 140, 25, Lang.registerTitle, registrationPanel);
+        registerButton.getObject().setBackground(new Color(0xF1F0E8));
+        registerButton.getObject().setBorder(BorderFactory.createLineBorder(new Color(0x0C0C0C), 1));
+
+        registerButton.getObject().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseExited(MouseEvent e) {
+                  registerButton.getObject().setBorder(BorderFactory.createLineBorder(new Color(0x0C0C0C), 1));
+             }
+
+            @Override
+             public void mouseEntered(MouseEvent e){
+                registerButton.getObject().setBorder(BorderFactory.createLineBorder(new Color(0x0C0C0C), 2));
+
+             }
+    });
+
         registerButton.getObject().addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                
                 String newUsername = newUsernameField.getObject().getText();
                 String newPassword = new String(newPasswordField.getObject().getPassword());
                 String newPassword2 = new String(newPasswordField2.getObject().getPassword());
@@ -124,24 +137,16 @@ public class RegisterFrame extends LoginFrame {
         // ***********************************************************************
 
         // Login link
-        returnReg = false;
-        loginLink = new Label(170, 210, 100, 25, "<html><u>Login here</u></html>", registrationPanel);
-        loginLink.getObject().setForeground(Color.BLUE);
+        loginLink = new Label(170, 210, 100, 25, "<html><u>" + Lang.loginHere + "</u></html>", registrationPanel);
+        loginLink.getObject().setForeground(Color.BLACK);
+        loginLink.getObject().setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         loginLink.getObject().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
 
-                // This made because by calling login()->register()->login()->...
-                // this can cause StackOverFlow error because of too much recursion process
-                // So calledFromLogin will get boolean value to define if this method
-                // called from login(true) or not(false)
-                if (!calledFromLogin) {
-                    registrationFrame.dispose();
-                    System.out.println("did not called from login");
-                    LoginFrame.login();
-                }
-                returnReg = true;
+                LoginFrame.login();
+                registrationFrame.dispose();
             }
         });
 

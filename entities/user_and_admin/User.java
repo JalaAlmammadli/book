@@ -8,17 +8,14 @@
 
 package entities.user_and_admin;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-
-import program_settings.Parametres;
-import database_systems.exceptions.IllegalMemberException;
-import entities.user_and_admin.AbstractUser;
+import entities.other.ControlOpinion;
 import entities.user_and_admin.exceptions.IllegalPasswordException;
 import entities.user_and_admin.exceptions.IllegalUsernameException;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import program_settings.Parametres;
 
 public class User extends AbstractUser {
 
@@ -33,15 +30,9 @@ public class User extends AbstractUser {
     // Searches User's data by username if there is no such file throws
     // IllegalMemberException
 
-    public static User readUser(String username, String password) {
+    public static User readUser(String username, int password) {
 
-        try {
-            return new User(username, password);
-        } catch (IllegalPasswordException | IllegalUsernameException e) {
-            System.out.println(e);
-        }
-
-        return null;
+        return new User(username, password);
 
         // try (BufferedReader br = new BufferedReader(
         // new FileReader(Parametres.USER_PATH + username + Parametres.FILE_FORMAT));) {
@@ -85,5 +76,13 @@ public class User extends AbstractUser {
 
     public String toString() {
         return "[ username: " + super.getUsername() + " ]";
+    }
+
+    public int[] getAllReviews(){
+        return ControlOpinion.getAllOpinion(Parametres.USER_REVIEW_PATH + getUsername() + Parametres.FILE_FORMAT, getUsername());
+    }
+
+    public int[] getAllRatings(){
+        return ControlOpinion.getAllOpinion(Parametres.USER_RATING_PATH + getUsername() + Parametres.FILE_FORMAT, getUsername());
     }
 }

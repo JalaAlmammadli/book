@@ -8,18 +8,23 @@
 
 package login_register;
 
-import database_systems.UserDataBase;
-import database_systems.exceptions.IllegalMemberException;
+import database_system.UserDataBase;
+import database_system.exceptions.IllegalMemberException;
 import entities.user_and_admin.Admin;
-import program_settings.Status;
-import program_settings.Parametres;
+import lang_change.Lang;
 import login_register.login_exceptions.WrongUserException;
+import program_settings.Parametres;
+import program_settings.Status;
 
 public class Login {
     private static boolean stay_logined = false;
 
-    public boolean stayLogined() {
+    public static boolean stayLogined() {
         return stay_logined;
+    }
+
+    public static void setLogined(boolean b){
+        stay_logined = b;
     }
 
     /*
@@ -33,49 +38,34 @@ public class Login {
      * the program.
      */
 
-    public static boolean tryLogin(String username, String password, boolean stay_logined_arg)
+    public static boolean tryLogin(String username, String password)
             throws WrongUserException, IllegalMemberException {
-
-        try {
-            Thread.sleep(200);
-        } catch (InterruptedException e) {
-
-        }
 
         if (loginProcess(username, password)) {
             return true;
         }
 
-        if (stay_logined_arg == true) {
-            stay_logined = true;
-            System.out.println("Stay logined");
-        } else {
-            stay_logined = false;
-        }
-
         return false;
-
     }
 
     private static boolean loginProcess(String username, String password)
             throws WrongUserException, IllegalMemberException {
 
+        // if user enters username: admin and password: admin he enters program as admin
         if (Admin.login(username, password)) {
             Parametres.setUserStatus(Status.ADMIN);
             return true;
 
-        } else {
-            if (UserDataBase.checkUserForLogin(username, password)) {
-
-                System.out.println("Success");
-                Parametres.setActiveUser(UserDataBase.getMember(username));
-                Parametres.setUserStatus(Status.USER);
-                return true;
-
-            } else {
-                throw new WrongUserException("Wrong username or password");
-            }
         }
+        else if (UserDataBase.MainUserList.checkUserForLogin(username, password)) {
 
+            System.out.println("Success");
+            Parametres.setActiveUser(UserDataBase.MainUserList.getMember(username));
+            Parametres.setUserStatus(Status.USER);
+            return true;
+
+        } else {
+            throw new WrongUserException(Lang.wrongUsernameOrPassword);
+        }
     }
 }

@@ -7,6 +7,7 @@ package gui_log_reg;
  * 
  */
 
+import app_runner.MainTableGUI;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
@@ -18,15 +19,21 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-import database_systems.exceptions.IllegalMemberException;
+import database_system.exceptions.IllegalMemberException;
 
+import javax.swing.BorderFactory;
 import javax.swing.JCheckBoxMenuItem;
 
 // Project classes
 import login_register.Login;
 import login_register.login_exceptions.WrongUserException;
+import program_settings.Parametres;
+import program_settings.Status;
 import gui_elements.*;
-import gui_table.Table;
+import gui_library.AdminGUI;
+import gui_library.DatabaseLib;
+import gui_library.UserGUI;
+import lang_change.Lang;
 
 public class LoginFrame {
         // Frame objects
@@ -34,7 +41,6 @@ public class LoginFrame {
         private static JFrame jframe;
 
         // Additional objects
-        private static JCheckBoxMenuItem stayLoginedBox;
         private static Label Userlabel;
         private static Label passwordlabel;
         private static TextField userText;
@@ -65,7 +71,7 @@ public class LoginFrame {
                 jpanel = new JPanel();
                 jframe = new JFrame();
                 jframe.setSize(350, 230);
-                jframe.setTitle("Login");
+                jframe.setTitle(Lang.loginTitle);
                 jframe.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 jframe.setLocationRelativeTo(null);
                 jframe.add(jpanel);
@@ -74,20 +80,15 @@ public class LoginFrame {
                 jframe.setResizable(false);
                 jpanel.setLayout(null);
 
-                /* CheckBox **************************************************************/
-                stayLoginedBox = new JCheckBoxMenuItem("Stay logined");
-                stayLoginedBox.setBounds(10, 130, 100, 25);
-                jpanel.add(stayLoginedBox);
-
                 /* Labels*************************************************************** */
                 // Username label
-                Userlabel = new Label(10, 20, 80, 25, "Username:", jpanel);
+                Userlabel = new Label(10, 20, 80, 25, Lang.usernameLabel, jpanel);
 
                 // Password label
-                passwordlabel = new Label(10, 70, 80, 25, "Password:", jpanel);
+                passwordlabel = new Label(10, 70, 80, 25, Lang.passwordLabel, jpanel);
 
                 // Label near register button
-                registerText = new Label(10, 165, 200, 25, "Do not you have an account?", jpanel);
+                registerText = new Label(10, 165, 200, 25, Lang.dontHaveAccount, jpanel);
 
                 // Information for user
                 infoForUser = new Label(100, 100, 300, 25, null, jpanel);
@@ -101,30 +102,48 @@ public class LoginFrame {
                 /*********************************************************************** */
 
                 // Register link***********************************************************
-                registerLink = new Label(190, 165, 200, 25, "<html><u>Register here</u></html>", jpanel);
-                registerLink.getObject().setForeground(Color.blue);
+                registerLink = new Label(190, 165, 200, 25, "<html><u>" + Lang.registerHere + "</u></html>", jpanel);
+                registerLink.getObject().setForeground(Color.black);
                 registerLink.getObject().setCursor(new Cursor(Cursor.HAND_CURSOR));
                 registerLink.getObject().addMouseListener(new MouseAdapter() {
                         @Override
                         public void mouseClicked(MouseEvent e) {
+                                RegisterFrame.Register(); // Open the registration form
                                 jframe.dispose();
-                                RegisterFrame.Register(true); // Open the registration form
-                                // Added by Orkhan
                         }
                 });
                 // **************************************************************************
 
                 /* Login button************************************************************** */
-                loginButton = new Button(130, 130, 100, 25, "Login", jpanel);
+                loginButton = new Button(130, 130, 100, 25, Lang.loginTitle, jpanel);
+                loginButton.getObject().setBackground(new Color(0xF1F0E8));
+                loginButton.getObject().setBorder(BorderFactory.createLineBorder(new Color(0x0C0C0C), 1));
+        
+                loginButton.getObject().addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseExited(MouseEvent e) {
+                        loginButton.getObject().setBorder(BorderFactory.createLineBorder(new Color(0x0C0C0C), 1));
+                 }
+
+                @Override
+                public void mouseEntered(MouseEvent e){
+                        loginButton.getObject().setBorder(BorderFactory.createLineBorder(new Color(0x0C0C0C), 2));
+                  }
+           });                
                 loginButton.getObject().addActionListener(new ActionListener() {
                         public void actionPerformed(ActionEvent e) {
                                 String user = userText.getObject().getText();
                                 String password = new String(passwordText.getObject().getPassword());
 
                                 try {
-                                        if (Login.tryLogin(user, password, stayLoginedBox.getState())) {
+                                        if (Login.tryLogin(user, password)) {
                                                 jframe.dispose();
-                                                new Table();
+
+                                                if (Parametres.getUserStatus() == Status.ADMIN) {
+                                                        MainTableGUI.databaseLib = new AdminGUI();
+                                                } else {
+                                                        MainTableGUI.databaseLib = new UserGUI();
+                                                }
                                         }
                                 } catch (WrongUserException | IllegalMemberException ex) {
                                         infoForUser.getObject().setText(ex.getMessage());

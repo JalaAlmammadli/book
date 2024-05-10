@@ -1,26 +1,9 @@
 package entities.book;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-
 public abstract class AbstractWork {
 
-    private String title;
-    private String author;
-    private double totalRating;
-    protected static int index;
-    protected int workIndex;
-
-    {
-        try (BufferedReader bf = new BufferedReader(new FileReader("./program_settings/book_index.txt"))) {
-
-            index = Integer.parseInt(bf.readLine());
-        } catch (IOException e) {
-        }
-    }
+    protected  String title;
+    protected  String author;
 
     public AbstractWork(String title, String author) {
         setTitle(title);
@@ -34,6 +17,7 @@ public abstract class AbstractWork {
     public void setTitle(String title) {
         if (title == null || title.strip().equals("")) {
             this.title = "Unknown";
+            return;
         } else if (title.length() < 64) {
             this.title = title;
         }
@@ -47,33 +31,29 @@ public abstract class AbstractWork {
     public void setAuthor(String author) {
         if (author == null || author.strip().equals("")) {
             this.author = "Unknown";
+            return;
         }
-        if (author.length() < 64) {
+        else if (author.length() < 64) {
             this.author = author;
         }
     }
 
-    public double getRating() {
-        return totalRating;
-    }
+    // public static void writeLastIndex() {
+    //     try (BufferedWriter bw = new BufferedWriter(new FileWriter("./program_settings/book_index.txt"))) {
+    //         bw.write(index);
 
-    public void setRating(double totalRating) {
-        this.totalRating = totalRating;
-    }
+    //     } catch (IOException e) {
+    //         System.out.println("error during writing last books index");
+    //     }
+    // }
 
-    public int getIndex() {
-        return workIndex;
-    }
+    // public static void readLastIndex() {
+    //     try (BufferedReader br = new BufferedReader(new FileReader("./program_settings/book_index.txt"))) {
 
-    protected void setIndex(int index) {
-        workIndex = index;
-    }
+    //         index = Integer.parseInt(br.readLine());
 
-    public void writeLastIndex() {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter("./program_settings/book_index.txt"))) {
-
-        } catch (IOException e) {
-            System.out.println("error during writing last books index");
-        }
-    }
+    //     } catch (IOException e) {
+    //         System.out.println("error during writing last books index");
+    //     }
+    // }
 }
