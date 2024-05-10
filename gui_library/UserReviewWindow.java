@@ -63,6 +63,7 @@ public class UserReviewWindow extends JFrame {
                     JOptionPane.showMessageDialog(UserReviewWindow.this, "Review saved successfully!");
                     // Update user review in personal database panel
                     UserGUI.updateUserReview(title, author, reviewContent);
+                    dispose();
                 } else {
                     JOptionPane.showMessageDialog(UserReviewWindow.this, "Please enter a review before saving.");
                 }

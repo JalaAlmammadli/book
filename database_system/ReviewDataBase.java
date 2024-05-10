@@ -85,8 +85,12 @@ public class ReviewDataBase {
     public static boolean reviewExists(String username, String title, String author){
 
         File folder = new File(Parametres.REVIEW_PATH);
+        File[] files = folder.listFiles();
 
-        for(File file : folder.listFiles()){
+        if(files == null){
+            return false;
+        }
+        for(File file : files){
 
             Review r = fileToReview(file);
             if(r.getWriter().equals(username) && r.getBookTo().equals(title) && r.getBookAuthor().equals(author)) return true;

@@ -1,2 +1,2 @@
-review_index=7
-rating_index=0
+review_index=11
+rating_index=2
