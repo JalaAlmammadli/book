@@ -27,23 +27,16 @@ This management system is one of the best softwares for book lovers. It aims to 
 
 To install the Book Review System on your local machine, follow these steps:
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
-<div>
-    <pre>
-        <code class="language-bash" id="code-block-1">
-            #git clone https://github.com/your-username/book-review-system.git
-        </code>
-    </pre>
-    <button class="copy-button" data-clipboard-target="#code-block-1">Copy</button>
-</div>
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         var clipboard = new ClipboardJS('.copy-button');
-
+    
         clipboard.on('success', function (e) {
             e.clearSelection();
             alert("Code copied to clipboard!");
         });
-
+    
         clipboard.on('error', function (e) {
             console.error('Action:', e.action);
             console.error('Trigger:', e.trigger);
@@ -51,9 +44,11 @@ To install the Book Review System on your local machine, follow these steps:
     });
 </script>
 
-
-
-
-
-
-
+<div>
+    <pre>
+        <code class="language-bash" id="git-clone-code">
+            # git clone https://github.com/your-username/book-review-system.git
+        </code>
+    </pre>
+    <button class="copy-button" data-clipboard-target="#git-clone-code">Copy</button>
+</div>
