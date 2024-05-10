@@ -91,7 +91,7 @@ public class Book extends AbstractWork {
             count += RatingDataBase.getRatingContent(rating);
         }
 
-        double[] data = {count, (double)ratings.length};
+        double[] data = {count/ratings.length, (double)ratings.length};
         return data;
     }
 

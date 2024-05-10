@@ -1,2 +1,2 @@
 review_index=11
-rating_index=2
+rating_index=5
